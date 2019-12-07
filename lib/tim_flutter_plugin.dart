@@ -1,6 +1,8 @@
 
 
 
+import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_tim_plugin/common_define.dart';
 import 'package:flutter_tim_plugin/tim_method_key.dart';
@@ -32,8 +34,9 @@ class TimFlutterPlugin{
   ///[conversationType] 会话类型，参见枚举 [TIMConversationType]
   ///
 
-  static void sendMessage(int conversationType, dynamic content) async {
-    _channel.invokeListMethod(TimMethodKey.SendMessage,content);
+  static void sendMessage(dynamic content) async {
+    print('发送消息               ${jsonEncode(content.toJson())}');
+    _channel.invokeListMethod(TimMethodKey.SendMessage,content.toJson());
   }
 
 

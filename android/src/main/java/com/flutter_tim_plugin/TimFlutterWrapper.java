@@ -58,6 +58,9 @@ public class TimFlutterWrapper {
     }
 
     private void sendMessage(MethodCall call, MethodChannel.Result result) {
+
+        System.out.println("sendMessage      "+call.arguments);
+
         if (call.arguments instanceof Map){
             Map<String,Object> map= (Map<String, Object>) call.arguments;
 

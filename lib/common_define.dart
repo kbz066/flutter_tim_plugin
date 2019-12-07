@@ -8,6 +8,12 @@ class TIMConversationType {
   static const int System = 3;
 }
 
+//消息类型
+enum MessageTypeEnum{
+  TEXT,
+  IMAGE
+}
+
 //消息发送状态
 class RCSentStatus {
   static const int Sending = 10;//发送中

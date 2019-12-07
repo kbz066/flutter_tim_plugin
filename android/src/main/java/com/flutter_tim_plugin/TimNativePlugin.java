@@ -1,5 +1,7 @@
 package com.flutter_tim_plugin;
 
+import com.tencent.imsdk.TIMMessage;
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -15,7 +17,7 @@ public class TimNativePlugin implements MethodCallHandler {
     channel.setMethodCallHandler(new TimNativePlugin());
     TimFlutterWrapper.getInstance().saveChannel(channel);
     TimFlutterWrapper.getInstance().saveContext(registrar.context());
-
+    
   }
 
   @Override

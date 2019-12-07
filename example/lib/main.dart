@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
+
 import 'package:flutter_tim_plugin/tim_flutter_plugin.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_tim_plugin/common_define.dart';
+import 'package:flutter_tim_plugin/message/TIMMessage.dart';
 
 
 void main() => runApp(MyApp());
@@ -29,8 +30,13 @@ class _MyAppState extends State<MyApp> {
 
 
     print('开始登录');
-    var res=await TimFlutterPlugin.login("1234","fafafa");
-    print('connect result --------------。${res}');
+    var text=TIMMessage(TIMConversationType.C2C);
+    text.text="测试发送文本消息";
+    TimFlutterPlugin.sendMessage( text);
+//    var res=await TimFlutterPlugin.login("1234","fafafa");
+//
+//
+//    print('connect result --------------。${res}');
   }
 
   @override
