@@ -6,16 +6,29 @@ import android.content.Context;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMConversation;
 import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.TIMElem;
+import com.tencent.imsdk.TIMImage;
+import com.tencent.imsdk.TIMImageElem;
+import com.tencent.imsdk.TIMImageType;
 import com.tencent.imsdk.TIMLogLevel;
 import com.tencent.imsdk.TIMManager;
+import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMSdkConfig;
+import com.tencent.imsdk.TIMTextElem;
+import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.imsdk.session.SessionWrapper;
 
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.flutter.plugin.common.MethodCall;
@@ -64,12 +77,115 @@ public class TimFlutterWrapper {
         if (call.arguments instanceof Map){
             Map<String,Object> map= (Map<String, Object>) call.arguments;
 
-            String type=map.get("type").toString();
+            int type= (int) map.get("messageType");
 
 
-            System.out.println("发送消息   "+  MessageTypeEnum.TEXT.name());
+            switch (type){
+                case MessageTypeEnum.Text:
+                    sendTextMessage(map,result);
+                    break;
+                case MessageTypeEnum.Image:
+                    sendImageMessage(map,result);
+                    break;
+            }
+
+
         }
     }
+
+    private void sendImageMessage(Map<String, Object> map, final MethodChannel.Result result) {
+
+        System.out.println("sendImageMessage   userID   "+ map.get("id").toString()+"\n   "+map.get("path").toString());
+
+        //构造一条消息
+        TIMMessage msg = new TIMMessage();
+
+        //添加图片
+        final TIMImageElem elem = new TIMImageElem();
+        elem.setPath(map.get("path").toString());
+
+        //将 elem 添加到消息
+        if(msg.addElement(elem) != 0) {
+
+            return;
+        }
+
+
+
+        //发送消息
+
+        sendMessageCallBack(MessageTypeEnum.Image,map,msg,result);
+
+    }
+
+    private void sendTextMessage(Map<String, Object> map, final MethodChannel.Result result) {
+
+        TIMMessage timMessage=new TIMMessage();
+        TIMTextElem elem=new TIMTextElem();
+        elem.setText(map.get("text").toString());
+        //将elem添加到消息
+        if(timMessage.addElement(elem) != 0) {
+            System.out.println( "addElement failed");
+            return;
+        }
+        //发送消息
+        sendMessageCallBack(MessageTypeEnum.Text,map,timMessage,result);
+
+
+
+    }
+
+
+    /**
+     * 发送消息完成后的回调
+     * @param type
+     * @param map
+     * @param timMessage
+     * @param result
+     */
+    private void  sendMessageCallBack(final int type, final Map map, TIMMessage timMessage, final MethodChannel.Result result){
+
+        System.out.println("conversationType  是  "+(TIMConversationType.values()[(int) map.get("conversationType")]));
+        TIMConversation conversation = TIMManager.getInstance().getConversation(
+                TIMConversationType.values()[(int) map.get("conversationType")],    //会话类型：单聊
+                map.get("id").toString());
+        conversation.sendMessage(timMessage, new TIMValueCallBack<TIMMessage>() {//发送消息回调
+            @Override
+            public void onError(int code, String desc) {//发送消息失败
+                //错误码 code 和错误描述 desc，可用于定位请求失败原因
+                //错误码 code 含义请参见错误码表
+                result.success(buildResponseMap(String.valueOf(code),desc));
+                System.out.println( "send message failed. code: " + code + " errmsg: " + desc);
+            }
+
+            @Override
+            public void onSuccess(TIMMessage msg) {//发送消息成功
+
+
+                switch (type){
+                    case MessageTypeEnum.Text:
+                        result.success(buildResponseMap(String.valueOf(0),"SendMsg ok"));
+                        break;
+                    case MessageTypeEnum.Image:
+                        Map dataMap=new HashMap();
+                        dataMap.put("msgId",msg.getMsgId());
+                        dataMap.put("msgSeq",msg.getSeq());
+                        dataMap.put("rand",msg.getRand());
+                        dataMap.put("time",msg.timestamp());
+                        dataMap.put("isSelf",msg.isSelf());
+                        dataMap.put("status",msg.status().getStatus());
+                        dataMap.put("sender",msg.getSender());
+
+
+                        result.success(buildResponseMap(String.valueOf(0),    MessageFactory.getInstance().imageElement2String(msg)));
+                        break;
+                }
+
+
+            }
+        });
+    }
+
 
     private void getConversationList(MethodCall call, MethodChannel.Result result) {
         //获取单聊会话
@@ -96,26 +212,29 @@ public class TimFlutterWrapper {
             public void onError(int code, String desc) {
                 //错误码 code 和错误描述 desc，可用于定位请求失败原因
                 //错误码 code 列表请参见错误码表
-                Map<String,String> errorMap=new HashMap<>();
-                errorMap.put("code",String.valueOf(code));
-                errorMap.put("desc",desc);
-                result.success(errorMap);
-                System.out.println("login failed. code: " + errorMap);
+
+                result.success(buildResponseMap(String.valueOf(code),desc));
+                System.out.println("login failed. code: " );
             }
 
             @Override
             public void onSuccess() {
 
                 System.out.println("登录成功----------------》"+Thread.currentThread().getName());
-                Map<String,String> successMap=new HashMap<>();
-                successMap.put("code","0");
-                successMap.put("desc","login Success");
-                result.success(successMap);
+
+                result.success(buildResponseMap("0","login Success"));
 
             }
         });
     }
 
+
+    private Map<String,Object> buildResponseMap(String codeVal,Object descVal){
+        Map<String,Object> successMap=new HashMap<>();
+        successMap.put("code",codeVal);
+        successMap.put("data",descVal);
+        return successMap;
+    }
 
     /**
      * 初始化

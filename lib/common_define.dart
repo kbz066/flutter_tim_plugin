@@ -9,9 +9,17 @@ class TIMConversationType {
 }
 
 //消息类型
-enum MessageTypeEnum{
-  TEXT,
-  IMAGE
+class MessageType{
+  static const int Text = 0;
+  static const int Image = 1;
+
+}
+
+//图片类型
+class TIMImageType{
+  static const int Original = 0;
+  static const int Thumb = 1;
+  static const int Large = 1;
 }
 
 //消息发送状态

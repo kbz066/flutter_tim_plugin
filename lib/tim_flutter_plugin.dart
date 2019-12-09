@@ -34,9 +34,8 @@ class TimFlutterPlugin{
   ///[conversationType] 会话类型，参见枚举 [TIMConversationType]
   ///
 
-  static void sendMessage(dynamic content) async {
-    print('发送消息               ${jsonEncode(content.toJson())}');
-    _channel.invokeListMethod(TimMethodKey.SendMessage,content.toJson());
+  static Future<dynamic> sendMessage(dynamic content) async {
+    return   _channel.invokeMethod(TimMethodKey.SendMessage,content.toJson());
   }
 
 

@@ -1,17 +1,24 @@
+class TIMMessage{
+  int rand;
+  String sender;
+  String msgId;
+  int msgSeq;
+  int time;
+  bool isSelf;
+  int status;
+  List<TestElemant> element;
+  TIMMessage.fromJson(Map<dynamic, dynamic> json) {
+    rand = json['rand'];
+    sender = json['sender'];
+    msgId = json['msgId'];
+    msgSeq = json['msgSeq'];
+    time = json['time'];
+    isSelf = json['isSelf'];
+    status = json['status'];
 
 
-class TIMMessage  {
-	String text;
-	int type;
-
-	TIMMessage({this.text}) ;
-
-
-
-	Map<String, dynamic> toJson() {
-		final Map<String, dynamic> data = new Map<String, dynamic>();
-		data['text'] = this.text;
-		data['type'] = this.type;
-		return data;
-	}
+    if (json['element'] != null) {
+      element = new List<TestElemant>();(json['element'] as List).forEach((v) { element.add(new TestElemant.fromJson(v)); });
+    }
+  }
 }

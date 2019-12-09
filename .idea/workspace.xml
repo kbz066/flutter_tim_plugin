@@ -5,14 +5,25 @@
       <config />
     </shared>
   </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="977ba238-b31d-46ad-bdf0-e3df4fc2ab69" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/message/TIMMessage.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/MessageFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/message/TIMImage.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/message/TIMImageElem.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/message/TIMTextElem.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/message/conversation.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/message/image_message.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/message/message_content.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/message/text_message.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/MessageTypeEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/MessageTypeEnum.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimFlutterWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimFlutterWrapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimNativePlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimNativePlugin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/common_define.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/common_define.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/message/TIMMessage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/TIMMessage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/tim_flutter_plugin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tim_flutter_plugin.dart" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,7 +50,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/message" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -47,7 +58,12 @@
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\My_APP\flutter_tim_plugin\lib\message\request" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\My_APP\flutter_tim_plugin\lib\message" />
+      <recent name="D:\My_APP\flutter_tim_plugin\lib\message\response" />
       <recent name="D:\My_APP\flutter_tim_plugin\lib" />
     </key>
   </component>
@@ -74,6 +90,14 @@
       <option name="presentableId" value="Default" />
       <updated>1575615503470</updated>
     </task>
+    <task id="LOCAL-00001" summary="增加消息类型">
+      <created>1575712428795</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1575712428795</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -81,10 +105,16 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="增加消息类型" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加消息类型" />
   </component>
 </project>
