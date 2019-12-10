@@ -1,16 +1,17 @@
+import '../common_define.dart';
 import 'message_content.dart';
+
 import 'dart:convert' show json;
 
 class ImageMessage extends MessageContent {
-  static const String objectName = "RC:ImgMsg";
+  static const int messageType = MessageType.Image;
 
   String localPath;
-  String extra;
-  String content;
-  String imageUri;
+
+  List<MessageDataElement> elementList;
 
 
-  /// [localPath] 本地路径，Android 必须以 file:// 开头
+  /// [localPath] 本地路径，
   static ImageMessage obtain(String localPath) {
     ImageMessage msg = new ImageMessage();
     msg.localPath = localPath;
@@ -18,27 +19,74 @@ class ImageMessage extends MessageContent {
   }
 
   @override
-  void decode(String jsonStr) {
-    Map map = json.decode(jsonStr.toString());
-    this.localPath = map["localPath"];
-    this.content = map["content"];
-    this.imageUri = map["imageUri"];
-    this.extra = map["extra"];
+  void decode(Map map) {
+
+
+    if (map['elementList'] != null) {
+      this.elementList = new List<MessageDataElement>();
+      (map['elementList'] as List).forEach((v) { elementList.add( MessageDataElement.fromJson(v)); });
+    }
   }
 
   @override
-  String encode() {
-    Map map = {"localPath":this.localPath,"extra":this.extra};
-    return json.encode(map);
+  Map encode() {
+    Map map = {"localPath":this.localPath,"messageType":messageType};
+    return map;
   }
 
   @override
   String conversationDigest() {
-    return "图片";
+    return "";
   }
 
+
+
   @override
-  String getObjectName() {
-    return objectName;
+  int getMessageType() {
+    // TODO: implement getMessageType
+    return messageType;
   }
+}
+
+
+class MessageDataElement {
+  String path;
+  int imageFormat;
+  int level;
+  List<TIMImage> imageList;
+  int taskId;
+
+
+
+  MessageDataElement.fromJson(Map<dynamic, dynamic> json) {
+    path = json['path'];
+    imageFormat = json['imageFormat'];
+    level = json['level'];
+    if (json['imageList'] != null) {
+      imageList = new List<TIMImage>();
+      (json['imageList'] as List).forEach((v) { imageList.add( TIMImage.fromJson(v)); });
+    }
+    taskId = json['taskId'];
+  }
+
+}
+class TIMImage{
+  int type;
+  String url;
+  String uuid;
+  int size;
+  int height;
+  int width;
+
+
+  TIMImage.fromJson(Map<String, dynamic> json) {
+
+    size = json['size'];
+    width = json['width'];
+    type = json['type'];
+    uuid = json['uuid'];
+    url = json['url'];
+    height = json['height'];
+  }
+
 }

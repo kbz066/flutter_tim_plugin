@@ -1,44 +1,47 @@
+
+import 'package:flutter_tim_plugin/common_define.dart';
+
 import 'message_content.dart';
-import 'dart:convert' show json;
+
 
 class TextMessage extends MessageContent {
-  static const String objectName = "RC:TxtMsg";
+  static const int messageType = MessageType.Text;
 
-  String content;
-  String extra;
+  String text;
+
 
   /// [content] 文本内容
   static TextMessage obtain(String content) {
     TextMessage msg = new TextMessage();
-    msg.content = content;
+    msg.text = content;
     return msg;
   }
 
   @override
-  void decode(String jsonStr) {
-    if(jsonStr == null) {
-      print("[RC-Flutter-IM] Flutter TextMessage deocde error: no content");
-      return;
-    }
-    Map map = json.decode(jsonStr.toString());
-    this.content = map["content"];
-    this.extra = map["extra"];
-  }
-
-  @override
-  String encode() {
-    Map map = {"content":this.content,"extra":this.extra};
-    return json.encode(map);
-  }
-
-  @override
   String conversationDigest() {
-    return content;
+    // TODO: implement conversationDigest
+    return null;
   }
 
   @override
-  String getObjectName() {
-    return objectName;
+  void decode(Map map) {
+
+    //this.text = jsonStr;
+
   }
+
+  @override
+  Map encode() {
+    Map map = {"text":this.text,"messageType":messageType};
+    return map;
+  }
+
+  @override
+  int getMessageType() {
+    // TODO: implement getMessageType
+    return messageType;
+  }
+
+
 
 }

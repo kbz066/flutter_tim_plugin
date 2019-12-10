@@ -1,9 +1,15 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_tim_plugin/tim_flutter_plugin.dart';
 import 'package:flutter_tim_plugin/common_define.dart';
-import 'package:flutter_tim_plugin/message/test_entity.dart';
-import 'package:flutter_tim_plugin/message/TIMImageElem.dart';
+
+import 'package:flutter_tim_plugin/message/text_message.dart';
+import 'package:flutter_tim_plugin/message/image_message.dart';
+import 'package:flutter_tim_plugin/message/sound_message.dart';
+import 'package:flutter_tim_plugin/message/data/sound_message_data.dart';
+import 'package:flutter_tim_plugin/message/emoji_message.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,6 +30,8 @@ class _MyAppState extends State<MyApp> {
   initPlatformState() async {
 
     String path="/storage/emulated/0/Android/data/com.flutter_tim_plugin_example/files/Pictures/Img89495.jpg";
+
+    String soundPath="/storage/emulated/0/Sound/sound.wma";
     //1.初始化 im SDK
     TimFlutterPlugin.init("2255");
 
@@ -31,16 +39,20 @@ class _MyAppState extends State<MyApp> {
     print('开始登录');
     await TimFlutterPlugin.login("1234","fafafa");
     print('准备发送消息');
-//    var text=TIMTextElem(text:"测试发送文本消息",conversationType: TIMConversationType.C2C);
-//
-//    var res=await TimFlutterPlugin.sendMessage( text);
 
-    var text=TIMImageElem(path:path,conversationType: TIMConversationType.C2C,id: 2255.toString());
 
-    var res=await TimFlutterPlugin.sendMessage( text);
-    print('发送消息结果 00 ${res["data"]}');
-    print('aaaa        ${json.decode(res["data"]).runtimeType}');
-    print('发送消息结果  ${TestEntity.fromJson( json.decode(res["data"])).element[0].imageList.length}');
+   // var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain("测试发送文本消息"));
+
+    var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: ImageMessage.obtain(path));
+
+
+    //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: SoundMessage.obtain(soundPath,8));
+  //  var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: EmojiMessage.obtain(Uint8List.fromList("表情测试".codeUnits),100));
+
+
+    print('发送消息结果 00 ${(res.msgSeq)}   ${res.sender}');
+//    print('aaaa        ${json.decode(res["data"]).runtimeType}');
+//    print('发送消息结果  ${TestEntity.fromJson( json.decode(res["data"])).element[0].imageList.length}');
 
 
 //
@@ -50,6 +62,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
 
 
     return MaterialApp(

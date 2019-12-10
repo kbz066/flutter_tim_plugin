@@ -16,6 +16,7 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
+
     }
 }
 
@@ -31,11 +32,7 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
-    defaultConfig {
-        ndk {
-            abiFilters "armeabi-v7a"
-        }
-    }
+
 
 }
 dependencies {

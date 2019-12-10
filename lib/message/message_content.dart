@@ -1,18 +1,16 @@
 
 
-abstract class MessageContent
-    implements MessageCoding, MessageContentView {
-
+abstract class MessageContent implements MessageCoding, MessageContentView {
 
 
 }
 
 abstract class MessageCoding {
-  String encode();
+  Map encode();
 
-  void decode(String jsonStr);
 
-  String getObjectName();
+  void decode(Map map);
+  int getMessageType();
 }
 
 abstract class MessageContentView {

@@ -10,8 +10,20 @@ class TIMConversationType {
 
 //消息类型
 class MessageType{
-  static const int Text = 0;
-  static const int Image = 1;
+  static const int Invalid = 0;
+  static const int Text = 1;
+
+  static const int Image = 2;
+  static const int Sound = 3;
+  static const int Custom =4;
+  static const int File = 5;
+  static const int GroupTips = 6;
+  static const int Face = 7;
+  static const int Location = 8;
+  static const int GroupSystem = 9;
+  static const int SNSTips = 10;
+  static const int ProfileTips = 11;
+  static const int Video = 12;
 
 }
 
