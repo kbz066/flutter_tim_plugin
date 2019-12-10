@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'dart:convert' show json;
+import 'dart:math';
 
 import 'package:flutter_tim_plugin/message/emoji_message.dart';
 import 'package:flutter_tim_plugin/message/sound_message.dart';
@@ -68,23 +69,25 @@ class MessageFactory extends Object {
 //  }
 //
   Message map2Message(Map map,int messageType) {
-
+    print('返回     $map');
     Message message=Message();
-
-    Map dataMap=json.decode(map["data"]);
-
-
     message.code=map["code"];
-    message.messageType = messageType;
-    message. rand = dataMap['rand'];
-    message. sender = dataMap['sender'];
-    message. msgId = dataMap['msgId'];
-    message. msgSeq = dataMap['msgSeq'];
-    message. time = dataMap['time'];
-    message.isSelf = dataMap['isSelf'];
-    message.status = dataMap['status'];
 
-    message.content=map2MessageContent(dataMap, messageType);
+    if(message.code==0){//成功
+      Map dataMap=json.decode(map["data"]);
+      message.messageType = messageType;
+      message. rand = dataMap['rand'];
+      message. sender = dataMap['sender'];
+      message. msgId = dataMap['msgId'];
+      message. msgSeq = dataMap['msgSeq'];
+      message. time = dataMap['time'];
+      message.isSelf = dataMap['isSelf'];
+      message.status = dataMap['status'];
+      message.content=map2MessageContent(dataMap, messageType);
+    }else{
+      message.desc=map["data"];
+    }
+
 
     return message;
   }
@@ -132,7 +135,7 @@ class MessageFactory extends Object {
       content.decode(map);
     }else if(messageType == EmojiMessage.messageType) {
       content = new EmojiMessage();
-    //  content.decode(contentS);
+      content.decode(map);
     }
 //    else if(messageType == VoiceMessage.objectName) {
 //      content = new VoiceMessage();

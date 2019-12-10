@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import '../common_define.dart';
-import 'data/sound_message_data.dart';
+
 import 'message_content.dart';
 
 class SoundMessage extends MessageContent{
@@ -9,7 +9,8 @@ class SoundMessage extends MessageContent{
   String localPath;
 
   int duration;
-  SoundMessageData data;
+
+  List<MessageDataElement> elementList;
 
   /// [localPath] 本地路径，
   ///
@@ -24,7 +25,12 @@ class SoundMessage extends MessageContent{
   @override
   void decode(Map map) {
 
-
+    if (map['elementList'] != null) {
+      this.elementList = new List<MessageDataElement>();
+      map['elementList'].forEach((v) {
+        elementList.add(new MessageDataElement.fromJson(v));
+      });
+    }
    // this.data = SoundMessageData.fromJson(map);
   }
 
@@ -46,4 +52,25 @@ class SoundMessage extends MessageContent{
     // TODO: implement getMessageType
     return messageType;
   }
+}
+
+class MessageDataElement {
+  int duration;
+  String path;
+  int dataSize;
+  String uuid;
+  int taskId;
+
+  MessageDataElement(
+      {this.duration, this.path, this.dataSize, this.uuid, this.taskId});
+
+  MessageDataElement.fromJson(Map<String, dynamic> json) {
+    duration = json['duration'];
+    path = json['path'];
+    dataSize = json['dataSize'];
+    uuid = json['uuid'];
+    taskId = json['taskId'];
+  }
+
+
 }

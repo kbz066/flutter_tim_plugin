@@ -8,7 +8,7 @@ import 'package:flutter_tim_plugin/common_define.dart';
 import 'package:flutter_tim_plugin/message/text_message.dart';
 import 'package:flutter_tim_plugin/message/image_message.dart';
 import 'package:flutter_tim_plugin/message/sound_message.dart';
-import 'package:flutter_tim_plugin/message/data/sound_message_data.dart';
+import 'package:flutter_tim_plugin/message/location_message.dart';
 import 'package:flutter_tim_plugin/message/emoji_message.dart';
 
 void main() => runApp(MyApp());
@@ -43,14 +43,15 @@ class _MyAppState extends State<MyApp> {
 
    // var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain("测试发送文本消息"));
 
-    var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: ImageMessage.obtain(path));
+    //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: SoundMessage.obtain(path,20));
 
 
     //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: SoundMessage.obtain(soundPath,8));
-  //  var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: EmojiMessage.obtain(Uint8List.fromList("表情测试".codeUnits),100));
+//    var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: EmojiMessage.obtain(Uint8List.fromList("表情测试".codeUnits),100));
+    var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: LocationMessage.obtain(20.22,33.66,"发送位置"));
 
 
-    print('发送消息结果 00 ${(res.msgSeq)}   ${res.sender}');
+    print('发送消息结果 00 ${(res.msgSeq)}   ${res.desc}');
 //    print('aaaa        ${json.decode(res["data"]).runtimeType}');
 //    print('发送消息结果  ${TestEntity.fromJson( json.decode(res["data"])).element[0].imageList.length}');
 

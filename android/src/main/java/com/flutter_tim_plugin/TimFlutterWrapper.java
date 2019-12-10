@@ -16,6 +16,7 @@ import com.tencent.imsdk.TIMFaceElem;
 import com.tencent.imsdk.TIMImage;
 import com.tencent.imsdk.TIMImageElem;
 import com.tencent.imsdk.TIMImageType;
+import com.tencent.imsdk.TIMLocationElem;
 import com.tencent.imsdk.TIMLogLevel;
 import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMMessage;
@@ -95,10 +96,34 @@ public class TimFlutterWrapper {
                 case MessageTypeEnum.Face:
                     sendEmojiMessage(map,result);
                     break;
+                case MessageTypeEnum.Location:
+                    sendLocationMessage(map,result);
+                    break;
             }
 
 
         }
+    }
+
+    private void sendLocationMessage(Map<String, Object> map, MethodChannel.Result result) {
+
+        Map content= (Map) map.get("content");
+        //构造一条消息
+        TIMMessage msg = new TIMMessage();
+
+        //添加位置信息
+        TIMLocationElem elem = new TIMLocationElem();
+        elem.setLatitude((double) content.get("Latitude"));   //设置纬度
+        elem.setLongitude((Double) content.get("longitude"));   //设置经度
+        elem.setDesc(content.get("desc").toString());
+
+        //将elem添加到消息
+        if(msg.addElement(elem) != 0) {
+            return;
+        }
+        //发送消息
+
+        sendMessageCallBack(MessageTypeEnum.Location,map,msg,result);
     }
 
     private void sendEmojiMessage(Map<String, Object> map, MethodChannel.Result result) {
@@ -108,12 +133,12 @@ public class TimFlutterWrapper {
         //构造一条消息
         TIMMessage msg = new TIMMessage();
 
-//添加表情
+        //添加表情
         TIMFaceElem elem = new TIMFaceElem();
         elem.setData((byte[]) content.get("emoji")); //自定义 byte[]
         elem.setIndex((int) content.get("index"));   //自定义表情索引
 
-//将 elem 添加到消息
+        //将 elem 添加到消息
         if(msg.addElement(elem) != 0) {
 
             return;
@@ -223,7 +248,8 @@ public class TimFlutterWrapper {
                 switch (type){
                     case MessageTypeEnum.Text:
                     case MessageTypeEnum.Face:
-                        result.success(buildResponseMap(0,"SendMsg ok"));
+                    case MessageTypeEnum.Location:
+                        result.success(buildResponseMap(0,MessageFactory.getInstance().basicMessage2String(msg)));
                         break;
                     case MessageTypeEnum.Image:
 

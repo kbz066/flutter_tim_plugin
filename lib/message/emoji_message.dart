@@ -10,7 +10,7 @@ class EmojiMessage extends MessageContent{
 
   Uint8List emoji;
   int index;
-  String desc;
+
 
 
 
@@ -24,7 +24,6 @@ class EmojiMessage extends MessageContent{
 
   @override
   void decode(Map map) {
-
 
   }
 

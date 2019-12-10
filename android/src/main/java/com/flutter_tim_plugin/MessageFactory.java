@@ -31,16 +31,15 @@ public class MessageFactory {
     }
 
 
+
+    public String basicMessage2String(TIMMessage msg){
+
+        return new JSONObject(buildBasicMap(msg)).toString();
+    }
+
     public String imageMessage2String(TIMMessage msg) {
 
-        Map dataMap=new HashMap();
-        dataMap.put("msgId",msg.getMsgId());
-        dataMap.put("msgSeq",msg.getSeq());
-        dataMap.put("rand",msg.getRand());
-        dataMap.put("time",msg.timestamp());
-        dataMap.put("isSelf",msg.isSelf());
-        dataMap.put("status",msg.status().getStatus());
-        dataMap.put("sender",msg.getSender());
+        Map dataMap=buildBasicMap(msg);
 
 
         List elementList=new ArrayList();
@@ -82,14 +81,8 @@ public class MessageFactory {
     }
 
     public String soundMessage2String(TIMMessage msg) {
-        Map dataMap=new HashMap();
-        dataMap.put("msgId",msg.getMsgId());
-        dataMap.put("msgSeq",msg.getSeq());
-        dataMap.put("rand",msg.getRand());
-        dataMap.put("time",msg.timestamp());
-        dataMap.put("isSelf",msg.isSelf());
-        dataMap.put("status",msg.status().getStatus());
-        dataMap.put("sender",msg.getSender());
+        Map dataMap=buildBasicMap(msg);
+
 
 
         List elementList=new ArrayList();
@@ -114,4 +107,17 @@ public class MessageFactory {
 
         return new JSONObject(dataMap).toString();
     }
+    private Map buildBasicMap(TIMMessage msg){
+        Map dataMap=new HashMap();
+        dataMap.put("msgId",msg.getMsgId());
+        dataMap.put("msgSeq",msg.getSeq());
+        dataMap.put("rand",msg.getRand());
+        dataMap.put("time",msg.timestamp());
+        dataMap.put("isSelf",msg.isSelf());
+        dataMap.put("status",msg.status().getStatus());
+        dataMap.put("sender",msg.getSender());
+        return dataMap;
+    }
+
+
 }
