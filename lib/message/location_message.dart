@@ -5,14 +5,14 @@ import 'message_content.dart';
 
 class LocationMessage extends MessageContent{
   static const int messageType = MessageType.Location;
-  double Latitude;//设置纬度
+  double latitude;//设置纬度
   double longitude;//设置经度
   String desc;
 
 
   static LocationMessage obtain(double Latitude,double longitude,String desc,) {
     LocationMessage msg = new LocationMessage();
-    msg.Latitude = Latitude;
+    msg.latitude = Latitude;
     msg.longitude = longitude;
     msg.desc=desc;
     return msg;
@@ -25,7 +25,7 @@ class LocationMessage extends MessageContent{
 
   @override
   Map encode() {
-    Map map = {"Latitude":this.Latitude,"longitude":this.longitude,"desc":this.desc};
+    Map map = {"latitude":this.latitude,"longitude":this.longitude,"desc":this.desc};
     return map;
   }
 

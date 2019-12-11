@@ -113,7 +113,7 @@ public class TimFlutterWrapper {
 
         //添加位置信息
         TIMLocationElem elem = new TIMLocationElem();
-        elem.setLatitude((double) content.get("Latitude"));   //设置纬度
+        elem.setLatitude((double) content.get("latitude"));   //设置纬度
         elem.setLongitude((Double) content.get("longitude"));   //设置经度
         elem.setDesc(content.get("desc").toString());
 
