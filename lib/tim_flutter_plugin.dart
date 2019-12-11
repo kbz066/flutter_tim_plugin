@@ -53,7 +53,7 @@ class TimFlutterPlugin{
     if (resultMap == null) {
       return null;
     }
-    print('resultMap=================null');
+
     String messageString = resultMap["data"];
     Message msg = MessageFactory.instance.map2Message(resultMap,content.getMessageType());
     return   msg;
@@ -69,9 +69,6 @@ class TimFlutterPlugin{
       print('_addNativeMethodCallHandler                   ${call.arguments}   ${TimMethodKey.MethodCallBackKeyInit}');
       switch (call.method) {
         case TimMethodKey.MethodCallBackKeyInit:
-
-
-
 
           break;
 

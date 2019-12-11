@@ -43,7 +43,7 @@ public class MessageFactory {
 
 
         List elementList=new ArrayList();
-        System.out.println( "发送消息成功  getElementCount  "+msg.getElementCount());
+
         for (int i = 0; i < msg.getElementCount(); i++) {
             TIMImageElem element = (TIMImageElem) msg.getElement(i);
             Map elementMap=new HashMap();

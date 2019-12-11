@@ -51,14 +51,7 @@ class _MyAppState extends State<MyApp> {
     var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: LocationMessage.obtain(20.22,33.66,"发送位置"));
 
 
-    print('发送消息结果 00 ${(res.msgSeq)}   ${res.desc}');
-//    print('aaaa        ${json.decode(res["data"]).runtimeType}');
-//    print('发送消息结果  ${TestEntity.fromJson( json.decode(res["data"])).element[0].imageList.length}');
-
-
-//
-//
-//    print('connect result --------------。${res}');
+    print('发送消息结果 ${(res.msgSeq)}   ${res.desc}');
   }
 
   @override

@@ -59,7 +59,7 @@ public class TimFlutterWrapper {
     public void onFlutterMethodCall(MethodCall call, MethodChannel.Result result) {
 
 
-        System.out.println("method -_------------------->  "+call.method);
+
         if (TimMethodList.MethodKeyInit.equalsIgnoreCase(call.method)){
             initIM();
 
@@ -76,7 +76,7 @@ public class TimFlutterWrapper {
     private void sendMessage(MethodCall call, MethodChannel.Result result) {
 
         System.out.println("sendMessage      "+call.arguments);
-        System.out.println("发送文字消息   "+call.method);
+
         if (call.arguments instanceof Map){
             Map<String,Object> map= (Map<String, Object>) call.arguments;
 
@@ -129,7 +129,7 @@ public class TimFlutterWrapper {
     private void sendEmojiMessage(Map<String, Object> map, MethodChannel.Result result) {
 
         Map content= (Map) map.get("content");
-        System.out.println("sendEmojiMessage   "+content.get("emoji")+"     "+content.get("index")+"  "+content.get("emoji"));
+
         //构造一条消息
         TIMMessage msg = new TIMMessage();
 
@@ -152,7 +152,7 @@ public class TimFlutterWrapper {
 
     private void sendSoundMessage(Map<String, Object> map, MethodChannel.Result result) {
         Map content= (Map) map.get("content");
-        System.out.println("音频路径   "+content.get("localPath").toString()  +"  "+content.get("duration").toString());
+
         //构造一条消息
         TIMMessage msg = new TIMMessage();
 
@@ -175,7 +175,7 @@ public class TimFlutterWrapper {
 
 
         Map content= (Map) map.get("content");
-        System.out.println("sendImageMessage   userID   "+ map.get("id").toString()+"\n   "+content.get("localPath"));
+
         //构造一条消息
         TIMMessage msg = new TIMMessage();
 
@@ -207,7 +207,7 @@ public class TimFlutterWrapper {
         elem.setText(content.get("text").toString());
         //将elem添加到消息
         if(timMessage.addElement(elem) != 0) {
-            System.out.println( "addElement failed");
+
             return;
         }
         //发送消息
@@ -227,7 +227,7 @@ public class TimFlutterWrapper {
      */
     private void  sendMessageCallBack(final int type, final Map map, TIMMessage timMessage, final MethodChannel.Result result){
 
-        System.out.println("conversationType  是  "+(TIMConversationType.values()[(int) map.get("conversationType")]));
+        System.out.println("conversationType   "+(TIMConversationType.values()[(int) map.get("conversationType")]));
         TIMConversation conversation = TIMManager.getInstance().getConversation(
                 TIMConversationType.values()[(int) map.get("conversationType")],    //会话类型
                 map.get("id").toString());
@@ -237,14 +237,14 @@ public class TimFlutterWrapper {
                 //错误码 code 和错误描述 desc，可用于定位请求失败原因
                 //错误码 code 含义请参见错误码表
                 result.success(buildResponseMap(code,desc));
-                System.out.println( "send message failed. code: " + code + " errmsg: " + desc);
+
             }
 
             @Override
             public void onSuccess(TIMMessage msg) {//发送消息成功
 
 
-                System.out.println("原生层打印发送消息成功  "+msg.toString());
+
                 switch (type){
                     case MessageTypeEnum.Text:
                     case MessageTypeEnum.Face:
