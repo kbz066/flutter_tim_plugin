@@ -9,22 +9,8 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="977ba238-b31d-46ad-bdf0-e3df4fc2ab69" name="Default Changelist" comment="增加消息类型">
-      <change afterPath="$PROJECT_DIR$/lib/message/location_message.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+    <list default="true" id="977ba238-b31d-46ad-bdf0-e3df4fc2ab69" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/MessageFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/MessageFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimFlutterWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimFlutterWrapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_tim_plugin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_tim_plugin.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/message/data/sound_message_data.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/message/emoji_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/emoji_message.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/message/message_factory.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/message_factory.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/message/sound_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/sound_message.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/message/text_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/text_message.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,7 +18,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_3_XL_API_29" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="2.2" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -50,11 +36,11 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/message" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="flutter.settings" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
@@ -98,7 +84,14 @@
       <option name="project" value="LOCAL" />
       <updated>1575712428795</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="优化结构">
+      <created>1575974748085</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1575974748085</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -116,6 +109,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="增加消息类型" />
-    <option name="LAST_COMMIT_MESSAGE" value="增加消息类型" />
+    <MESSAGE value="优化结构" />
+    <option name="LAST_COMMIT_MESSAGE" value="优化结构" />
   </component>
 </project>
