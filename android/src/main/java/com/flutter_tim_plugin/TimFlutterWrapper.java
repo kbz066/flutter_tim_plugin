@@ -11,8 +11,10 @@ import android.util.Log;
 import com.tencent.imsdk.TIMCallBack;
 import com.tencent.imsdk.TIMConversation;
 import com.tencent.imsdk.TIMConversationType;
+import com.tencent.imsdk.TIMCustomElem;
 import com.tencent.imsdk.TIMElem;
 import com.tencent.imsdk.TIMFaceElem;
+import com.tencent.imsdk.TIMFileElem;
 import com.tencent.imsdk.TIMImage;
 import com.tencent.imsdk.TIMImageElem;
 import com.tencent.imsdk.TIMImageType;
@@ -99,10 +101,63 @@ public class TimFlutterWrapper {
                 case MessageTypeEnum.Location:
                     sendLocationMessage(map,result);
                     break;
+                case MessageTypeEnum.File:
+                    sendFileMessage(map,result);
+                    break;
+                case MessageTypeEnum.Custom:
+                    sendCustomMessage(map,result);
+                    break;
+                case MessageTypeEnum.Video:
+                    sendVideoMessage(map,result);
+                    break;
             }
 
 
         }
+    }
+
+    private void sendVideoMessage(Map<String, Object> map, MethodChannel.Result result) {
+
+    }
+
+    private void sendCustomMessage(Map<String, Object> map, MethodChannel.Result result) {
+        Map content= (Map) map.get("content");
+        //构造一条消息
+        TIMMessage msg = new TIMMessage();
+
+
+        //向 TIMMessage 中添加自定义内容
+        TIMCustomElem elem = new TIMCustomElem();
+        elem.setData((byte[]) content.get("data"));      //自定义 byte[]
+
+
+        //将 elem 添加到消息
+        if(msg.addElement(elem) != 0) {
+
+            return;
+        }
+
+        //发送消息
+
+        sendMessageCallBack(MessageTypeEnum.Location,map,msg,result);
+    }
+
+    private void sendFileMessage(Map<String, Object> map, MethodChannel.Result result) {
+        Map content= (Map) map.get("content");
+        //构造一条消息
+        TIMMessage msg = new TIMMessage();
+        //添加文件内容
+        TIMFileElem elem = new TIMFileElem();
+        elem.setPath(content.get("filePath").toString()); //设置文件路径
+        elem.setFileName(content.get("fileName").toString()); //设置消息展示用的文件名称
+
+        System.out.println("发送文件   "+elem.getPath()+"   "+elem.getFileName()+" "+elem.getUuid()+"   "+elem.getFileSize());
+        //将 elem 添加到消息
+        if(msg.addElement(elem) != 0) {
+
+            return;
+        }
+        sendMessageCallBack(MessageTypeEnum.Location,map,msg,result);
     }
 
     private void sendLocationMessage(Map<String, Object> map, MethodChannel.Result result) {
@@ -244,6 +299,7 @@ public class TimFlutterWrapper {
             public void onSuccess(TIMMessage msg) {//发送消息成功
 
 
+                System.out.println("msg     "+msg.toString());
 
                 switch (type){
                     case MessageTypeEnum.Text:
@@ -259,7 +315,10 @@ public class TimFlutterWrapper {
                         result.success(buildResponseMap(0,    MessageFactory.getInstance().soundMessage2String(msg)));
 
                         break;
+                    case MessageTypeEnum.File:
+                        result.success(buildResponseMap(0,    MessageFactory.getInstance().soundMessage2String(msg)));
 
+                        break;
                 }
 
 

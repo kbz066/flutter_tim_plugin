@@ -1,7 +1,7 @@
 
 
 
-import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +19,7 @@ class TimFlutterPlugin{
   ///
   ///[appkey] appkey
   static void init(String appkey) {
+
     _channel.invokeMethod(TimMethodKey.Init, appkey);
    _addNativeMethodCallHandler();
   }
@@ -30,6 +31,8 @@ class TimFlutterPlugin{
       "userID":userID,
       "userSig":userSig
     };
+
+
     return _channel.invokeMethod(TimMethodKey.Login, arguments);
   }
 

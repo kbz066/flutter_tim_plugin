@@ -23,6 +23,7 @@ public class MessageFactory {
     }
 
     private static class SingletonInstance {
+
         private static final MessageFactory INSTANCE = new MessageFactory();
     }
 

@@ -14,7 +14,7 @@ class EmojiMessage extends MessageContent{
 
 
 
-  /// [localPath] 本地路径，
+
   static EmojiMessage obtain(Uint8List emoji,int index) {
     EmojiMessage msg = new EmojiMessage();
     msg.emoji = emoji;
