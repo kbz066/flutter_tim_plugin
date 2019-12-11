@@ -37,10 +37,12 @@ class VideoMessage extends MessageContent{
     // TODO: implement decode
   }
 
+
   @override
   Map encode() {
-    // TODO: implement encode
-    return null;
+    Map map = {"imgPath":this.imgPath,"videoPath":this.videoPath,
+      "width":this.width,"height":this.height,"duration":this.duration};
+    return map;
   }
 
   @override

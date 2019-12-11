@@ -12,6 +12,7 @@ import 'package:flutter_tim_plugin/message/location_message.dart';
 import 'package:flutter_tim_plugin/message/emoji_message.dart';
 import 'package:flutter_tim_plugin/message/file_message.dart';
 import 'package:flutter_tim_plugin/message/custom_message.dart';
+import 'package:flutter_tim_plugin/message/video_message.dart';
 
 void main() => runApp(MyApp());
 
@@ -52,8 +53,9 @@ class _MyAppState extends State<MyApp> {
 //    var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: EmojiMessage.obtain(Uint8List.fromList("表情测试".codeUnits),100));
     //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: LocationMessage.obtain(20.22,33.66,"发送位置"));
     //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: FileMessage.obtain(path,"测试文件发送"));
-    var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: CustomMessage.obtain(Uint8List.fromList(utf8.encode("自定义消息"))));
 
+   // var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: CustomMessage.obtain(Uint8List.fromList(utf8.encode("自定义消息"))));
+      var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: VideoMessage.obtain(path,soundPath,300,200,100));
     print('发送消息结果 ${(res.msgSeq)}   ${res.desc}');
   }
 

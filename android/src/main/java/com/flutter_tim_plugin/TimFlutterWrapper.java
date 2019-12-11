@@ -23,9 +23,12 @@ import com.tencent.imsdk.TIMLogLevel;
 import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMSdkConfig;
+import com.tencent.imsdk.TIMSnapshot;
 import com.tencent.imsdk.TIMSoundElem;
 import com.tencent.imsdk.TIMTextElem;
 import com.tencent.imsdk.TIMValueCallBack;
+import com.tencent.imsdk.TIMVideo;
+import com.tencent.imsdk.TIMVideoElem;
 import com.tencent.imsdk.session.SessionWrapper;
 
 import org.json.JSONObject;
@@ -118,6 +121,38 @@ public class TimFlutterWrapper {
 
     private void sendVideoMessage(Map<String, Object> map, MethodChannel.Result result) {
 
+        Map content= (Map) map.get("content");
+
+
+        //构造一条消息
+        TIMMessage msg = new TIMMessage();
+
+        //构造一个短视频对象
+        TIMVideoElem ele = new TIMVideoElem();
+
+        TIMVideo video = new TIMVideo();
+        video.setDuaration((int) content.get("duration")); //设置视频时长
+       // video.setType("mp4"); // 设置视频文件类型
+
+        TIMSnapshot snapshot = new TIMSnapshot();
+        snapshot.setWidth((int) content.get("width")); // 设置视频快照图宽度
+        snapshot.setHeight((int) content.get("height")); // 设置视频快照图高度
+
+        ele.setSnapshot(snapshot);
+        ele.setVideo(video);
+        ele.setSnapshotPath(content.get("imgPath").toString());
+        ele.setVideoPath(content.get("videoPath").toString());
+
+
+        //将 elem 添加到消息
+        if(msg.addElement(ele) != 0) {
+
+            return;
+        }
+
+        //发送消息
+
+        sendMessageCallBack(MessageTypeEnum.Location,map,msg,result);
     }
 
     private void sendCustomMessage(Map<String, Object> map, MethodChannel.Result result) {
