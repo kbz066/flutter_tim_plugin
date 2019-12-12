@@ -32,8 +32,16 @@ class TimFlutterPlugin{
       "userSig":userSig
     };
 
+    try{
 
-    return _channel.invokeMethod(TimMethodKey.Login, arguments);
+      return _channel.invokeMethod(TimMethodKey.Login, arguments);
+    } catch (e) {
+      print('出现异常   $e');
+    }
+
+
+
+
   }
 
 

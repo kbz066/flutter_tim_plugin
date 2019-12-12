@@ -10,15 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="977ba238-b31d-46ad-bdf0-e3df4fc2ab69" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/message/custom_message.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/message/file_message.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/message/video_message.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/MessageFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/MessageFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimFlutterWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimFlutterWrapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/message/emoji_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/emoji_message.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/tim_flutter_plugin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tim_flutter_plugin.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -113,7 +111,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576027858491</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="完善消息发送">
+      <created>1576059183204</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1576059183204</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -133,6 +138,7 @@
     <MESSAGE value="增加消息类型" />
     <MESSAGE value="优化结构" />
     <MESSAGE value="修改名字错误" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改名字错误" />
+    <MESSAGE value="完善消息发送" />
+    <option name="LAST_COMMIT_MESSAGE" value="完善消息发送" />
   </component>
 </project>

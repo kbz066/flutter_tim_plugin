@@ -23,6 +23,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
 
+
+
   @override
   void initState() {
     super.initState();
@@ -34,12 +36,7 @@ class _MyAppState extends State<MyApp> {
     String path="/storage/emulated/0/Android/data/com.flutter_tim_plugin_example/files/Pictures/Img89495.jpg";
 
     String soundPath="/storage/emulated/0/Sound/sound.wma";
-    //1.初始化 im SDK
-    TimFlutterPlugin.init("2255");
 
-    //2.连接 im SDK
-    print('开始登录');
-    await TimFlutterPlugin.login("1234","fafafa");
     print('准备发送消息');
 
 
@@ -52,13 +49,15 @@ class _MyAppState extends State<MyApp> {
 //    var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: EmojiMessage.obtain(Uint8List.fromList("表情测试".codeUnits),100));
     //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: LocationMessage.obtain(20.22,33.66,"发送位置"));
     //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: FileMessage.obtain(path,"测试文件发送"));
-    var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: CustomMessage.obtain(Uint8List.fromList(utf8.encode("自定义消息"))));
-
-    print('发送消息结果 ${(res.msgSeq)}   ${res.desc}');
+//    var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: CustomMessage.obtain(Uint8List.fromList(utf8.encode("自定义消息"))));
+//
+//    print('发送消息结果 ${(res.msgSeq)}   ${res.desc}');
   }
 
   @override
   Widget build(BuildContext context) {
+
+
 
 
 
@@ -67,11 +66,35 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: Wrap(
+          children: <Widget>[
+            SizedBox(height: 50,width: double.infinity,child: TextField(decoration: InputDecoration(hintText: "请输入userid"),),),
+            MaterialButton(
+              color: Colors.blue,
+              textColor: Colors.white,
+              onPressed: ()=>this.onPressed("登录"),
+              child: Text("登录"),
+            )
+          ],
         ),
       ),
     );
+  }
+
+  Future<void> onPressed(type) async {
+
+
+
+
+
+    if(type=="登录"){
+      //1.初始化 im SDK
+      TimFlutterPlugin.init("2255");
+
+      //2.连接 im SDK
+      print('开始登录  ${ await TimFlutterPlugin.login("1234","fafafa")}');
+
+    }
   }
 }
 

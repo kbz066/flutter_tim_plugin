@@ -347,13 +347,13 @@ public class TimFlutterWrapper {
         String userSig = GenerateTestUserSig.genTestUserSig(userID);
 
         // identifier 为用户名，userSig 为用户登录凭证
-        TIMManager.getInstance().login(userID, userSig, new TIMCallBack() {
+        TIMManager.getInstance().login(userID, null, new TIMCallBack() {
             @Override
             public void onError(int code, String desc) {
                 //错误码 code 和错误描述 desc，可用于定位请求失败原因
                 //错误码 code 列表请参见错误码表
-
                 result.success(buildResponseMap(code,desc));
+
                 System.out.println("login failed. code: " );
             }
 
