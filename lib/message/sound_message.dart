@@ -31,7 +31,7 @@ class SoundMessage extends MessageContent{
         elementList.add(new MessageDataElement.fromJson(v));
       });
     }
-   // this.data = SoundMessageData.fromJson(map);
+
   }
 
   @override

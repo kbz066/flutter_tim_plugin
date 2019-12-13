@@ -25,6 +25,7 @@ class TextMessage extends MessageContent {
 
   @override
   void decode(Map map) {
+    this.text=map["text"];
   }
 
   @override

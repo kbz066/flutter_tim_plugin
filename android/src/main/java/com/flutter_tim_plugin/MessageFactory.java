@@ -3,13 +3,19 @@ package com.flutter_tim_plugin;
 import android.util.JsonWriter;
 
 
+import com.tencent.imsdk.TIMCallBack;
+import com.tencent.imsdk.TIMElem;
+import com.tencent.imsdk.TIMElemType;
+import com.tencent.imsdk.TIMFileElem;
 import com.tencent.imsdk.TIMImage;
 import com.tencent.imsdk.TIMImageElem;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMSoundElem;
+import com.tencent.imsdk.TIMTextElem;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +36,9 @@ public class MessageFactory {
     public static MessageFactory getInstance() {
         return SingletonInstance.INSTANCE;
     }
+
+
+
 
 
 
@@ -108,6 +117,59 @@ public class MessageFactory {
 
         return new JSONObject(dataMap).toString();
     }
+
+
+    public String fileMessage2String(TIMMessage msg){
+
+
+
+        Map dataMap=buildBasicMap(msg);
+
+
+
+        List elementList=new ArrayList();
+        System.out.println( "收到文件消息成功  getElementCount  "+msg.getElementCount());
+        for (int i = 0; i < msg.getElementCount(); i++) {
+            TIMFileElem element = (TIMFileElem) msg.getElement(i);
+            Map elementMap=new HashMap();
+            elementMap.put("fileName",element.getFileName());
+            elementMap.put("fileSize",element.getFileSize());
+            elementMap.put("path",element.getPath());
+            elementMap.put("taskId",element.getTaskId());
+            elementMap.put("uuid",element.getUuid());
+
+            try {
+                Field field = element.getClass().getDeclaredField("businessId");
+                field.setAccessible(true);
+                // 给变量赋值
+
+                System.out.println("businessId------------->   "+ field.get(element));
+
+                element.getToFile("aaaccc", new TIMCallBack() {
+                    @Override
+                    public void onError(int i, String s) {
+                        System.out.println("测试下载     "+i+"   "+s);
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        System.out.println("测试下载  onSuccess   ");
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            elementList.add(elementMap);
+
+        }
+
+        dataMap.put("elementList",elementList);
+
+        System.out.println("打印  "+new JSONObject(dataMap).toString());
+
+        return new JSONObject(dataMap).toString();
+    }
     private Map buildBasicMap(TIMMessage msg){
         Map dataMap=new HashMap();
         dataMap.put("msgId",msg.getMsgId());
@@ -115,10 +177,45 @@ public class MessageFactory {
         dataMap.put("rand",msg.getRand());
         dataMap.put("time",msg.timestamp());
         dataMap.put("isSelf",msg.isSelf());
+        dataMap.put("isPeerReaded",msg.isPeerReaded());
+        dataMap.put("isRead",msg.isRead());
         dataMap.put("status",msg.status().getStatus());
         dataMap.put("sender",msg.getSender());
         return dataMap;
     }
 
+
+    public List<String> message2List(TIMMessage msg){
+
+        List<String> list=new ArrayList<>();
+        for(int i = 0; i < msg.getElementCount(); ++i) {
+            TIMElem elem = msg.getElement(i);
+
+            //获取当前元素的类型
+            TIMElemType elemType = elem.getType();
+            System.out.println( "elem type: " + elemType.name());
+            if (elemType == TIMElemType.Text) {
+                TIMTextElem textElem= (TIMTextElem) elem;
+
+                Map dataMap=buildBasicMap(msg);
+                dataMap.put("messageType",TIMElemType.Text.value());
+                dataMap.put("text",textElem.getText());
+                list.add(new JSONObject(dataMap).toString());
+
+                System.out.println("准备返回    "+new JSONObject(dataMap).toString());
+                //处理文本消息
+            } else if (elemType == TIMElemType.Image) {
+
+                list.add(imageMessage2String(msg));
+            }else if (elemType == TIMElemType.Sound) {
+
+                list.add(soundMessage2String(msg));
+            }else if (elemType == TIMElemType.File) {
+
+                list.add(fileMessage2String(msg));
+            }
+        }
+        return list;
+    }
 
 }

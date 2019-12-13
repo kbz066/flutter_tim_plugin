@@ -36,10 +36,11 @@ class TimMethodKey{
   static const String RemoveFromBlackList = 'RemoveFromBlackList';
   static const String GetBlackListStatus = 'GetBlackListStatus';
   static const String GetBlackList = 'GetBlackList';
+  static const String DownloadFile = 'DownloadFile';
 
 
   static const String MethodCallBackKeyInit = 'initCallBack';
-  static const String MethodCallBackKeySendMessage = 'sendMessageCallBack';
+  static const String MethodCallBackKeyNewMessages = 'newMessagesCallBack';
   static const String MethodCallBackKeyRefreshUserInfo = 'refreshUserInfoCallBack';
   static const String MethodCallBackKeyReceiveMessage = 'receiveMessageCallBack';
   static const String MethodCallBackKeyJoinChatRoom = 'joinChatRoomCallBack';

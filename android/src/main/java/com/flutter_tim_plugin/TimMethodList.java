@@ -37,13 +37,13 @@ public class TimMethodList {
     static String MethodKeyRemoveFromBlackList = "RemoveFromBlackList";
     static String MethodKeyGetBlackListStatus = "GetBlackListStatus";
     static String MethodKeyGetBlackList = "GetBlackList";
-
+    static String MethodKeyDownloadFile = "DownloadFile";
 
 
 
     //callback method list，以下方法是有 native 代码触发，有 flutter 处理
     static String MethodCallBackKeyInit = "initCallBack";
-    static String MethodCallBackKeySendMessage = "sendMessageCallBack";
+    static String MethodCallBackKeyNewMessages = "newMessagesCallBack";
     static String MethodCallBackKeyRefrechUserInfo = "refreshUserInfoCallBack";
     static String MethodCallBackKeyReceiveMessage = "receiveMessageCallBack";
     static String MethodCallBackKeyJoinChatRoom = "joinChatRoomCallBack";

@@ -11,7 +11,7 @@ class FileMessage extends MessageContent{
   String filePath;
 
   String fileName;
-
+  List<MessageDataElement> elementList;
 
 
   static FileMessage obtain(String filePath,String fileName) {
@@ -29,7 +29,12 @@ class FileMessage extends MessageContent{
 
   @override
   void decode(Map map) {
-
+    if (map['elementList'] != null) {
+      this.elementList = new List<MessageDataElement>();
+      map['elementList'].forEach((v) {
+        elementList.add(new MessageDataElement.fromJson(v));
+      });
+    }
   }
 
   @override
@@ -44,4 +49,28 @@ class FileMessage extends MessageContent{
     return messageType;
   }
 
+
+
+
+}
+
+
+
+class MessageDataElement {
+
+  String fileName;
+  int fileSize;
+  int taskId;
+  String uuid;
+
+  String path;
+
+
+  MessageDataElement.fromJson(Map<String, dynamic> json) {
+    fileName = json['fileName'];
+    path = json['path'];
+    fileSize = json['fileSize'];
+    uuid = json['uuid'];
+    taskId = json['taskId'];
+  }
 }

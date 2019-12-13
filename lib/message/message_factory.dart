@@ -2,7 +2,9 @@ import 'dart:core';
 import 'dart:convert' show json;
 import 'dart:math';
 
+import 'package:flutter_tim_plugin/common_define.dart';
 import 'package:flutter_tim_plugin/message/emoji_message.dart';
+import 'package:flutter_tim_plugin/message/file_message.dart';
 import 'package:flutter_tim_plugin/message/sound_message.dart';
 import 'package:flutter_tim_plugin/util/type_util.dart';
 
@@ -31,7 +33,7 @@ class MessageFactory extends Object {
   }
 
 
-  Message map2Message(Map map,int messageType) {
+  Message map2SendMessage(Map map,int messageType) {
     print('返回     $map');
     Message message=Message();
     message.code=map["code"];
@@ -45,6 +47,8 @@ class MessageFactory extends Object {
       message. msgSeq = dataMap['msgSeq'];
       message. time = dataMap['time'];
       message.isSelf = dataMap['isSelf'];
+      message.isRead = dataMap['isRead'];
+      message.isPeerReaded = dataMap['isPeerReaded'];
       message.status = dataMap['status'];
       message.content=map2MessageContent(dataMap, messageType);
     }else{
@@ -53,6 +57,33 @@ class MessageFactory extends Object {
 
 
     return message;
+  }
+  List<Message> string2ListMessage(List<dynamic> strings) {
+
+    List<Message> list=[];
+    for(int i=0;i<strings.length;i++){
+
+      Map dataMap=json.decode(strings[i]);
+      int  messageType= dataMap["messageType"];
+
+      Message message=Message();
+      message.messageType = messageType;
+      message. rand = dataMap['rand'];
+      message. sender = dataMap['sender'];
+      message. msgId = dataMap['msgId'];
+      message. msgSeq = dataMap['msgSeq'];
+      message. time = dataMap['time'];
+      message.isRead = dataMap['isRead'];
+      message.isPeerReaded = dataMap['isPeerReaded'];
+      message.isSelf = dataMap['isSelf'];
+      message.status = dataMap['status'];
+      message.content=map2MessageContent(dataMap, messageType);
+      list.add(message);
+      print('返回     ${strings[i]}    ${strings[i].runtimeType}   $dataMap');
+    }
+
+
+    return list;
   }
 
   MessageContent map2MessageContent(Map map,int messageType) {
@@ -68,6 +99,9 @@ class MessageFactory extends Object {
       content.decode(map);
     }else if(messageType == EmojiMessage.messageType) {
       content = new EmojiMessage();
+      content.decode(map);
+    }else if(messageType == FileMessage.messageType) {
+      content = new FileMessage();
       content.decode(map);
     }
 

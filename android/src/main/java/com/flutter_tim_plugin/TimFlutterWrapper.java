@@ -22,6 +22,7 @@ import com.tencent.imsdk.TIMLocationElem;
 import com.tencent.imsdk.TIMLogLevel;
 import com.tencent.imsdk.TIMManager;
 import com.tencent.imsdk.TIMMessage;
+import com.tencent.imsdk.TIMMessageListener;
 import com.tencent.imsdk.TIMSdkConfig;
 import com.tencent.imsdk.TIMSoundElem;
 import com.tencent.imsdk.TIMTextElem;
@@ -31,11 +32,13 @@ import com.tencent.imsdk.session.SessionWrapper;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
@@ -71,7 +74,46 @@ public class TimFlutterWrapper {
             getConversationList(call,result);
         }else if (TimMethodList.MethodKeySendMessage.equalsIgnoreCase(call.method)){
             sendMessage(call,result);
+        }else if (TimMethodList.MethodKeyDownloadFile.equalsIgnoreCase(call.method)){
+
+            Map map= (Map) call.arguments;
+//            TIMConversation conversation = TIMManager.getInstance().getConversation(
+//                    TIMConversationType.values()[(int) map.get("conversationType")],    //会话类型
+//                    map.get("id").toString());
+
+
+
+            TIMFileElem timFileElem = new TIMFileElem();
+
+            try {
+                Class clz = timFileElem.getClass();
+                Field field =clz .getDeclaredField("uuid");
+                field.setAccessible(true);
+                // 给变量赋值
+                field.set(timFileElem,"1400294549_1234_eeac126a6b1b79e19640be607405f585.jpg");
+
+                Field businessId = clz.getDeclaredField("businessId");
+                businessId.setAccessible(true);
+                businessId.set(timFileElem,2);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            System.out.println("uuid     "+timFileElem.getUuid());
+
+            timFileElem .getToFile("test", new TIMCallBack() {
+                @Override
+                public void onError(int i, String s) {
+                    System.out.println("下载文件 失败 "+i+"      "+s);
+                }
+
+                @Override
+                public void onSuccess() {
+                    System.out.println("下载文件  --------》成功");
+                }
+            });
         }
+
 
     }
 
@@ -83,6 +125,7 @@ public class TimFlutterWrapper {
             Map<String,Object> map= (Map<String, Object>) call.arguments;
 
             int type= (int) map.get("messageType");
+
 
 
             switch (type){
@@ -347,12 +390,13 @@ public class TimFlutterWrapper {
         String userSig = GenerateTestUserSig.genTestUserSig(userID);
 
         // identifier 为用户名，userSig 为用户登录凭证
-        TIMManager.getInstance().login(userID, null, new TIMCallBack() {
+        TIMManager.getInstance().login(userID, userSig, new TIMCallBack() {
             @Override
             public void onError(int code, String desc) {
                 //错误码 code 和错误描述 desc，可用于定位请求失败原因
                 //错误码 code 列表请参见错误码表
                 result.success(buildResponseMap(code,desc));
+
 
                 System.out.println("login failed. code: " );
             }
@@ -387,7 +431,17 @@ public class TimFlutterWrapper {
             TIMSdkConfig config = new TIMSdkConfig(GenerateTestUserSig.SDKAPPID)
                     .enableLogPrint(false)
                     .setLogLevel(TIMLogLevel.DEBUG);
+            TIMManager.getInstance().addMessageListener(new TIMMessageListener() {
+                @Override
+                public boolean onNewMessages(List<TIMMessage> list) {
+                    TIMMessage timMessage = list.get(0);
 
+
+                    mChannel.invokeMethod(TimMethodList.MethodCallBackKeyNewMessages,MessageFactory.getInstance().message2List(timMessage));
+                    System.out.println("收到消息   "+list.size()+"  "+timMessage.toString());
+                    return false;
+                }
+            });
 
             //初始化 SDK
             boolean init = TIMManager.getInstance().init(mContext, config);

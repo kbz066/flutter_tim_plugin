@@ -11,12 +11,21 @@
   <component name="ChangeListManager">
     <list default="true" id="977ba238-b31d-46ad-bdf0-e3df4fc2ab69" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/android/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/MessageFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/MessageFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimFlutterWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimFlutterWrapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimMethodList.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimMethodList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimNativePlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimNativePlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/android/app/src/main/java/com/flutter_tim_plugin_example/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/app/src/main/java/com/flutter_tim_plugin_example/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_tim_plugin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_tim_plugin.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/message/file_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/file_message.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/message/message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/message.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/message/message_factory.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/message_factory.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/message/sound_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/sound_message.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/message/text_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/text_message.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/tim_flutter_plugin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tim_flutter_plugin.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tim_method_key.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tim_method_key.dart" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +55,7 @@
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="flutter.settings" />
+    <property name="settings.editor.selected.configurable" value="dart.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">

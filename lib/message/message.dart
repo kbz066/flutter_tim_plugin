@@ -14,6 +14,8 @@ class Message{
 	int msgSeq;
 	int time;
 	bool isSelf;
+	bool isPeerReaded;
+	bool isRead;
 	int status;
 	MessageContent content;
 
