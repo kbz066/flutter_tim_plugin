@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -12,6 +13,9 @@ import 'package:flutter_tim_plugin/message/location_message.dart';
 import 'package:flutter_tim_plugin/message/emoji_message.dart';
 import 'package:flutter_tim_plugin/message/file_message.dart';
 import 'package:flutter_tim_plugin/message/custom_message.dart';
+import 'package:flutter_tim_plugin/message/message.dart';
+import 'package:path_provider/path_provider.dart';
+
 
 void main() => runApp(MyApp());
 
@@ -57,6 +61,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    getTemporaryDirectory().then((val){
+      print('tempPath--------------------------------------   $val');
+    });
+
+
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -118,10 +128,26 @@ class _MyAppState extends State<MyApp> {
       String path = "/storage/emulated/0/Divoomtest.jpg";
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain(messageController.text));
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: ImageMessage.obtain(path));
-      var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: FileMessage.obtain(path,"测试文件发送"));
+      var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: CustomMessage.obtain(Uint8List.fromList(utf8.encode("自定义消息"))));
+
+      //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: FileMessage.obtain(path,"测试文件发送"));
       print('发送消息res   $res');
     }else if(type=="下载文件"){
-      TimFlutterPlugin.downloadFile();
+
+
+      Message message=Message();
+      message.time=1576483073;
+      message.rand=1101001612;
+      message.msgSeq=16800;
+      message.isSelf=false;
+      message.sender="1234";
+      Directory tempDir = await getTemporaryDirectory();
+      String tempPath = tempDir.path+"aaa";
+
+      print('tempPath   $tempPath');
+      TimFlutterPlugin.downloadFile(conversationType: TIMConversationType.C2C,msg:message,path: tempPath );
+
+
     }
   }
 }

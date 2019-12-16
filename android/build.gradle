@@ -1,4 +1,4 @@
-group 'com.flutter_tim_plugin'
+group 'fluttertimplugin.flutter_tim_plugin'
 version '1.0'
 
 buildscript {
@@ -16,7 +16,6 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
-
     }
 }
 
@@ -32,8 +31,6 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
-
-
 }
 dependencies {
 

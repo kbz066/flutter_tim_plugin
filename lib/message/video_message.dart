@@ -13,7 +13,7 @@ class VideoMessage extends MessageContent{
   int width;
   int height;
   int duration;
-
+  List<MessageDataElement> elementList;
 
 
   static VideoMessage obtain(String imgPath, String videoPath, int width, int height, int duration) {
@@ -34,9 +34,13 @@ class VideoMessage extends MessageContent{
 
   @override
   void decode(Map map) {
-    // TODO: implement decode
+    if (map['elementList'] != null) {
+      this.elementList = new List<MessageDataElement>();
+      map['elementList'].forEach((v) {
+        elementList.add(new MessageDataElement.fromJson(v));
+      });
+    }
   }
-
 
   @override
   Map encode() {
@@ -51,4 +55,32 @@ class VideoMessage extends MessageContent{
     return messageType;
   }
 
+}
+
+class MessageDataElement {
+
+  String videoPath;
+  String snapshotPath;
+  int snapshotWidth;
+  int snapshotHeight;
+  int duaration;
+  String snapshotType;
+  String videoUUID;
+  String snapshotUUID;
+  String videoType;
+  int videoSize;
+
+
+  MessageDataElement.fromJson(Map<String, dynamic> json) {
+    videoPath = json['videoPath'];
+    snapshotPath = json['snapshotPath'];
+    snapshotWidth = json['snapshotWidth'];
+    snapshotHeight = json['snapshotHeight'];
+    duaration = json['duaration'];
+    snapshotType = json['snapshotType'];
+    videoUUID = json['videoUUID'];
+    snapshotUUID = json['snapshotUUID'];
+    videoType = json['videoType'];
+    videoSize = json['videoSize'];
+  }
 }

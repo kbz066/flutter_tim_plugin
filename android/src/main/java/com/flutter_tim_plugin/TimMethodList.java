@@ -38,7 +38,7 @@ public class TimMethodList {
     static String MethodKeyGetBlackListStatus = "GetBlackListStatus";
     static String MethodKeyGetBlackList = "GetBlackList";
     static String MethodKeyDownloadFile = "DownloadFile";
-
+    static String MethodKeyDownloadVideo= "DownloadVideo";
 
 
     //callback method list，以下方法是有 native 代码触发，有 flutter 处理

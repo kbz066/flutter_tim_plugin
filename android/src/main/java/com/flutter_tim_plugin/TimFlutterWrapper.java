@@ -1,7 +1,6 @@
 package com.flutter_tim_plugin;
 
 
-
 import android.content.Context;
 import android.os.Environment;
 import android.os.Handler;
@@ -30,6 +29,8 @@ import com.tencent.imsdk.TIMTextElem;
 import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.imsdk.TIMVideo;
 import com.tencent.imsdk.TIMVideoElem;
+import com.tencent.imsdk.conversation.Msg;
+import com.tencent.imsdk.ext.message.TIMMessageLocator;
 import com.tencent.imsdk.session.SessionWrapper;
 
 import org.json.JSONObject;
@@ -79,45 +80,129 @@ public class TimFlutterWrapper {
             sendMessage(call,result);
         }else if (TimMethodList.MethodKeyDownloadFile.equalsIgnoreCase(call.method)){
 
-            Map map= (Map) call.arguments;
-//            TIMConversation conversation = TIMManager.getInstance().getConversation(
-//                    TIMConversationType.values()[(int) map.get("conversationType")],    //会话类型
-//                    map.get("id").toString());
+            downloadFile((Map) call.arguments,result,false);
 
 
+        }else if (TimMethodList.MethodKeyDownloadVideo.equalsIgnoreCase(call.method)){
 
-            TIMFileElem timFileElem = new TIMFileElem();
+            downloadFile((Map) call.arguments,result,true);
 
-            try {
-                Class clz = timFileElem.getClass();
-                Field field =clz .getDeclaredField("uuid");
-                field.setAccessible(true);
-                // 给变量赋值
-                field.set(timFileElem,"1400294549_1234_eeac126a6b1b79e19640be607405f585.jpg");
-
-                Field businessId = clz.getDeclaredField("businessId");
-                businessId.setAccessible(true);
-                businessId.set(timFileElem,2);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            System.out.println("uuid     "+timFileElem.getUuid());
-
-            timFileElem .getToFile("test", new TIMCallBack() {
-                @Override
-                public void onError(int i, String s) {
-                    System.out.println("下载文件 失败 "+i+"      "+s);
-                }
-
-                @Override
-                public void onSuccess() {
-                    System.out.println("下载文件  --------》成功");
-                }
-            });
         }
 
 
+    }
+
+    private void downloadFile(final Map map, final MethodChannel.Result result, final boolean isVideo){
+        TIMConversation conversation = TIMManager.getInstance().getConversation(
+                TIMConversationType.values()[(int) map.get("conversationType")],    //会话类型
+                map.get("sender").toString());
+
+        List<TIMMessageLocator> locators=new ArrayList<>();
+
+        TIMMessageLocator locator=new TIMMessageLocator();
+        locator.setRand((int) map.get("rand"));
+        locator.setSelf((boolean) map.get("self"));
+        locator.setSeq((int) map.get("seq"));
+        locator.setTimestamp((int) map.get("timestamp"));
+        setMsgField(locator,"stype",TIMConversationType.values()[(int) map.get("conversationType")]);
+        setMsgField(locator,"sid",map.get("sender"));
+        locators.add(locator);
+
+        conversation.findMessages(locators, new TIMValueCallBack<List<TIMMessage>>() {
+            @Override
+            public void onError(int i, String s) {
+
+                System.out.println("findMessages onError   "+i+"  "+s);
+            }
+
+            @Override
+            public void onSuccess(List<TIMMessage> timMessages) {
+
+
+
+                if (timMessages!=null&&timMessages.size()>0){
+                    TIMElem element = timMessages.get(0).getElement(0);
+                    if (isVideo){
+                        downloadVideo((TIMVideoElem) element,map,result);
+
+                    }else {
+                        downloadFileByType(element,map.get("path").toString(),result);
+                    }
+
+
+
+
+                }
+                System.out.println("findMessages onSuccess   "+timMessages.size());
+            }
+        });
+    }
+
+    private void downloadFileByType(TIMElem elem, String path, final MethodChannel.Result result){
+
+        TIMCallBack timCallBack = new TIMCallBack() {
+            @Override
+            public void onError(int i, String s) {
+                result.success(buildResponseMap(i,s));
+                System.out.println("下载失败了   "+i+"   "+s);
+            }
+
+            @Override
+            public void onSuccess() {
+                result.success(buildResponseMap(0,"download ok"));
+                System.out.println("下载成功了");
+            }
+        };
+        if (elem instanceof TIMFileElem){
+            TIMFileElem fileElem= (TIMFileElem) elem;
+            fileElem.getToFile(path, timCallBack);
+        }else  if (elem instanceof TIMSoundElem){
+            TIMSoundElem soundElem= (TIMSoundElem) elem;
+            soundElem.getSoundToFile(path, timCallBack);
+        }
+    }
+
+    private void downloadVideo(final TIMVideoElem elem, final Map map, final MethodChannel.Result result) {
+        elem.getVideoInfo().getVideo(map.get("videoPath").toString(), new TIMCallBack() {
+            @Override
+            public void onError(int i, String s) {
+                System.out.println("视频下载失败     "+s);
+                result.success(buildResponseMap(i,s));
+            }
+
+            @Override
+            public void onSuccess() {
+                elem.getSnapshotInfo().getImage(map.get("snapshotPath").toString(), new TIMCallBack() {
+                    @Override
+                    public void onError(int i, String s) {
+                        System.out.println("视频下载失败     "+s);
+                        result.success(buildResponseMap(i,s));
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        System.out.println("视频下载成功了  ");
+                        result.success(buildResponseMap(0,"download ok"));
+                    }
+                });
+            }
+        });
+    }
+
+    private void setMsgField(TIMMessageLocator locator,String key,Object value){
+
+
+        try {
+            Field field = locator.getClass().getDeclaredField(key);
+            field.setAccessible(true);
+            // 给变量赋值
+            field.set(locator,value);
+            System.out.println("setMsgField------------->   "+ field.get(locator));
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void sendMessage(MethodCall call, MethodChannel.Result result) {
@@ -217,7 +302,7 @@ public class TimFlutterWrapper {
 
         //发送消息
 
-        sendMessageCallBack(MessageTypeEnum.Location,map,msg,result);
+        sendMessageCallBack(MessageTypeEnum.Custom,map,msg,result);
     }
 
     private void sendFileMessage(Map<String, Object> map, MethodChannel.Result result) {
@@ -383,6 +468,7 @@ public class TimFlutterWrapper {
                     case MessageTypeEnum.Text:
                     case MessageTypeEnum.Face:
                     case MessageTypeEnum.Location:
+
                         result.success(buildResponseMap(0,MessageFactory.getInstance().basicMessage2String(msg)));
                         break;
                     case MessageTypeEnum.Image:
@@ -394,7 +480,15 @@ public class TimFlutterWrapper {
 
                         break;
                     case MessageTypeEnum.File:
-                        result.success(buildResponseMap(0,    MessageFactory.getInstance().soundMessage2String(msg)));
+                        result.success(buildResponseMap(0,    MessageFactory.getInstance().fileMessage2String(msg)));
+
+                        break;
+                    case MessageTypeEnum.Video:
+                        result.success(buildResponseMap(0,    MessageFactory.getInstance().videoMessage2String(msg)));
+
+                        break;
+                    case MessageTypeEnum.Custom:
+                        result.success(buildResponseMap(0,    MessageFactory.getInstance().customMessage2String(msg)));
 
                         break;
                 }
@@ -445,6 +539,8 @@ public class TimFlutterWrapper {
 
             }
         });
+
+
     }
 
 

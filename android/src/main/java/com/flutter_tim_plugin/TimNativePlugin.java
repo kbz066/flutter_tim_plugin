@@ -1,5 +1,5 @@
-package com.flutter_tim_plugin;
 
+package com.flutter_tim_plugin;
 import com.tencent.imsdk.TIMMessage;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -13,7 +13,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 /** TimNativePlugin */
 public class TimNativePlugin implements FlutterPlugin,MethodCallHandler {
   /** Plugin registration. */
-  public static void registerWith(Registrar registrar) {
+  private static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "tim_plugin");
     channel.setMethodCallHandler(new TimNativePlugin());
     TimFlutterWrapper.getInstance().saveChannel(channel);

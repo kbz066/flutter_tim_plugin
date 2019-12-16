@@ -4,6 +4,7 @@ import android.util.JsonWriter;
 
 
 import com.tencent.imsdk.TIMCallBack;
+import com.tencent.imsdk.TIMCustomElem;
 import com.tencent.imsdk.TIMElem;
 import com.tencent.imsdk.TIMElemType;
 import com.tencent.imsdk.TIMFileElem;
@@ -12,6 +13,7 @@ import com.tencent.imsdk.TIMImageElem;
 import com.tencent.imsdk.TIMMessage;
 import com.tencent.imsdk.TIMSoundElem;
 import com.tencent.imsdk.TIMTextElem;
+import com.tencent.imsdk.TIMVideoElem;
 
 import org.json.JSONObject;
 
@@ -138,27 +140,8 @@ public class MessageFactory {
             elementMap.put("taskId",element.getTaskId());
             elementMap.put("uuid",element.getUuid());
 
-            try {
-                Field field = element.getClass().getDeclaredField("businessId");
-                field.setAccessible(true);
-                // 给变量赋值
 
-                System.out.println("businessId------------->   "+ field.get(element));
-
-                element.getToFile("aaaccc", new TIMCallBack() {
-                    @Override
-                    public void onError(int i, String s) {
-                        System.out.println("测试下载     "+i+"   "+s);
-                    }
-
-                    @Override
-                    public void onSuccess() {
-                        System.out.println("测试下载  onSuccess   ");
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            System.out.println("打印   "+msg.getMessageLocator().toString());
 
             elementList.add(elementMap);
 
@@ -170,6 +153,44 @@ public class MessageFactory {
 
         return new JSONObject(dataMap).toString();
     }
+
+    public String videoMessage2String(TIMMessage msg) {
+        Map dataMap=buildBasicMap(msg);
+
+
+
+        List elementList=new ArrayList();
+        System.out.println( "消息视频  getElementCount  "+msg.getElementCount());
+        for (int i = 0; i < msg.getElementCount(); i++) {
+            TIMVideoElem element = (TIMVideoElem) msg.getElement(i);
+
+            System.out.println(" 视频信息  "+element.getVideoPath());
+            Map elementMap=new HashMap();
+            elementMap.put("videoPath",element.getVideoPath());
+            elementMap.put("snapshotPath",element.getSnapshotPath());
+
+            elementMap.put("videoUUID",element.getVideoInfo().getUuid());
+            elementMap.put("videoType",element.getVideoInfo().getType());
+            elementMap.put("videoSize",element.getVideoInfo().getSize());
+            elementMap.put("duaration",element.getVideoInfo().getDuaration());
+
+            elementMap.put("snapshotUUID",element.getSnapshotInfo().getUuid());
+            elementMap.put("snapshotType",element.getSnapshotInfo().getType());
+            elementMap.put("snapshotHeight",element.getSnapshotInfo().getHeight());
+            elementMap.put("snapshotWidth",element.getSnapshotInfo().getWidth());
+
+
+            elementList.add(elementMap);
+
+        }
+
+        dataMap.put("elementList",elementList);
+
+        System.out.println("打印  "+new JSONObject(dataMap).toString());
+
+        return new JSONObject(dataMap).toString();
+    }
+
     private Map buildBasicMap(TIMMessage msg){
         Map dataMap=new HashMap();
         dataMap.put("msgId",msg.getMsgId());
@@ -182,6 +203,27 @@ public class MessageFactory {
         dataMap.put("status",msg.status().getStatus());
         dataMap.put("sender",msg.getSender());
         return dataMap;
+    }
+    public String customMessage2String(TIMMessage msg) {
+        Map dataMap=buildBasicMap(msg);
+
+
+
+        List elementList=new ArrayList();
+        System.out.println( "发送消息成功  getElementCount  "+msg.getElementCount());
+        for (int i = 0; i < msg.getElementCount(); i++) {
+            TIMCustomElem element = (TIMCustomElem) msg.getElement(i);
+            Map elementMap=new HashMap();
+            elementMap.put("data",element.getData());
+            elementList.add(elementMap);
+
+        }
+
+        dataMap.put("elementList",elementList);
+
+        System.out.println("打印  "+new JSONObject(dataMap).toString());
+
+        return new JSONObject(dataMap).toString();
     }
 
 
@@ -213,9 +255,17 @@ public class MessageFactory {
             }else if (elemType == TIMElemType.File) {
 
                 list.add(fileMessage2String(msg));
+            }else if (elemType == TIMElemType.Video) {
+
+                list.add(videoMessage2String(msg));
+            }else if (elemType == TIMElemType.Custom) {
+
+                list.add(customMessage2String(msg));
             }
         }
         return list;
     }
+
+
 
 }

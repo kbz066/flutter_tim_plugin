@@ -37,6 +37,7 @@ class TimMethodKey{
   static const String GetBlackListStatus = 'GetBlackListStatus';
   static const String GetBlackList = 'GetBlackList';
   static const String DownloadFile = 'DownloadFile';
+  static const String DownloadVideo = 'DownloadVideo';
 
 
   static const String MethodCallBackKeyInit = 'initCallBack';

@@ -11,7 +11,7 @@ class CustomMessage extends MessageContent{
 
   Uint8List data;
 
-
+  List<MessageDataElement> elementList;
 
   static CustomMessage obtain(Uint8List data) {
     CustomMessage msg = new CustomMessage();
@@ -29,7 +29,13 @@ class CustomMessage extends MessageContent{
 
   @override
   void decode(Map map) {
-    // TODO: implement decode
+    if (map['elementList'] != null) {
+      this.elementList = new List<MessageDataElement>();
+      map['elementList'].forEach((v) {
+        print('打印看看类型   ${v.runtimeType}');
+        elementList.add(new MessageDataElement.fromJson(v));
+      });
+    }
   }
 
   @override
@@ -43,4 +49,19 @@ class CustomMessage extends MessageContent{
     return messageType;
   }
 
+
+
+}
+class MessageDataElement {
+
+  Uint8List data;
+
+
+
+  MessageDataElement.fromJson(Map<String, dynamic> json) {
+    print('data  类型   ${json['data']}  ${json['data'].runtimeType}  ');
+    data =Uint8List.fromList( List<int>.from(json['data']));
+
+
+  }
 }

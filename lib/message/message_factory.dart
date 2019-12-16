@@ -3,9 +3,11 @@ import 'dart:convert' show json;
 import 'dart:math';
 
 import 'package:flutter_tim_plugin/common_define.dart';
+import 'package:flutter_tim_plugin/message/custom_message.dart';
 import 'package:flutter_tim_plugin/message/emoji_message.dart';
 import 'package:flutter_tim_plugin/message/file_message.dart';
 import 'package:flutter_tim_plugin/message/sound_message.dart';
+import 'package:flutter_tim_plugin/message/video_message.dart';
 import 'package:flutter_tim_plugin/util/type_util.dart';
 
 
@@ -66,6 +68,8 @@ class MessageFactory extends Object {
       Map dataMap=json.decode(strings[i]);
       int  messageType= dataMap["messageType"];
 
+
+      print('string2ListMessage   messageType    $messageType  ');
       Message message=Message();
       message.messageType = messageType;
       message. rand = dataMap['rand'];
@@ -79,7 +83,7 @@ class MessageFactory extends Object {
       message.status = dataMap['status'];
       message.content=map2MessageContent(dataMap, messageType);
       list.add(message);
-      print('返回     ${strings[i]}    ${strings[i].runtimeType}   $dataMap');
+      print('返回  string2ListMessage   ${strings[i]}  ${ message.content.runtimeType}   ${strings[i].runtimeType}   $dataMap  ');
     }
 
 
@@ -102,6 +106,12 @@ class MessageFactory extends Object {
       content.decode(map);
     }else if(messageType == FileMessage.messageType) {
       content = new FileMessage();
+      content.decode(map);
+    }else if(messageType == VideoMessage.messageType) {
+      content = new VideoMessage();
+      content.decode(map);
+    }else if(messageType == CustomMessage.messageType) {
+      content = new CustomMessage();
       content.decode(map);
     }
 

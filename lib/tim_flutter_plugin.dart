@@ -2,12 +2,15 @@
 
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tim_plugin/common_define.dart';
+import 'package:flutter_tim_plugin/message/custom_message.dart';
 import 'package:flutter_tim_plugin/message/message.dart';
 import 'package:flutter_tim_plugin/tim_method_key.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'message/message_content.dart';
 import 'message/message_factory.dart';
@@ -63,21 +66,46 @@ class TimFlutterPlugin{
       return null;
     }
 
-    String messageString = resultMap["data"];
     Message msg = MessageFactory.instance.map2SendMessage(resultMap,content.getMessageType());
     return   msg;
   }
 
 
-  static void downloadFile(){
-    _channel.invokeMethod(TimMethodKey.DownloadFile,{"uuid":"1400294549_1234_eeac126a6b1b79e19640be607405f585.jpg"});
+  static Future<Map> downloadFile({@required int conversationType,@required String path,@required Message msg})async{
+
+
+    Map map={
+      "conversationType":conversationType,
+      "rand":msg.rand,
+      "self":msg.isSelf,
+      "seq":msg.msgSeq,
+      "timestamp":msg.time,
+      "sender":msg.sender,
+      "path":path
+    };
+    return await _channel.invokeMethod(TimMethodKey.DownloadFile,map);
   }
 
+  static Future<Map> downloadVideo({@required int conversationType,@required String snapshotPath,@required String videoPath,@required Message msg})async{
 
+
+
+    Map map={
+      "conversationType":conversationType,
+      "rand":msg.rand,
+      "self":msg.isSelf,
+      "seq":msg.msgSeq,
+      "timestamp":msg.time,
+      "sender":msg.sender,
+      "videoPath":videoPath,
+      "snapshotPath":snapshotPath
+    };
+    return await _channel.invokeMethod(TimMethodKey.DownloadVideo,map);
+  }
   ///响应原生的事件
   ///
   static void _addNativeMethodCallHandler() {
-    _channel.setMethodCallHandler((MethodCall call) {
+    _channel.setMethodCallHandler((MethodCall call) async {
       print('_addNativeMethodCallHandler         ${call.arguments.runtimeType}            ${call.arguments}   ${call.method}');
 
 
@@ -87,7 +115,18 @@ class TimFlutterPlugin{
           break;
         case TimMethodKey.MethodCallBackKeyNewMessages:
           var v=MessageFactory.instance.string2ListMessage(call.arguments);
-          print('解码   ${v}');
+          Directory tempDir = await getTemporaryDirectory();
+          String tempPath = tempDir.path;
+
+
+          //var a= await TimFlutterPlugin.downloadVideo(conversationType: TIMConversationType.C2C,msg:v[0],videoPath: tempPath+"/qqq",snapshotPath: tempPath+"/www" );
+
+          print('解码完成   ${v.runtimeType}');
+          v.forEach((val){
+            print('${val  }');
+            print('解码   ${(val as Message).content }');
+          });
+
           break;
 
       }
