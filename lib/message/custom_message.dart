@@ -29,10 +29,11 @@ class CustomMessage extends MessageContent{
 
   @override
   void decode(Map map) {
+
     if (map['elementList'] != null) {
       this.elementList = new List<MessageDataElement>();
       map['elementList'].forEach((v) {
-        print('打印看看类型   ${v.runtimeType}');
+
         elementList.add(new MessageDataElement.fromJson(v));
       });
     }
@@ -59,9 +60,8 @@ class MessageDataElement {
 
 
   MessageDataElement.fromJson(Map<String, dynamic> json) {
-    print('data  类型   ${json['data']}  ${json['data'].runtimeType}  ');
-    data =Uint8List.fromList( List<int>.from(json['data']));
 
+    this.data =Uint8List.fromList( List<int>.from(json['data']));
 
   }
 }

@@ -55,7 +55,7 @@ public class MessageFactory {
 
 
         List elementList=new ArrayList();
-
+        dataMap.put("messageType",TIMElemType.Image.value());
         for (int i = 0; i < msg.getElementCount(); i++) {
             TIMImageElem element = (TIMImageElem) msg.getElement(i);
             Map elementMap=new HashMap();
@@ -95,7 +95,7 @@ public class MessageFactory {
     public String soundMessage2String(TIMMessage msg) {
         Map dataMap=buildBasicMap(msg);
 
-
+        dataMap.put("messageType",TIMElemType.Sound.value());
 
         List elementList=new ArrayList();
         System.out.println( "发送消息成功  getElementCount  "+msg.getElementCount());
@@ -126,7 +126,7 @@ public class MessageFactory {
 
 
         Map dataMap=buildBasicMap(msg);
-
+        dataMap.put("messageType",TIMElemType.File.value());
 
 
         List elementList=new ArrayList();
@@ -157,7 +157,7 @@ public class MessageFactory {
     public String videoMessage2String(TIMMessage msg) {
         Map dataMap=buildBasicMap(msg);
 
-
+        dataMap.put("messageType",TIMElemType.Video.value());
 
         List elementList=new ArrayList();
         System.out.println( "消息视频  getElementCount  "+msg.getElementCount());
@@ -207,7 +207,7 @@ public class MessageFactory {
     public String customMessage2String(TIMMessage msg) {
         Map dataMap=buildBasicMap(msg);
 
-
+        dataMap.put("messageType",TIMElemType.Custom.value());
 
         List elementList=new ArrayList();
         System.out.println( "发送消息成功  getElementCount  "+msg.getElementCount());

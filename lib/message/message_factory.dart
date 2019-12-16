@@ -83,7 +83,7 @@ class MessageFactory extends Object {
       message.status = dataMap['status'];
       message.content=map2MessageContent(dataMap, messageType);
       list.add(message);
-      print('返回  string2ListMessage   ${strings[i]}  ${ message.content.runtimeType}   ${strings[i].runtimeType}   $dataMap  ');
+      print('返回  string2ListMessage  =================================== ${message} ');
     }
 
 

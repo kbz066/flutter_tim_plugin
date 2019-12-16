@@ -12,6 +12,7 @@ import 'package:flutter_tim_plugin/message/message.dart';
 import 'package:flutter_tim_plugin/tim_method_key.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'message/custom_message.dart';
 import 'message/message_content.dart';
 import 'message/message_factory.dart';
 
@@ -123,8 +124,9 @@ class TimFlutterPlugin{
 
           print('解码完成   ${v.runtimeType}');
           v.forEach((val){
-            print('${val  }');
-            print('解码   ${(val as Message).content }');
+            print('${val.content }');
+           var a= ((val as Message).content as CustomMessage);
+            print('解码   ${a.elementList[0].data}');
           });
 
           break;
