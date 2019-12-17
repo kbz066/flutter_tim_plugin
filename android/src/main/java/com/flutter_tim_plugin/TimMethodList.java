@@ -10,9 +10,13 @@ public class TimMethodList {
     static String MethodKeyRefrechUserInfo = "refreshUserInfo";
     static String MethodKeyJoinChatRoom = "joinChatRoom";
     static String MethodKeyQuitChatRoom = "quitChatRoom";
-    static String MethodKeyGetHistoryMessage ="getHistoryMessage";
-    static String MethodKeyGetHistoryMessages ="getHistoryMessages";
-    static String MethodKeyGetMessage ="getMessage";
+    static String MethodKeyCreateGroup ="createGroup";
+    static String MethodKeyInviteGroupMember ="inviteGroupMember";
+    static String MethodKeyDeleteConversation = "deleteConversation";
+    static String MethodKeyGetMessage = "getMessage";
+    static String MethodKeySetReadMessage = "setReadMessage";
+
+    static String MethodKeyGetLocalMessage ="getLocalMessage";
     static String MethodKeyGetConversationList ="getConversationList";
     static String MethodKeyGetConversationListByPage ="getConversationListByPage";
     static String MethodKeyGetConversation ="getConversation";
@@ -44,6 +48,7 @@ public class TimMethodList {
     //callback method list，以下方法是有 native 代码触发，有 flutter 处理
     static String MethodCallBackKeyInit = "initCallBack";
     static String MethodCallBackKeyNewMessages = "newMessagesCallBack";
+    static String MethodCallBackKeyUserStatus= "userStatusCallBack";
     static String MethodCallBackKeyRefrechUserInfo = "refreshUserInfoCallBack";
     static String MethodCallBackKeyReceiveMessage = "receiveMessageCallBack";
     static String MethodCallBackKeyJoinChatRoom = "joinChatRoomCallBack";

@@ -1,6 +1,6 @@
 package com.flutter_tim_plugin;
 
-public class MessageTypeEnum {
+public class MessageType {
 
 
     static final int Invalid = 0;
