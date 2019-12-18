@@ -227,42 +227,49 @@ public class MessageFactory {
     }
 
 
-    public List<String> message2List(TIMMessage msg){
-
+    public List<String> message2List(List<TIMMessage> timList){
         List<String> list=new ArrayList<>();
-        for(int i = 0; i < msg.getElementCount(); ++i) {
-            TIMElem elem = msg.getElement(i);
+        for (TIMMessage msg : timList) {
 
-            //获取当前元素的类型
-            TIMElemType elemType = elem.getType();
-            System.out.println( "elem type: " + elemType.name());
-            if (elemType == TIMElemType.Text) {
-                TIMTextElem textElem= (TIMTextElem) elem;
 
-                Map dataMap=buildBasicMap(msg);
-                dataMap.put("messageType",TIMElemType.Text.value());
-                dataMap.put("text",textElem.getText());
-                list.add(new JSONObject(dataMap).toString());
 
-                System.out.println("准备返回    "+new JSONObject(dataMap).toString());
-                //处理文本消息
-            } else if (elemType == TIMElemType.Image) {
+            for(int i = 0; i < msg.getElementCount(); ++i) {
+                TIMElem elem = msg.getElement(i);
 
-                list.add(imageMessage2String(msg));
-            }else if (elemType == TIMElemType.Sound) {
+                //获取当前元素的类型
+                TIMElemType elemType = elem.getType();
+                System.out.println( "elem type: " + elemType.name());
+                if (elemType == TIMElemType.Text) {
+                    TIMTextElem textElem= (TIMTextElem) elem;
 
-                list.add(soundMessage2String(msg));
-            }else if (elemType == TIMElemType.File) {
+                    Map dataMap=buildBasicMap(msg);
+                    dataMap.put("messageType",TIMElemType.Text.value());
+                    dataMap.put("text",textElem.getText());
+                    list.add(new JSONObject(dataMap).toString());
 
-                list.add(fileMessage2String(msg));
-            }else if (elemType == TIMElemType.Video) {
+                    System.out.println("准备返回    "+new JSONObject(dataMap).toString());
+                    //处理文本消息
+                } else if (elemType == TIMElemType.Image) {
 
-                list.add(videoMessage2String(msg));
-            }else if (elemType == TIMElemType.Custom) {
+                    list.add(imageMessage2String(msg));
+                }else if (elemType == TIMElemType.Sound) {
 
-                list.add(customMessage2String(msg));
+                    list.add(soundMessage2String(msg));
+                }else if (elemType == TIMElemType.File) {
+
+                    list.add(fileMessage2String(msg));
+                }else if (elemType == TIMElemType.Video) {
+
+                    list.add(videoMessage2String(msg));
+                }else if (elemType == TIMElemType.Custom) {
+
+                    list.add(customMessage2String(msg));
+                }
             }
+
         }
+
+
         return list;
     }
 

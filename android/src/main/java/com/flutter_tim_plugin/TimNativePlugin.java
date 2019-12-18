@@ -8,17 +8,22 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
+import io.flutter.plugins.pathprovider.PathProviderPlugin;
 
 
 /** TimNativePlugin */
 public class TimNativePlugin implements FlutterPlugin,MethodCallHandler {
+
+  private MethodChannel channel;
   /** Plugin registration. */
   private static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "tim_plugin");
-    channel.setMethodCallHandler(new TimNativePlugin());
-    TimFlutterWrapper.getInstance().saveChannel(channel);
+    TimNativePlugin instance = new TimNativePlugin();
+    instance.channel = new MethodChannel(registrar.messenger(), "tim_plugin");
+    instance.channel.setMethodCallHandler(new TimNativePlugin());
+    TimFlutterWrapper.getInstance().saveChannel(instance.channel);
     TimFlutterWrapper.getInstance().saveContext(registrar.context());
 
+    System.out.println("TimNativePlugin  registerWith ------------------------> ");
 
   }
 
@@ -32,16 +37,17 @@ public class TimNativePlugin implements FlutterPlugin,MethodCallHandler {
 
   @Override
   public void onAttachedToEngine(FlutterPluginBinding binding) {
-    final MethodChannel channel = new MethodChannel(binding.getBinaryMessenger(), "tim_plugin");
+    channel = new MethodChannel(binding.getBinaryMessenger(), "tim_plugin");
     channel.setMethodCallHandler(new TimNativePlugin());
     TimFlutterWrapper.getInstance().saveChannel(channel);
     TimFlutterWrapper.getInstance().saveContext(binding.getApplicationContext());
 
-    System.out.println("执行了注册的方法   "+binding.getApplicationContext());
+    System.out.println("执行了注册的方法   ------------------------>  "+binding.getApplicationContext());
   }
 
   @Override
   public void onDetachedFromEngine(FlutterPluginBinding binding) {
-
+    channel.setMethodCallHandler(null);
+    channel = null;
   }
 }

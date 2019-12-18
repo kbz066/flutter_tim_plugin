@@ -2,7 +2,6 @@ package com.flutter_tim_plugin;
 
 
 import android.content.Context;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -14,9 +13,8 @@ import com.tencent.imsdk.TIMCustomElem;
 import com.tencent.imsdk.TIMElem;
 import com.tencent.imsdk.TIMFaceElem;
 import com.tencent.imsdk.TIMFileElem;
-import com.tencent.imsdk.TIMImage;
+import com.tencent.imsdk.TIMGroupManager;
 import com.tencent.imsdk.TIMImageElem;
-import com.tencent.imsdk.TIMImageType;
 import com.tencent.imsdk.TIMLocationElem;
 import com.tencent.imsdk.TIMLogLevel;
 import com.tencent.imsdk.TIMManager;
@@ -26,15 +24,14 @@ import com.tencent.imsdk.TIMSdkConfig;
 import com.tencent.imsdk.TIMSnapshot;
 import com.tencent.imsdk.TIMSoundElem;
 import com.tencent.imsdk.TIMTextElem;
+import com.tencent.imsdk.TIMUserConfig;
+import com.tencent.imsdk.TIMUserStatusListener;
 import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.imsdk.TIMVideo;
 import com.tencent.imsdk.TIMVideoElem;
-import com.tencent.imsdk.conversation.Msg;
+import com.tencent.imsdk.ext.group.TIMGroupMemberResult;
 import com.tencent.imsdk.ext.message.TIMMessageLocator;
 import com.tencent.imsdk.session.SessionWrapper;
-
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -42,7 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
@@ -68,14 +64,12 @@ public class TimFlutterWrapper {
     public void onFlutterMethodCall(MethodCall call, MethodChannel.Result result) {
 
 
-
+        System.out.println("onFlutterMethodCall    "+call.method+"       "+TimMethodList.MethodKeyGetConversationList.equalsIgnoreCase(call.method));
         if (TimMethodList.MethodKeyInit.equalsIgnoreCase(call.method)){
-            initIM();
+            initIM(result);
 
         }else if (TimMethodList.MethodKeyLogin.equalsIgnoreCase(call.method)){
             login(call,result);
-        }else if (TimMethodList.MethodKeyGetConversationList.equalsIgnoreCase(call.method)){
-            getConversationList(call,result);
         }else if (TimMethodList.MethodKeySendMessage.equalsIgnoreCase(call.method)){
             sendMessage(call,result);
         }else if (TimMethodList.MethodKeyDownloadFile.equalsIgnoreCase(call.method)){
@@ -87,9 +81,209 @@ public class TimFlutterWrapper {
 
             downloadFile((Map) call.arguments,result,true);
 
+        }else if (TimMethodList.MethodKeyGetConversationList.equalsIgnoreCase(call.method)){
+
+
+            getConversationList(result);
+
+        }else if (TimMethodList.MethodKeyGetLocalMessage.equalsIgnoreCase(call.method)){
+
+
+            getLocalMessage((Map) call.arguments,result);
+
+        }else if (TimMethodList.MethodKeyGetMessage.equalsIgnoreCase(call.method)){
+
+
+            getMessage((Map) call.arguments,result);
+
+        }else if (TimMethodList.MethodKeyDeleteConversation.equalsIgnoreCase(call.method)){
+
+
+            deleteConversation((Map) call.arguments,result);
+
+        }else if (TimMethodList.MethodKeyCreateGroup.equalsIgnoreCase(call.method)){
+
+
+            createGroup((Map) call.arguments,result);
+
+        }else if (TimMethodList.MethodKeyInviteGroupMember.equalsIgnoreCase(call.method)){
+
+
+            inviteGroupMember((Map) call.arguments,result);
+
+        }else if (TimMethodList.MethodKeySetReadMessage.equalsIgnoreCase(call.method)){
+
+
+            setReadMessage((Map) call.arguments,result);
+
         }
 
 
+
+    }
+
+    private void setReadMessage(Map arguments, final MethodChannel.Result result) {
+        final TIMConversation conversation = getTIMConversationByID(arguments);
+        System.out.println("未读数量   "+conversation.getUnreadMessageNum());
+        conversation.setReadMessage(null, new TIMCallBack() {
+            @Override
+            public void onError(int i, String s) {
+                result.success(buildResponseMap(i,s));
+            }
+
+            @Override
+            public void onSuccess() {
+                System.out.println("未读数量  onSuccess   "+conversation.getUnreadMessageNum());
+                result.success(buildResponseMap(0,"setReadMessage ok"));
+            }
+        });
+    }
+
+    private void inviteGroupMember(Map arguments, final MethodChannel.Result result) {
+
+        String groupId= (String) arguments.get("groupId");
+        List<String> memList= (List<String>) arguments.get("memList");
+
+        for (String s : memList) {
+            System.out.println("memList-------------------->   "+s);
+        }
+
+        //将 list 中的用户加入群组
+        TIMGroupManager.getInstance().inviteGroupMember(groupId, memList, new TIMValueCallBack<List<TIMGroupMemberResult>>() {
+            @Override
+            public void onError(int i, String s) {
+                result.success(buildResponseMap(i,s));
+            }
+
+            @Override
+            public void onSuccess(List<TIMGroupMemberResult> results) {
+                List<Map> list=new ArrayList<>();
+
+                for(TIMGroupMemberResult result : results) {
+                    Map map=new HashMap();
+                    map.put("result",result.getResult());
+                    map.put("user",result.getUser());
+                    list.add(map);
+                }
+                result.success(buildResponseMap(0,list));
+            }
+        });
+    }
+
+    private void createGroup(Map arguments, final MethodChannel.Result result) {
+        String type= (String) arguments.get("type");
+        String name= (String) arguments.get("name");
+        //创建公开群，且不自定义群 ID
+        TIMGroupManager.CreateGroupParam param = new TIMGroupManager.CreateGroupParam(type, name);
+        TIMGroupManager.getInstance().createGroup(param, new TIMValueCallBack<String>() {
+            @Override
+            public void onError(int i, String s) {
+                result.success(buildResponseMap(i,s));
+            }
+
+            @Override
+            public void onSuccess(String s) {
+                result.success(buildResponseMap(0,s));
+            }
+        });
+    }
+
+    private void deleteConversation(Map arguments, MethodChannel.Result result) {
+        boolean delMsg= (boolean) arguments.get("delLocalMsg");
+        int id= (int) arguments.get("id");
+        boolean resultFlag;
+
+        if (delMsg){
+            resultFlag=TIMManager.getInstance().deleteConversationAndLocalMsgs(TIMConversationType.values()[(int) arguments.get("conversationType")], id+"");
+
+        }else {
+            resultFlag=TIMManager.getInstance().deleteConversation(TIMConversationType.values()[(int) arguments.get("conversationType")], id+"");
+        }
+
+        result.success(buildResponseMap(0,resultFlag));
+    }
+
+    private void getMessage(Map map, final MethodChannel.Result result) {
+
+        int count= (int) map.get("count");
+
+        System.out.println("count   "+count);
+        System.out.println("id   "+map.get("id"));
+
+        TIMConversation conversation = getTIMConversationByID(map);
+
+        System.out.println(" conversation    "+conversation.getType());
+
+
+        conversation.getLocalMessage(count, null, new TIMValueCallBack<List<TIMMessage>>() {
+            @Override
+            public void onError(int i, String s) {
+                System.out.println("getMessage    onError   "+s+"   "+i);
+                result.success(buildResponseMap(i,s));
+            }
+
+            @Override
+            public void onSuccess(List<TIMMessage> msgs) {
+
+                System.out.println("getMessage    onSuccess   "+msgs.size());
+                //遍历取得的消息
+                for(TIMMessage msg : msgs) {
+
+                    //可以通过 timestamp()获得消息的时间戳, isSelf()是否为自己发送的消息
+                    Log.e("getMessage", msg.toString());
+
+
+                }
+
+                result.success(buildResponseMap(0,MessageFactory.getInstance().message2List(msgs)));
+            }
+        });
+    }
+
+    private void getLocalMessage(final Map map, final MethodChannel.Result result) {
+
+        int count= (int) map.get("count");
+
+        System.out.println("count   "+count);
+        System.out.println("id   "+map.get("id"));
+
+        TIMConversation conversation = getTIMConversationByID(map);
+        System.out.println(" conversation    "+conversation.getType());
+        conversation.getLocalMessage(count, null, new TIMValueCallBack<List<TIMMessage>>() {
+            @Override
+            public void onError(int i, String s) {
+                System.out.println("getLocalMessage    onError   "+s+"   "+i);
+                result.success(buildResponseMap(i,s));
+            }
+
+            @Override
+            public void onSuccess(List<TIMMessage> msgs) {
+
+                System.out.println("getLocalMessage    onSuccess   "+msgs.size());
+                //遍历取得的消息
+                for(TIMMessage msg : msgs) {
+
+                    //可以通过 timestamp()获得消息的时间戳, isSelf()是否为自己发送的消息
+                    Log.e("getLocalMessage", msg.toString());
+
+
+                }
+                result.success(buildResponseMap(0,MessageFactory.getInstance().message2List(msgs)));
+            }
+        });
+    }
+
+    private void getConversationList(MethodChannel.Result result) {
+
+
+        List<TIMConversation> conversationList = TIMManager.getInstance().getConversationList();
+
+        System.out.println("conversationList       "+conversationList.size());
+
+        for (TIMConversation timConversation : conversationList) {
+
+            System.out.println("timConversation      "+timConversation.getLastMsg().toString());
+        }
     }
 
     private void downloadFile(final Map map, final MethodChannel.Result result, final boolean isVideo){
@@ -136,6 +330,12 @@ public class TimFlutterWrapper {
                 System.out.println("findMessages onSuccess   "+timMessages.size());
             }
         });
+    }
+
+    private TIMConversation getTIMConversationByID(Map map){
+         return TIMManager.getInstance().getConversation(
+                TIMConversationType.values()[(int) map.get("conversationType")],    //会话类型
+                map.get("id").toString());
     }
 
     private void downloadFileByType(TIMElem elem, String path, final MethodChannel.Result result){
@@ -217,28 +417,28 @@ public class TimFlutterWrapper {
 
 
             switch (type){
-                case MessageTypeEnum.Text:
+                case MessageType.Text:
                     sendTextMessage(map,result);
                     break;
-                case MessageTypeEnum.Image:
+                case MessageType.Image:
                     sendImageMessage(map,result);
                     break;
-                case MessageTypeEnum.Sound:
+                case MessageType.Sound:
                     sendSoundMessage(map,result);
                     break;
-                case MessageTypeEnum.Face:
+                case MessageType.Face:
                     sendEmojiMessage(map,result);
                     break;
-                case MessageTypeEnum.Location:
+                case MessageType.Location:
                     sendLocationMessage(map,result);
                     break;
-                case MessageTypeEnum.File:
+                case MessageType.File:
                     sendFileMessage(map,result);
                     break;
-                case MessageTypeEnum.Custom:
+                case MessageType.Custom:
                     sendCustomMessage(map,result);
                     break;
-                case MessageTypeEnum.Video:
+                case MessageType.Video:
                     sendVideoMessage(map,result);
                     break;
             }
@@ -280,7 +480,7 @@ public class TimFlutterWrapper {
 
         //发送消息
 
-        sendMessageCallBack(MessageTypeEnum.Location,map,msg,result);
+        sendMessageCallBack(MessageType.Location,map,msg,result);
     }
 
     private void sendCustomMessage(Map<String, Object> map, MethodChannel.Result result) {
@@ -302,7 +502,7 @@ public class TimFlutterWrapper {
 
         //发送消息
 
-        sendMessageCallBack(MessageTypeEnum.Custom,map,msg,result);
+        sendMessageCallBack(MessageType.Custom,map,msg,result);
     }
 
     private void sendFileMessage(Map<String, Object> map, MethodChannel.Result result) {
@@ -320,7 +520,7 @@ public class TimFlutterWrapper {
 
             return;
         }
-        sendMessageCallBack(MessageTypeEnum.Location,map,msg,result);
+        sendMessageCallBack(MessageType.Location,map,msg,result);
     }
 
     private void sendLocationMessage(Map<String, Object> map, MethodChannel.Result result) {
@@ -341,7 +541,7 @@ public class TimFlutterWrapper {
         }
         //发送消息
 
-        sendMessageCallBack(MessageTypeEnum.Location,map,msg,result);
+        sendMessageCallBack(MessageType.Location,map,msg,result);
     }
 
     private void sendEmojiMessage(Map<String, Object> map, MethodChannel.Result result) {
@@ -365,7 +565,7 @@ public class TimFlutterWrapper {
 
         //发送消息
 
-        sendMessageCallBack(MessageTypeEnum.Face,map,msg,result);
+        sendMessageCallBack(MessageType.Face,map,msg,result);
     }
 
     private void sendSoundMessage(Map<String, Object> map, MethodChannel.Result result) {
@@ -386,7 +586,7 @@ public class TimFlutterWrapper {
         }
         //发送消息
 
-        sendMessageCallBack(MessageTypeEnum.Sound,map,msg,result);
+        sendMessageCallBack(MessageType.Sound,map,msg,result);
     }
 
     private void sendImageMessage(Map<String, Object> map, final MethodChannel.Result result) {
@@ -411,7 +611,7 @@ public class TimFlutterWrapper {
 
         //发送消息
 
-        sendMessageCallBack(MessageTypeEnum.Image,map,msg,result);
+        sendMessageCallBack(MessageType.Image,map,msg,result);
 
     }
 
@@ -429,7 +629,7 @@ public class TimFlutterWrapper {
             return;
         }
         //发送消息
-        sendMessageCallBack(MessageTypeEnum.Text,map,timMessage,result);
+        sendMessageCallBack(MessageType.Text,map,timMessage,result);
 
 
 
@@ -446,9 +646,7 @@ public class TimFlutterWrapper {
     private void  sendMessageCallBack(final int type, final Map map, TIMMessage timMessage, final MethodChannel.Result result){
 
         System.out.println("conversationType   "+(TIMConversationType.values()[(int) map.get("conversationType")]));
-        TIMConversation conversation = TIMManager.getInstance().getConversation(
-                TIMConversationType.values()[(int) map.get("conversationType")],    //会话类型
-                map.get("id").toString());
+        TIMConversation conversation = getTIMConversationByID(map);
         conversation.sendMessage(timMessage, new TIMValueCallBack<TIMMessage>() {//发送消息回调
             @Override
             public void onError(int code, String desc) {//发送消息失败
@@ -465,29 +663,29 @@ public class TimFlutterWrapper {
                 System.out.println("msg     "+msg.toString());
 
                 switch (type){
-                    case MessageTypeEnum.Text:
-                    case MessageTypeEnum.Face:
-                    case MessageTypeEnum.Location:
+                    case MessageType.Text:
+                    case MessageType.Face:
+                    case MessageType.Location:
 
                         result.success(buildResponseMap(0,MessageFactory.getInstance().basicMessage2String(msg)));
                         break;
-                    case MessageTypeEnum.Image:
+                    case MessageType.Image:
 
                         result.success(buildResponseMap(0,    MessageFactory.getInstance().imageMessage2String(msg)));
                         break;
-                    case MessageTypeEnum.Sound:
+                    case MessageType.Sound:
                         result.success(buildResponseMap(0,    MessageFactory.getInstance().soundMessage2String(msg)));
 
                         break;
-                    case MessageTypeEnum.File:
+                    case MessageType.File:
                         result.success(buildResponseMap(0,    MessageFactory.getInstance().fileMessage2String(msg)));
 
                         break;
-                    case MessageTypeEnum.Video:
+                    case MessageType.Video:
                         result.success(buildResponseMap(0,    MessageFactory.getInstance().videoMessage2String(msg)));
 
                         break;
-                    case MessageTypeEnum.Custom:
+                    case MessageType.Custom:
                         result.success(buildResponseMap(0,    MessageFactory.getInstance().customMessage2String(msg)));
 
                         break;
@@ -553,8 +751,9 @@ public class TimFlutterWrapper {
 
     /**
      * 初始化
+     * @param result
      */
-    private void initIM() {
+    private void initIM(MethodChannel.Result result) {
 
         //初始化 IM SDK 基本配置
 //判断是否是在主线程
@@ -568,19 +767,42 @@ public class TimFlutterWrapper {
                     TIMMessage timMessage = list.get(0);
 
 
-                    mChannel.invokeMethod(TimMethodList.MethodCallBackKeyNewMessages,MessageFactory.getInstance().message2List(timMessage));
+                    mChannel.invokeMethod(TimMethodList.MethodCallBackKeyNewMessages,MessageFactory.getInstance().message2List(list));
                     System.out.println("收到消息   "+list.size()+"  "+timMessage.toString());
                     return false;
                 }
             });
 
+
+
+            TIMManager.getInstance().setUserConfig(buildTIMUserConfig());
+
+
             //初始化 SDK
             boolean init = TIMManager.getInstance().init(mContext, config);
 
-            mChannel.invokeMethod(TimMethodList.MethodCallBackKeyInit,init);
-
+            result.success(buildResponseMap(init?0:1,init));
             System.out.println("打印      "+init);
         }
+    }
+
+    private TIMUserConfig buildTIMUserConfig() {
+        TIMUserConfig userConfig = new TIMUserConfig();
+
+
+        userConfig.setUserStatusListener(new TIMUserStatusListener() {
+            @Override
+            public void onForceOffline() {
+
+                mChannel.invokeMethod(TimMethodList.MethodCallBackKeyUserStatus,1);
+            }
+
+            @Override
+            public void onUserSigExpired() {
+                mChannel.invokeMethod(TimMethodList.MethodCallBackKeyUserStatus,2);
+            }
+        });
+        return userConfig;
     }
 
     public void saveContext(Context context) {
