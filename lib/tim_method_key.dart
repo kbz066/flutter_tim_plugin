@@ -9,14 +9,10 @@ class TimMethodKey{
   static const String RefreshUserInfo = 'refreshUserInfo';
   static const String JoinChatRoom = 'joinChatRoom';
   static const String QuitChatRoom = 'quitChatRoom';
-  static const String CreateGroup = 'createGroup';
+  static const String GetHistoryMessage = 'getHistoryMessage';
   static const String GetHistoryMessages = 'getHistoryMessages';
-  static const String InviteGroupMember = 'inviteGroupMember';
-  static const String GetMessage = 'getMessage';
-  static const String SetReadMessage = 'setReadMessage';
-  static const String GetLocalMessage = 'getLocalMessage';
+  static const String GetMessage = 'GetMessage';
   static const String GetConversationList = 'getConversationList';
-  static const String DeleteConversation = 'deleteConversation';
   static const String GetConversationListByPage = 'getConversationListByPage';
   static const String GetConversation = 'GetConversation';
   static const String GetChatRoomInfo = 'getChatRoomInfo';
@@ -47,7 +43,6 @@ class TimMethodKey{
   static const String MethodCallBackKeyInit = 'initCallBack';
   static const String MethodCallBackKeyNewMessages = 'newMessagesCallBack';
   static const String MethodCallBackKeyRefreshUserInfo = 'refreshUserInfoCallBack';
-  static const String MethodCallBackKeyUserStatus= 'userStatusCallBack';
   static const String MethodCallBackKeyReceiveMessage = 'receiveMessageCallBack';
   static const String MethodCallBackKeyJoinChatRoom = 'joinChatRoomCallBack';
   static const String MethodCallBackKeyQuitChatRoom = 'quitChatRoomCallBack';

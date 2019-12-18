@@ -90,20 +90,6 @@ class TIMConnectionStatus {
   static const int UserBlocked = 5;//用户被封禁
 }
 
-class TIMUserStatus {
-  static const int ForceOffline = 1;//被踢下线时回调
-  static const int UserSigExpired = 2;//票据过期时回调
-
-}
-
-class TIMGroupType{
-  static const String Private = "Private";
-  static const String Public = "Public";
-  static const String ChatRoom = "ChatRoom";
-  static const String AVChatRoom = "AVChatRoom";
-  static const String BChatRoom = "BChatRoom";
-}
-
 ///错误码
 ///
 ///iOS 参考 [TIMStatusDefine.h] 的枚举 [TIMConnectErroTIMode] 和 [TIMErroTIMode]

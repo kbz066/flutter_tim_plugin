@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -68,12 +67,8 @@ class _MyAppState extends State<MyApp> {
 
 
 
-
-
-
     return MaterialApp(
       home: Scaffold(
-
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
@@ -131,17 +126,13 @@ class _MyAppState extends State<MyApp> {
     }else if(type == "发送消息"){
 
       String path = "/storage/emulated/0/Divoomtest.jpg";
-      String idGroup="@TGS#1YVYCDDGZ";
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain(messageController.text));
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: ImageMessage.obtain(path));
-      //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: CustomMessage.obtain(Uint8List.fromList(utf8.encode("自定义消息"))));
+      var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: CustomMessage.obtain(Uint8List.fromList(utf8.encode("自定义消息"))));
+
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: FileMessage.obtain(path,"测试文件发送"));
-
-//      TimFlutterPlugin.getLocalMessage(id:1234,conversationType:TIMConversationType.C2C,count: 5  );
-      var res=await TimFlutterPlugin.setReadMessage(id:1234,conversationType:TIMConversationType.C2C);
-      print('发送消息res    $res  ');
+      print('发送消息res   $res');
     }else if(type=="下载文件"){
-
 
 
       Message message=Message();
