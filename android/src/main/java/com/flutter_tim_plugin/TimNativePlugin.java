@@ -27,6 +27,19 @@ public class TimNativePlugin implements FlutterPlugin,MethodCallHandler {
 
   }
 
+
+
+  @Override
+  public void onAttachedToEngine(FlutterPluginBinding binding) {
+    channel = new MethodChannel(binding.getBinaryMessenger(), "tim_plugin");
+
+    channel.setMethodCallHandler(new TimNativePlugin());
+    TimFlutterWrapper.getInstance().saveChannel(channel);
+    TimFlutterWrapper.getInstance().saveContext(binding.getApplicationContext());
+
+
+  }
+
   @Override
   public void onMethodCall(final MethodCall call, final Result result) {
 
@@ -34,17 +47,6 @@ public class TimNativePlugin implements FlutterPlugin,MethodCallHandler {
     System.out.println("onMethodCall           "+Thread.currentThread().getName());
     TimFlutterWrapper.getInstance().onFlutterMethodCall(call,result);
   }
-
-  @Override
-  public void onAttachedToEngine(FlutterPluginBinding binding) {
-    channel = new MethodChannel(binding.getBinaryMessenger(), "tim_plugin");
-    channel.setMethodCallHandler(new TimNativePlugin());
-    TimFlutterWrapper.getInstance().saveChannel(channel);
-    TimFlutterWrapper.getInstance().saveContext(binding.getApplicationContext());
-
-    System.out.println("执行了注册的方法   ------------------------>  "+binding.getApplicationContext());
-  }
-
   @Override
   public void onDetachedFromEngine(FlutterPluginBinding binding) {
     channel.setMethodCallHandler(null);

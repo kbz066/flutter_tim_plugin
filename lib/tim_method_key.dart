@@ -5,6 +5,7 @@ class TimMethodKey{
   static const String Init = 'init';
   static const String Config = 'config';
   static const String Login = 'login';
+  static const String Logout = 'logout';
   static const String Disconnect = 'disconnect';
   static const String SendMessage = 'sendMessage';
   static const String RefreshUserInfo = 'refreshUserInfo';

@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import '../common_define.dart';
 import 'message_content.dart';
 
@@ -49,7 +51,9 @@ class ImageMessage extends MessageContent {
 }
 
 
+
 class MessageDataElement {
+  MessageDataElement(){}
   String path;
   int imageFormat;
   int level;
@@ -90,3 +94,4 @@ class TIMImage{
   }
 
 }
+

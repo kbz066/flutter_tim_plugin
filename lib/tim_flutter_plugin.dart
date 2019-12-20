@@ -53,6 +53,17 @@ class TimFlutterPlugin{
 
 
   }
+  ///登出
+  static Future<dynamic> logout() async {
+
+
+
+    return  await _channel.invokeMethod(TimMethodKey.Logout);
+
+
+  }
+
+
 
 
 

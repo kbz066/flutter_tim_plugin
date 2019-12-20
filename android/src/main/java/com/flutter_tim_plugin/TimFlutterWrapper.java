@@ -70,6 +70,8 @@ public class TimFlutterWrapper {
 
         }else if (TimMethodList.MethodKeyLogin.equalsIgnoreCase(call.method)){
             login(call,result);
+        }else if (TimMethodList.MethodKeyLogout.equalsIgnoreCase(call.method)){
+            logout(result);
         }else if (TimMethodList.MethodKeySendMessage.equalsIgnoreCase(call.method)){
             sendMessage(call,result);
         }else if (TimMethodList.MethodKeyDownloadFile.equalsIgnoreCase(call.method)){
@@ -707,6 +709,20 @@ public class TimFlutterWrapper {
 
     }
 
+    private void logout( final MethodChannel.Result result) {
+
+        TIMManager.getInstance().logout(new TIMCallBack() {
+            @Override
+            public void onError(int code, String desc) {
+                result.success(buildResponseMap(code,desc));
+            }
+
+            @Override
+            public void onSuccess() {
+                result.success(buildResponseMap(0,"logout Success"));
+            }
+        });
+    }
     private void login(MethodCall call, final MethodChannel.Result result) {
 
         final Map<String,Object> map= (Map<String, Object>) call.arguments;
@@ -802,6 +818,7 @@ public class TimFlutterWrapper {
                 mChannel.invokeMethod(TimMethodList.MethodCallBackKeyUserStatus,2);
             }
         });
+
         return userConfig;
     }
 

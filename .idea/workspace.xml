@@ -5,10 +5,13 @@
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_tim_plugin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_tim_plugin.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimFlutterWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimFlutterWrapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimMethodList.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimMethodList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimNativePlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/src/main/java/com/flutter_tim_plugin/TimNativePlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/message/image_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/image_message.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tim_flutter_plugin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tim_flutter_plugin.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tim_method_key.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tim_method_key.dart" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,7 +19,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_3_XL_API_29" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="2.2" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -25,7 +28,7 @@
   <component name="PropertiesComponent">
     <property name="dart.analysis.tool.window.force.activate" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../flutter_shiguangxu" />
     <property name="settings.editor.selected.configurable" value="flutter.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
@@ -52,6 +55,14 @@
       <option name="presentableId" value="Default" />
       <updated>1576676988423</updated>
     </task>
+    <task id="LOCAL-00001" summary="修改错误">
+      <created>1576739145774</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1576739145774</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
