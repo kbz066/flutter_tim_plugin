@@ -2,13 +2,19 @@ PODS:
   - Flutter (1.0.0)
   - flutter_tim_plugin (0.0.1):
     - Flutter
+    - TXIMSDK_iOS
   - path_provider (0.0.1):
     - Flutter
+  - TXIMSDK_iOS (4.6.15)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_tim_plugin (from `.symlinks/plugins/flutter_tim_plugin/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
+
+SPEC REPOS:
+  trunk:
+    - TXIMSDK_iOS
 
 EXTERNAL SOURCES:
   Flutter:
@@ -20,8 +26,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_tim_plugin: c5ebe17620407362afcbf3e36b1a2bf56e539a6b
+  flutter_tim_plugin: b62e5a66a337d52c64dd09165869dbea3a48c95f
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
+  TXIMSDK_iOS: 24145064a3d44db9f5208b89a14c647bc6ae3496
 
 PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
 
