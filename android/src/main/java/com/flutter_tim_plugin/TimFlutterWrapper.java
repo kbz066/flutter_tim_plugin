@@ -61,7 +61,7 @@ public class TimFlutterWrapper {
     }
 
 
-    public void onFlutterMethodCall(MethodCall call, MethodChannel.Result result) {
+    public void TimFlutterWrapper(MethodCall call, MethodChannel.Result result) {
 
 
         System.out.println("onFlutterMethodCall    "+call.method+"       "+TimMethodList.MethodKeyGetConversationList.equalsIgnoreCase(call.method));
