@@ -197,6 +197,7 @@ class TimFlutterPlugin{
       print('_addNativeMethodCallHandler         ${call.arguments.runtimeType}            ${call.arguments}   ${call.method}');
 
 
+
       switch (call.method) {
 
         case TimMethodKey.MethodCallBackKeyNewMessages:
