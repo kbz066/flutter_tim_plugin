@@ -34,10 +34,12 @@ class TimFlutterPlugin{
   ///初始化 SDK
   ///
   ///[appkey] appkey
-  static void init(String appkey) {
+  static Future<dynamic>  init(String appkey) async{
 
-    _channel.invokeMethod(TimMethodKey.Init, appkey);
+    var res= await _channel.invokeMethod(TimMethodKey.Init, appkey);
     _addNativeMethodCallHandler();
+
+    return res;
   }
 
 
