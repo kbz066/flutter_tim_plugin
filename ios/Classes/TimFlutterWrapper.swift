@@ -11,6 +11,8 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
     
     func onFlutterMethodCall(call: FlutterMethodCall, result: @escaping FlutterResult){
 
+        
+        print("f方法名字。 \(call.method)")
         if(TimMethodList.MethodKeyInit == call.method){
             initTim(call: call,result: result);
         }else if(TimMethodList.MethodKeyLogin == call.method){
@@ -24,7 +26,7 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         var param = TIMLoginParam();
         param.identifier = map["userID"] as! String;
       
-        
+        param.userSig = GenerateTestUserSig.genTestUserSig(param.identifier)
         
         func succ(){
             print("登陆。             succ")
@@ -34,8 +36,10 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
             print("登陆。    fail         \(code)  \(desc)  \(param.identifier)")
         }
 
+        
        
         TIMManager.sharedInstance()?.login(param, succ: succ, fail: fail )
+        
         
 
     }
@@ -44,7 +48,7 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         print( type(of: call.arguments))
         
         var config = TIMSdkConfig();
-        
+        config.sdkAppId = 1400294549
         
         
         var userConfig = TIMUserConfig();
@@ -54,11 +58,11 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         
         TIMManager.sharedInstance()?.add(self)
         
-       print("chu shihua 00000  ")
+
         var initState = TIMManager.sharedInstance()?.initSdk(config)
         
         
-        print("chu shihua   \(initState)")
+        print("f初始化---------------------  \(initState)")
         result(buildResponseMap(codeVal : initState! ,descVal : initState!))
     }
     
