@@ -61,12 +61,12 @@ public class TimFlutterWrapper {
     }
 
 
-    public void TimFlutterWrapper(MethodCall call, MethodChannel.Result result) {
+    public void onFlutterMethodCall(MethodCall call, MethodChannel.Result result) {
 
 
         System.out.println("onFlutterMethodCall    "+call.method+"       "+TimMethodList.MethodKeyGetConversationList.equalsIgnoreCase(call.method));
         if (TimMethodList.MethodKeyInit.equalsIgnoreCase(call.method)){
-            initIM(result);
+            initIM(call.arguments,result);
 
         }else if (TimMethodList.MethodKeyLogin.equalsIgnoreCase(call.method)){
             login(call,result);
@@ -732,6 +732,8 @@ public class TimFlutterWrapper {
         // 获取userSig函数
         String userSig = GenerateTestUserSig.genTestUserSig(userID);
 
+
+        System.out.println("userSig         "+userSig);
         // identifier 为用户名，userSig 为用户登录凭证
         TIMManager.getInstance().login(userID, userSig, new TIMCallBack() {
             @Override
@@ -767,14 +769,18 @@ public class TimFlutterWrapper {
 
     /**
      * 初始化
+     * @param arguments
      * @param result
      */
-    private void initIM(MethodChannel.Result result) {
+    private void initIM(Object arguments, MethodChannel.Result result) {
+
+
+        System.out.println("init    im   id   "+arguments);
 
         //初始化 IM SDK 基本配置
 //判断是否是在主线程
         if (SessionWrapper.isMainProcess(mContext)) {
-            TIMSdkConfig config = new TIMSdkConfig(GenerateTestUserSig.SDKAPPID)
+            TIMSdkConfig config = new TIMSdkConfig((int) arguments)
                     .enableLogPrint(false)
                     .setLogLevel(TIMLogLevel.DEBUG);
             TIMManager.getInstance().addMessageListener(new TIMMessageListener() {

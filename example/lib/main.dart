@@ -116,8 +116,9 @@ class _MyAppState extends State<MyApp> {
 
     if (type == "登录") {
       //1.初始化 im SDK
-      TimFlutterPlugin.init("2255");
+      var  init= await TimFlutterPlugin.init(1400294549);
 
+      print('init               $init');
       //2.连接 im SDK
       print('开始登录  ${await TimFlutterPlugin.login(loginController.text, "fafafa")}');
     }else if(type == "发送消息"){

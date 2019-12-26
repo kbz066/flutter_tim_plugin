@@ -34,9 +34,9 @@ class TimFlutterPlugin{
   ///初始化 SDK
   ///
   ///[appkey] appkey
-  static Future<dynamic>  init(String appkey) async{
+  static Future<dynamic>  init(int sdkAppid) async{
 
-    var res= await _channel.invokeMethod(TimMethodKey.Init, appkey);
+    var res= await _channel.invokeMethod(TimMethodKey.Init, sdkAppid);
     _addNativeMethodCallHandler();
 
     return res;
@@ -50,6 +50,7 @@ class TimFlutterPlugin{
       "userID":userID,
       "userSig":userSig
     };
+
 
     return  await _channel.invokeMethod(TimMethodKey.Login, arguments);
 
@@ -214,6 +215,7 @@ class TimFlutterPlugin{
           if(onUserStatusListener!=null){
             onUserStatusListener(call.arguments);
           }
+
 
           break;
       }
