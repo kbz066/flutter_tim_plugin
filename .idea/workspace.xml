@@ -2,21 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bad28641-4199-4280-9566-307967a65889" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/ios/Classes/GenerateTestUserSig.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/ios/Classes/GenerateTestUserSig.m" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ios/Classes/GenerateTestUserSig.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ios/Classes/GenerateTestUserSig.m" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/ios/Classes/MessageFactory.swift" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/ios/Classes/MessageType.swift" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/Classes/MessageFactory.swift" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ios/Classes/MessageType.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/flutter_tim_plugin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/flutter_tim_plugin.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/ios/Classes/TimFlutterWrapper.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/ios/Classes/TimFlutterWrapper.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flutter_tim_plugin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_tim_plugin.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Classes/Tim-Bridging-Header.h" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/Tim-Bridging-Header.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/ios/Classes/TimMethodList.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/ios/Classes/TimMethodList.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/TimFlutterWrapper.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/TimFlutterWrapper.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/TimMethodList.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/TimMethodList.swift" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

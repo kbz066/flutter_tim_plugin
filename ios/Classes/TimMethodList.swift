@@ -11,4 +11,6 @@ class TimMethodList{
     static var MethodKeyLogin  :String = "login"
     static var MethodKeyLogout :String = "logout"
     
+    static var  SendMessage : String = "sendMessage";
+    
 }

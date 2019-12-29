@@ -17,9 +17,65 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
             initTim(call: call,result: result);
         }else if(TimMethodList.MethodKeyLogin == call.method){
             login(call: call,result: result);
+        }else if(TimMethodList.SendMessage == call.method){
+            sendMessage(call: call,result: result);
         }
+        
      
     }
+    func  sendMessage(call: FlutterMethodCall, result: @escaping FlutterResult){
+  
+        var map : [String: Any]=call.arguments as! [String : Any];
+        
+
+        var type =  map["messageType"] as! Int;
+        
+        switch type {
+        case MessageType.Text:
+            sendTextMessage(map,result)
+            break;
+
+        default:
+            break
+        }
+
+        
+    }
+    
+    func sendTextMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
+        var content = map["content"] as! [String : Any];
+        
+        var timMessage = TIMMessage()
+        
+        
+        var textElm = TIMTextElem();
+        textElm.text = content["text"] as! String ;
+        
+        
+        timMessage.add(textElm);
+        
+        sendMessageCallBack(MessageType.Text,map ,timMessage ,result)
+    }
+    
+    func sendMessageCallBack(_ type : Int,_ map : [String:Any],_ timMessage : TIMMessage,  _ result: @escaping FlutterResult){
+        
+        var conversation = getTIMConversationByID(map: map);
+        func succ(){
+            // result(buildResponseMap(codeVal : 0, descVal : "sendMessage  ok"))
+            print("sendMessageCallBack。             succ")
+        }
+        
+        func fail (code : Int32?, desc : String?){
+             result(buildResponseMap(codeVal : code! ,descVal : desc!))
+            print("sendMessageCallBack。    fail   ")
+        }
+        
+        conversation.send(timMessage, succ: succ, fail: fail)
+
+        
+    }
+    
+    
     func  login(call: FlutterMethodCall, result: @escaping FlutterResult){
         var map : [String: Any]=call.arguments as! [String : Any];
         
@@ -29,10 +85,12 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         param.userSig = GenerateTestUserSig.genTestUserSig(param.identifier)
         
         func succ(){
+             result(buildResponseMap(codeVal : 0, descVal : "login  ok"))
             print("登陆。             succ")
         }
         
         func fail (code : Int32?, desc : String?){
+             result(buildResponseMap(codeVal : code! ,descVal : desc!))
             print("登陆。    fail         \(code)  \(desc)  \(param.identifier)")
         }
 
@@ -49,7 +107,7 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         
         var config = TIMSdkConfig();
         config.sdkAppId = 1400294549
-        
+        config.logLevel = TIMLogLevel.LOG_DEBUG;
         
         var userConfig = TIMUserConfig();
      
@@ -77,6 +135,18 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         resMap["code"] = Int(codeVal);
         resMap["data"] = descVal;
         return resMap;
+    }
+    
+    func getTIMConversationByID(map : [String:Any])-> TIMConversation{
+        
+        
+
+        var type = map["conversationType"] as! Int ;
+        var id = map["id"] as! Int;
+    
+       
+        return TIMManager.sharedInstance().getConversation( TIMConversationType.init(rawValue: type)!, receiver:  String(id))
+  
     }
 
 }
