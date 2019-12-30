@@ -60,17 +60,25 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
     func sendMessageCallBack(_ type : Int,_ map : [String:Any],_ timMessage : TIMMessage,  _ result: @escaping FlutterResult){
         
         var conversation = getTIMConversationByID(map: map);
-        func succ(){
-            // result(buildResponseMap(codeVal : 0, descVal : "sendMessage  ok"))
-            print("sendMessageCallBack。             succ")
-        }
+  
         
-        func fail (code : Int32?, desc : String?){
-             result(buildResponseMap(codeVal : code! ,descVal : desc!))
-            print("sendMessageCallBack。    fail   ")
-        }
-        
-        conversation.send(timMessage, succ: succ, fail: fail)
+        conversation.send(timMessage, succ: {
+            
+            switch(type){
+            case MessageType.Text:
+                
+                result(self.buildResponseMap(codeVal : 0, descVal :MessageFactory.basicMessage2String(timMessage)))
+                
+                break
+            default:
+                break
+            }
+                   print("sendMessageCallBack。  ========================           succ")
+
+        }, fail: {
+            print("sendMessageCallBack。  =====================  fail   ")
+            result(self.buildResponseMap(codeVal : $0,descVal : $1))
+        })
 
         
     }
@@ -84,19 +92,17 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
       
         param.userSig = GenerateTestUserSig.genTestUserSig(param.identifier)
         
-        func succ(){
-             result(buildResponseMap(codeVal : 0, descVal : "login  ok"))
-            print("登陆。             succ")
-        }
-        
-        func fail (code : Int32?, desc : String?){
-             result(buildResponseMap(codeVal : code! ,descVal : desc!))
-            print("登陆。    fail         \(code)  \(desc)  \(param.identifier)")
-        }
-
+  
         
        
-        TIMManager.sharedInstance()?.login(param, succ: succ, fail: fail )
+        TIMManager.sharedInstance()?.login(param, succ: {
+            result(self.buildResponseMap(codeVal : 0, descVal : "login  ok"))
+      
+            
+        }, fail: {
+            result(self.buildResponseMap(codeVal : $0 ,descVal : $1))
+            
+        } )
         
         
 

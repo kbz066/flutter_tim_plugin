@@ -124,7 +124,7 @@ class _MyAppState extends State<MyApp> {
     }else if(type == "发送消息"){
 
       String path = "/storage/emulated/0/Divoomtest.jpg";
-     // var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain(messageController.text));
+      var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain(messageController.text));
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: ImageMessage.obtain(path));
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: CustomMessage.obtain(Uint8List.fromList(utf8.encode("自定义消息"))));
 
@@ -137,7 +137,7 @@ class _MyAppState extends State<MyApp> {
 
 
 
-      var res=await TimFlutterPlugin.modifySelfProfile(map);
+     // var res=await TimFlutterPlugin.modifySelfProfile(map);
       print('发送消息res   $res');
     }else if(type=="下载文件"){
 
