@@ -45,8 +45,18 @@ public class MessageFactory {
 
 
     public String basicMessage2String(TIMMessage msg){
+        Map map = buildBasicMap(msg);
+        List elementList=new ArrayList();
+        for (int i = 0; i < msg.getElementCount(); i++) {
+            TIMElem element =  msg.getElement(i);
+            Map elementMap=new HashMap();
+            elementMap.put("type",element.getType().value());
 
-        return new JSONObject(buildBasicMap(msg)).toString();
+            elementList.add(elementMap);
+
+        }
+        map.put("elementList",elementList);
+        return new JSONObject(map).toString();
     }
 
     public String imageMessage2String(TIMMessage msg) {
@@ -264,6 +274,12 @@ public class MessageFactory {
                 }else if (elemType == TIMElemType.Custom) {
 
                     list.add(customMessage2String(msg));
+                }else {
+
+
+
+                    list.add(basicMessage2String(msg));
+                    System.out.println("message2List      elemType     "+elemType);
                 }
             }
 

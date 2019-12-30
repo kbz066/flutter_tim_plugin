@@ -52,6 +52,7 @@ class MessageFactory extends Object {
       message.isRead = dataMap['isRead'];
       message.isPeerReaded = dataMap['isPeerReaded'];
       message.status = dataMap['status'];
+      message.elementList=dataMap['elementList'];
       message.content=map2MessageContent(dataMap, messageType);
     }else{
       message.desc=map["data"];
@@ -63,13 +64,14 @@ class MessageFactory extends Object {
   List<Message> string2ListMessage(List<dynamic> strings) {
 
     List<Message> list=[];
+    print('string2ListMessage    ${strings.length}       ');
     for(int i=0;i<strings.length;i++){
 
       Map dataMap=json.decode(strings[i]);
       int  messageType= dataMap["messageType"];
 
 
-      print('string2ListMessage   messageType    $messageType  ');
+      print('string2ListMessage   messageType    $messageType   ${dataMap}');
       Message message=Message();
       message.messageType = messageType;
       message. rand = dataMap['rand'];
@@ -81,9 +83,10 @@ class MessageFactory extends Object {
       message.isPeerReaded = dataMap['isPeerReaded'];
       message.isSelf = dataMap['isSelf'];
       message.status = dataMap['status'];
+      message.elementList=dataMap['elementList'];
       message.content=map2MessageContent(dataMap, messageType);
       list.add(message);
-      print('返回  string2ListMessage  =================================== ${message} ');
+      print('返回  string2ListMessage  =================================== ${ message.elementList} ');
     }
 
 

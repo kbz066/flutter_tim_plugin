@@ -12,6 +12,9 @@ class TimMethodKey{
   static const String JoinChatRoom = 'joinChatRoom';
   static const String QuitChatRoom = 'quitChatRoom';
   static const String CreateGroup = 'createGroup';
+  static const String GetSelfProfile = 'getSelfProfile';
+  static const String ModifySelfProfile = 'modifySelfProfile';
+
   static const String GetHistoryMessages = 'getHistoryMessages';
   static const String InviteGroupMember = 'inviteGroupMember';
   static const String GetMessage = 'getMessage';

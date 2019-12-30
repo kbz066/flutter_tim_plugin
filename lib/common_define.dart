@@ -90,6 +90,26 @@ class TIMConnectionStatus {
   static const int UserBlocked = 5;//用户被封禁
 }
 
+class TIMUserProfile{
+   static final String TIM_PROFILE_TYPE_KEY_NICK = "Tag_Profile_IM_Nick";
+   static final String TIM_PROFILE_TYPE_KEY_FACEURL = "Tag_Profile_IM_Image";
+   static final String TIM_PROFILE_TYPE_KEY_ALLOWTYPE = "Tag_Profile_IM_AllowType";
+   static final String TIM_PROFILE_TYPE_KEY_GENDER = "Tag_Profile_IM_Gender";
+   static final String TIM_PROFILE_TYPE_KEY_BIRTHDAY = "Tag_Profile_IM_BirthDay";
+   static final String TIM_PROFILE_TYPE_KEY_LOCATION = "Tag_Profile_IM_Location";
+   static final String TIM_PROFILE_TYPE_KEY_LANGUAGE = "Tag_Profile_IM_Language";
+   static final String TIM_PROFILE_TYPE_KEY_LEVEL = "Tag_Profile_IM_Level";
+   static final String TIM_PROFILE_TYPE_KEY_ROLE = "Tag_Profile_IM_Role";
+   static final String TIM_PROFILE_TYPE_KEY_SELFSIGNATURE = "Tag_Profile_IM_SelfSignature";
+   static final String TIM_PROFILE_TYPE_KEY_CUSTOM_PREFIX = "Tag_Profile_Custom_";
+}
+
+class TIMFriendGenderType{
+   static final int GENDER_UNKNOWN = 0;
+   static final int GENDER_MALE = 1;
+   static final int GENDER_FEMALE = 2;
+}
+
 ///错误码
 ///
 ///iOS 参考 [TIMStatusDefine.h] 的枚举 [TIMConnectErroTIMode] 和 [TIMErroTIMode]

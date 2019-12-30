@@ -13,6 +13,8 @@ import com.tencent.imsdk.TIMCustomElem;
 import com.tencent.imsdk.TIMElem;
 import com.tencent.imsdk.TIMFaceElem;
 import com.tencent.imsdk.TIMFileElem;
+import com.tencent.imsdk.TIMFriendGenderType;
+import com.tencent.imsdk.TIMFriendshipManager;
 import com.tencent.imsdk.TIMGroupManager;
 import com.tencent.imsdk.TIMImageElem;
 import com.tencent.imsdk.TIMLocationElem;
@@ -25,6 +27,7 @@ import com.tencent.imsdk.TIMSnapshot;
 import com.tencent.imsdk.TIMSoundElem;
 import com.tencent.imsdk.TIMTextElem;
 import com.tencent.imsdk.TIMUserConfig;
+import com.tencent.imsdk.TIMUserProfile;
 import com.tencent.imsdk.TIMUserStatusListener;
 import com.tencent.imsdk.TIMValueCallBack;
 import com.tencent.imsdk.TIMVideo;
@@ -33,12 +36,15 @@ import com.tencent.imsdk.ext.group.TIMGroupMemberResult;
 import com.tencent.imsdk.ext.message.TIMMessageLocator;
 import com.tencent.imsdk.session.SessionWrapper;
 
+import org.json.JSONObject;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.flutter.plugin.common.JSONUtil;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
@@ -118,9 +124,61 @@ public class TimFlutterWrapper {
 
             setReadMessage((Map) call.arguments,result);
 
+        }else if (TimMethodList.MethodKeyGetSelfProfile.equalsIgnoreCase(call.method)){
+            getSelfProfile(result);
+        }else if (TimMethodList.MethodKeyModifySelfProfile.equalsIgnoreCase(call.method)){
+            modifySelfProfile((HashMap<String, Object>) call.arguments,result);
         }
 
 
+
+    }
+
+    private void modifySelfProfile(HashMap<String,Object> arguments, final MethodChannel.Result result) {
+
+
+        System.out.println("modifySelfProfile  修改    "+arguments);
+
+        TIMFriendshipManager.getInstance().modifySelfProfile(arguments, new TIMCallBack() {
+            @Override
+            public void onError(int code, String desc) {
+                result.success(buildResponseMap(code,desc));
+                Log.e("onError ", "modifySelfProfile failed: " + code + " desc" + desc);
+            }
+
+            @Override
+            public void onSuccess() {
+                result.success(buildResponseMap(0,"modifySelfProfile ok"));
+                Log.e("tag", "modifySelfProfile success");
+            }
+        });
+    }
+
+    private void getSelfProfile(final MethodChannel.Result result) {
+        TIMFriendshipManager.getInstance().getSelfProfile(new TIMValueCallBack<TIMUserProfile>() {
+            @Override
+            public void onError(int i, String s) {
+                result.success(buildResponseMap(i,s));
+            }
+
+            @Override
+            public void onSuccess(TIMUserProfile timUserProfile) {
+
+
+
+                Map map=new HashMap();
+                map.put("allowType",timUserProfile.getAllowType());
+                map.put("birthday",timUserProfile.getBirthday());
+                map.put("faceUrl",timUserProfile.getFaceUrl());
+                map.put("gender",timUserProfile.getGender());
+                map.put("identifier",timUserProfile.getIdentifier());
+                map.put("nickName",timUserProfile.getNickName());
+                map.put("location",timUserProfile.getLocation());
+
+                result.success(buildResponseMap(0,new JSONObject(map).toString()));
+                System.out.println("getSelfProfile            ");
+            }
+        });
 
     }
 
@@ -778,7 +836,7 @@ public class TimFlutterWrapper {
         System.out.println("init    im   id   "+arguments);
 
         //初始化 IM SDK 基本配置
-//判断是否是在主线程
+        //判断是否是在主线程
         if (SessionWrapper.isMainProcess(mContext)) {
             TIMSdkConfig config = new TIMSdkConfig((int) arguments)
                     .enableLogPrint(false)

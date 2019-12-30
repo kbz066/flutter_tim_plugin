@@ -2,6 +2,7 @@
 
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -191,14 +192,21 @@ class TimFlutterPlugin{
   }
 
 
+  static Future<Map> getSelfProfile() async {
+    return await _channel.invokeMethod(TimMethodKey.GetSelfProfile);
+  }
+
+  static Future<Map> modifySelfProfile(Map map) async {
+
+
+    return await _channel.invokeMethod(TimMethodKey.ModifySelfProfile,map);
+  }
 
   ///响应原生的事件
   ///
 
   static void _addNativeMethodCallHandler() {
     _channel.setMethodCallHandler((MethodCall call) async {
-      print('_addNativeMethodCallHandler         ${call.arguments.runtimeType}            ${call.arguments}   ${call.method}');
-
 
 
       switch (call.method) {

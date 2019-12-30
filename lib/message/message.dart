@@ -17,6 +17,8 @@ class Message{
 	bool isPeerReaded;
 	bool isRead;
 	int status;
+
+	List<dynamic> elementList;
 	MessageContent content;
 
 }
