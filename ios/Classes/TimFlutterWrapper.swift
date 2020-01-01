@@ -34,12 +34,50 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         case MessageType.Text:
             sendTextMessage(map,result)
             break;
-
+        case MessageType.Face:
+            sendEmojiMessage(map,result)
+            break;
+        case MessageType.Location:
+            sendLocationMessage(map,result)
+            break;
         default:
             break
         }
 
         
+    }
+    
+    func sendLocationMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
+        var content = map["content"] as! [String : Any];
+        
+        var timMessage = TIMMessage()
+        
+        
+        var elm = TIMLocationElem();
+    
+       
+        elm.latitude = content["latitude"] as! Double ;
+        elm.longitude = content["longitude"] as! Double ;
+        elm.desc = content["desc"] as! String ;
+        
+        timMessage.add(elm);
+        
+        sendMessageCallBack(MessageType.Face,map ,timMessage ,result)
+    }
+    
+    func sendEmojiMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
+        var content = map["content"] as! [String : Any];
+        
+        var timMessage = TIMMessage()
+        
+        
+        var elm = TIMFaceElem();
+        elm.data = (content["emoji"] as! FlutterStandardTypedData).data ;
+        elm.index = Int32(content["index"] as! Int);
+        
+        timMessage.add(elm);
+        
+        sendMessageCallBack(MessageType.Face,map ,timMessage ,result)
     }
     
     func sendTextMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
@@ -48,11 +86,11 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         var timMessage = TIMMessage()
         
         
-        var textElm = TIMTextElem();
-        textElm.text = content["text"] as! String ;
+        var elm = TIMTextElem();
+        elm.text = content["text"] as! String ;
         
         
-        timMessage.add(textElm);
+        timMessage.add(elm);
         
         sendMessageCallBack(MessageType.Text,map ,timMessage ,result)
     }
@@ -65,8 +103,10 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         conversation.send(timMessage, succ: {
             
             switch(type){
-            case MessageType.Text:
-                
+            case MessageType.Text,
+                 MessageType.Face,
+                 MessageType.Location:
+        
                 result(self.buildResponseMap(codeVal : 0, descVal :MessageFactory.basicMessage2String(timMessage)))
                 
                 break

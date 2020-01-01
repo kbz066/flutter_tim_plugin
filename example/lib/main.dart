@@ -124,18 +124,20 @@ class _MyAppState extends State<MyApp> {
     }else if(type == "发送消息"){
 
       String path = "/storage/emulated/0/Divoomtest.jpg";
-      var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain(messageController.text));
+     // var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain(messageController.text));
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: ImageMessage.obtain(path));
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: CustomMessage.obtain(Uint8List.fromList(utf8.encode("自定义消息"))));
 
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: FileMessage.obtain(path,"测试文件发送"));
+      //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: EmojiMessage.obtain(Uint8List.fromList(utf8.encode("表情消息")),999));
+
 
       var map= Map();
       map[TIMUserProfile.TIM_PROFILE_TYPE_KEY_NICK]="我的昵称";
       map[TIMUserProfile.TIM_PROFILE_TYPE_KEY_GENDER]=TIMFriendGenderType.GENDER_MALE;
       map[TIMUserProfile.TIM_PROFILE_TYPE_KEY_BIRTHDAY]=20190419;
 
-
+      var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: LocationMessage.obtain(66.6,99.9,"发生位置信息"));
 
      // var res=await TimFlutterPlugin.modifySelfProfile(map);
       print('发送消息res   $res');

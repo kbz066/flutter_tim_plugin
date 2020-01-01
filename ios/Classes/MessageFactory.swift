@@ -34,7 +34,8 @@ class MessageFactory{
             elementList.append(elementMap);
         }
         
-
+       
+        
         map["elementList"] = elementList;
 
         return convertDictionaryToJSONString(dict: map)
@@ -44,8 +45,12 @@ class MessageFactory{
     static func getElemType(_ elem : TIMElem)-> Int{
         if(elem is TIMTextElem){
             return MessageType.Text
+        }else if(elem is TIMFaceElem){
+            return MessageType.Face
+        }else if(elem is TIMLocationElem){
+            return MessageType.Location
         }else{
-            return 0
+            return -99
         }
     }
     static func convertDictionaryToJSONString(dict : Dictionary<String,Any>)->String {
