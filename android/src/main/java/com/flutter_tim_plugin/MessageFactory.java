@@ -257,7 +257,7 @@ public class MessageFactory {
                     dataMap.put("text",textElem.getText());
                     list.add(new JSONObject(dataMap).toString());
 
-                    System.out.println("准备返回    "+new JSONObject(dataMap).toString());
+                    System.out.println("message2List   准备返回    "+ elemType.name() +"  "    +new JSONObject(dataMap).toString());
                     //处理文本消息
                 } else if (elemType == TIMElemType.Image) {
 

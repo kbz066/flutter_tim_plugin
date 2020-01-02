@@ -131,16 +131,18 @@ class _MyAppState extends State<MyApp> {
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: FileMessage.obtain(path,"测试文件发送"));
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: EmojiMessage.obtain(Uint8List.fromList(utf8.encode("表情消息")),999));
 
+      var res=await TimFlutterPlugin.getLocalMessage(conversationType: TIMConversationType.C2C, id: 2255, count: 10);
 
       var map= Map();
       map[TIMUserProfile.TIM_PROFILE_TYPE_KEY_NICK]="我的昵称";
       map[TIMUserProfile.TIM_PROFILE_TYPE_KEY_GENDER]=TIMFriendGenderType.GENDER_MALE;
       map[TIMUserProfile.TIM_PROFILE_TYPE_KEY_BIRTHDAY]=20190419;
 
-      var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: LocationMessage.obtain(66.6,99.9,"发生位置信息"));
+      //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: LocationMessage.obtain(66.6,99.9,"发生位置信息"));
 
      // var res=await TimFlutterPlugin.modifySelfProfile(map);
-      print('发送消息res   $res');
+      print('发送消息res   $res  ');
+
     }else if(type=="下载文件"){
 
 
