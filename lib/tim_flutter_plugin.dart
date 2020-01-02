@@ -126,26 +126,33 @@ class TimFlutterPlugin{
   }
 
   ///获取漫游消息
-  static Future<void> getMessage({@required int conversationType,@required int id,@required int count}) async {
+  static Future<List<Message>> getMessage({@required int conversationType,@required int id,@required int count}) async {
     Map map={
       "conversationType":conversationType,
       "count":count,
       "id":id
 
     };
-    return await _channel.invokeMethod(TimMethodKey.GetMessage,map);
+    var resultMap=await _channel.invokeMethod(TimMethodKey.GetMessage,map);
+    print('resultMap-------getMessage---------->   ${resultMap} ');
+    return MessageFactory.instance.string2ListMessage(resultMap["data"]);
   }
 
 
   ///获取本地消息
-  static Future<List> getLocalMessage({@required int conversationType,@required int id,@required int count}) async {
+  static Future<List<Message>> getLocalMessage({@required int conversationType,@required int id,@required int count}) async {
     Map map={
       "conversationType":conversationType,
       "count":count,
       "id":id
 
     };
-    return await _channel.invokeMethod(TimMethodKey.GetLocalMessage,map);
+
+    var resultMap=await _channel.invokeMethod(TimMethodKey.GetLocalMessage,map);
+
+    print('resultMap-------getLocalMessage---------->    $resultMap');
+
+    return MessageFactory.instance.string2ListMessage(resultMap["data"]);
   }
 
 
@@ -175,6 +182,15 @@ class TimFlutterPlugin{
       "memList":memList,
     };
     return await _channel.invokeMethod(TimMethodKey.InviteGroupMember,map);
+  }
+
+  ///申请入群
+  static Future applyJoinGroup({@required String groupId, String reason}) async {
+    Map map={
+      "groupId":groupId,
+      "reason":reason,
+    };
+    return await _channel.invokeMethod(TimMethodKey.ApplyJoinGroup,map);
   }
   ///设置消息已读上报
   static Future setReadMessage({@required int conversationType,@required int id}) async {

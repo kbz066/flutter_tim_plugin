@@ -8,6 +8,7 @@ public class TimMethodList {
     static String MethodKeyLogout = "logout";
     static String MethodKeyGetSelfProfile = "getSelfProfile";
     static String MethodKeyModifySelfProfile = "modifySelfProfile";
+    static String MethodKeyApplyJoinGroup = "applyJoinGroup";
 
     static String MethodKeyDisconnect = "disconnect";
     static String MethodKeySendMessage = "sendMessage";

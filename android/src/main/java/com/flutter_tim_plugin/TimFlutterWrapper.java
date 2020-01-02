@@ -128,10 +128,29 @@ public class TimFlutterWrapper {
             getSelfProfile(result);
         }else if (TimMethodList.MethodKeyModifySelfProfile.equalsIgnoreCase(call.method)){
             modifySelfProfile((HashMap<String, Object>) call.arguments,result);
+        }else if (TimMethodList.MethodKeyApplyJoinGroup.equalsIgnoreCase(call.method)){
+            applyJoinGroup((HashMap<String, Object>) call.arguments,result);
         }
 
 
 
+    }
+
+    private void applyJoinGroup(HashMap<String, Object> arguments, final MethodChannel.Result result) {
+        String groupId= (String) arguments.get("groupId");
+
+        String reason=(String) arguments.get("reason");
+        TIMGroupManager.getInstance().applyJoinGroup(groupId, reason, new TIMCallBack() {
+            @Override
+            public void onError(int code, String desc) {
+                result.success(buildResponseMap(code,desc));
+            }
+
+            @Override
+            public void onSuccess() {
+                result.success(buildResponseMap(0,"applyJoinGroup ok"));
+            }
+        });
     }
 
     private void modifySelfProfile(HashMap<String,Object> arguments, final MethodChannel.Result result) {
