@@ -40,11 +40,48 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         case MessageType.Location:
             sendLocationMessage(map,result)
             break;
+        case MessageType.Custom:
+            sendCustomMessage(map,result)
+            break;
+        case MessageType.Image:
+            sendImageMessage(map,result)
+            break;
         default:
             break
         }
 
         
+    }
+    
+    
+    func sendImageMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
+        var content = map["content"] as! [String : Any];
+              
+        var timMessage = TIMMessage()
+              
+        var elm = TIMImageElem();
+        elm.path = content["localPath"] as! String ;
+        
+        print("发送。localPath  \( elm.path )")
+              
+        timMessage.add(elm);
+              
+        sendMessageCallBack(MessageType.Image,map ,timMessage ,result)
+    }
+    
+    func sendCustomMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
+        var content = map["content"] as! [String : Any];
+        
+        var timMessage = TIMMessage()
+        
+        
+        var elm = TIMCustomElem();
+        elm.data = (content["data"] as! FlutterStandardTypedData).data ;
+  
+        
+        timMessage.add(elm);
+        
+        sendMessageCallBack(MessageType.Custom,map ,timMessage ,result)
     }
     
     func sendLocationMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
@@ -99,6 +136,7 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         
         var conversation = getTIMConversationByID(map: map);
   
+        print("sendMessageCallBack        \(timMessage)")
         
         conversation.send(timMessage, succ: {
             
@@ -110,6 +148,11 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
                 result(self.buildResponseMap(codeVal : 0, descVal :MessageFactory.basicMessage2String(timMessage)))
                 
                 break
+            case MessageType.Custom:
+                result(self.buildResponseMap(codeVal : 0, descVal :MessageFactory.customMessage2String(timMessage)))
+                break
+                
+                
             default:
                 break
             }

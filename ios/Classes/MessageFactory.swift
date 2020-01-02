@@ -20,6 +20,29 @@ class MessageFactory{
         return dataMap;
     }
     
+    
+    static func customMessage2String(_ msg : TIMMessage)-> String{
+        
+        print("customMessage2String===============")
+        var map = buildBasicMap(msg);
+        
+        map["messageType"] = MessageType.Custom;
+        
+        var elementList = Array<[String:Any]>();
+              
+        var count = msg.elemCount();
+        for index in 0..<count{
+            var element  =  msg.getElem(index) as! TIMCustomElem;
+            
+       
+            var elementMap = ["data":Array(element.data)]
+            elementList.append(elementMap);
+            
+        }
+        map["elementList"] = elementList;
+        return convertDictionaryToJSONString(dict: map)
+    }
+    
     static func  basicMessage2String(_ msg : TIMMessage)-> String{
         var map = buildBasicMap(msg);
         var elementList = Array<[String:Any]>();

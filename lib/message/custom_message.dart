@@ -14,6 +14,7 @@ class CustomMessage extends MessageContent{
   List<MessageDataElement> elementList;
 
   static CustomMessage obtain(Uint8List data) {
+
     CustomMessage msg = new CustomMessage();
     msg.data = data;
 
