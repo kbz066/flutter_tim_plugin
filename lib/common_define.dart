@@ -68,7 +68,14 @@ class TIMConversationNotificationStatus {
   static const int DoNotDisturb = 0;//免打扰
   static const int Notify = 1;//新消息通知
 }
-
+//群组类型
+class TIMGroupType{
+  static const String Private = "Private";
+  static const String Public = "Public";
+  static const String ChatRoom = "ChatRoom";
+  static const String AVChatRoom = "AVChatRoom";
+  static const String BChatRoom = "BChatRoom";
+}
 //聊天室成员顺序
 class TIMChatRoomMemberOrder {
   static const int Asc = 1;//升序，最早加入

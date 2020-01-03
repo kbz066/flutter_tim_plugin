@@ -168,7 +168,7 @@ class TimFlutterPlugin{
   }
 
   ///创建群组
-  static Future createGroup({@required String type,@required String name}) async {
+  static Future<Map> createGroup({@required String type,@required String name}) async {
     Map map={
       "type":type,
       "name":name,
