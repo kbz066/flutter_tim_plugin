@@ -17,12 +17,46 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
             initTim(call: call,result: result);
         }else if(TimMethodList.MethodKeyLogin == call.method){
             login(call: call,result: result);
-        }else if(TimMethodList.SendMessage == call.method){
+        }else if(TimMethodList.MethodKeySendMessage == call.method){
             sendMessage(call: call,result: result);
+        }else if(TimMethodList.MethodKeyCreateGroup == call.method){
+            createGroup(call.arguments as! [String : Any],result)
+        }else if(TimMethodList.MethodKeyInviteGroupMember == call.method){
+            inviteGroupMember (call.arguments as! [String : Any],result)
         }
+
         
      
     }
+    
+    
+    func inviteGroupMember(_ map : [String: Any],_ result: @escaping FlutterResult){
+        var groupId = map["groupId"] as! String;
+        var memList = map["memList"] as! Array<String>;
+        
+        
+        print("groupId       \(groupId)")
+        print("memList       \(memList)")
+        
+        TIMGroupManager.sharedInstance()?.inviteGroupMember(groupId, members: memList, succ: {
+           
+            var list = Array<[String:Any]>();
+            
+            var results  = $0 as! Array<TIMGroupMemberResult>;
+            for res  in results {
+                var map = [String:Any]();
+                map["result"] = res.status.rawValue;
+                map["user"] = res.member;
+                list.append(map);
+            }
+            print("inviteGroupMember        \(list)")
+            
+            result(self.buildResponseMap(codeVal : 0, descVal : list))
+        }, fail: {
+            result(self.buildResponseMap(codeVal : $0,descVal : $1))
+        })
+    }
+    
     func  sendMessage(call: FlutterMethodCall, result: @escaping FlutterResult){
   
         var map : [String: Any]=call.arguments as! [String : Any];
@@ -46,13 +80,28 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         case MessageType.Image:
             sendImageMessage(map,result)
             break;
+
+            
         default:
             break
         }
 
         
     }
-    
+    func createGroup(_ map : [String: Any],_ result: @escaping FlutterResult){
+        var type = map["type"] as! String;
+        var name = map["name"] as! String;
+        var info = TIMCreateGroupInfo();
+        info.groupName = name ;
+        info.groupType = type;
+        TIMGroupManager.sharedInstance()?.createGroup(info, succ: {
+            result(self.buildResponseMap(codeVal : 0, descVal : $0))
+        }, fail: {
+            result(self.buildResponseMap(codeVal : $0,descVal : $1))
+        })
+
+
+    }
     
     func sendImageMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
         var content = map["content"] as! [String : Any];

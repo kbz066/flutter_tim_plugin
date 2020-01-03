@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bad28641-4199-4280-9566-307967a65889" name="Default Changelist" comment="">
+    <list default="true" id="bad28641-4199-4280-9566-307967a65889" name="Default Changelist" comment="ios 支持图片消息">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/flutter_tim_plugin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/flutter_tim_plugin.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/ios/Classes/TimFlutterWrapper.swift" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/.symlinks/plugins/flutter_tim_plugin/ios/Classes/TimFlutterWrapper.swift" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Classes/MessageFactory.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/MessageFactory.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_tim_plugin.iml" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_tim_plugin.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ios/Classes/TimFlutterWrapper.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/TimFlutterWrapper.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Classes/TimMethodList.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Classes/TimMethodList.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/common_define.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/common_define.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/tim_flutter_plugin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/tim_flutter_plugin.dart" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -70,7 +82,14 @@
       <option name="project" value="LOCAL" />
       <updated>1577114319155</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="ios 支持图片消息">
+      <created>1577981023670</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1577981023671</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -89,6 +108,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="增加桥接文件" />
     <MESSAGE value="支持调用oc" />
-    <option name="LAST_COMMIT_MESSAGE" value="支持调用oc" />
+    <MESSAGE value="ios 支持图片消息" />
+    <option name="LAST_COMMIT_MESSAGE" value="ios 支持图片消息" />
   </component>
 </project>

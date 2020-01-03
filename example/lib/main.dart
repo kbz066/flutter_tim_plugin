@@ -137,8 +137,11 @@ class _MyAppState extends State<MyApp> {
       map[TIMUserProfile.TIM_PROFILE_TYPE_KEY_GENDER]=TIMFriendGenderType.GENDER_MALE;
       map[TIMUserProfile.TIM_PROFILE_TYPE_KEY_BIRTHDAY]=20190419;
 
-      var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: LocationMessage.obtain(66.6,99.9,"发生位置信息"));
+      //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: LocationMessage.obtain(66.6,99.9,"发生位置信息"));
 
+      //var res =await TimFlutterPlugin.createGroup(type: TIMGroupType.Public, name: "创建个Public 群2 ");
+
+      var res =await TimFlutterPlugin.inviteGroupMember(groupId: "@TGS#27CSNSDGY", memList: ["2255"]);
      // var res=await TimFlutterPlugin.modifySelfProfile(map);
       print('发送消息res   $res');
     }else if(type=="下载文件"){
