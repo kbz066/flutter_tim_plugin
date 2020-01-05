@@ -23,12 +23,77 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
             createGroup(call.arguments as! [String : Any],result)
         }else if(TimMethodList.MethodKeyInviteGroupMember == call.method){
             inviteGroupMember (call.arguments as! [String : Any],result)
+        }else if(TimMethodList.MethodKeyApplyJoinGroup == call.method){
+            applyJoinGroup (call.arguments as! [String : Any],result)
+        }else if(TimMethodList.MethodKeyGetSelfProfile == call.method){
+            getSelfProfile (result)
+        }else if(TimMethodList.MethodKeyGetMessage == call.method){
+            getMessage (call.arguments as! [String : Any],result)
+        }else if(TimMethodList.MethodKeyModifySelfProfile == call.method){
+            modifySelfProfile (call.arguments as! [String : Any],result)
         }
 
+    
+    }
+    func modifySelfProfile(_ map : [String: Any],_ result: @escaping FlutterResult){
+
         
-     
+        TIMFriendshipManager.sharedInstance()?.modifySelfProfile(map, succ: {
+            result(self.buildResponseMap(codeVal : 0, descVal : "modifySelfProfile ok"))
+        }, fail: {
+            result(self.buildResponseMap(codeVal : $0,descVal : $1))
+        })
+    }
+    func getMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
+         var conversation = getTIMConversationByID(map: map);
+        
+        var count = map["count"] as! Int;
+        
+        conversation.getMessage(Int32(count), last: nil, succ: {
+            
+            print("getMessage      =======        \($0)")
+            
+        },fail:{
+            
+            
+            result(self.buildResponseMap(codeVal : $0,descVal : $1))
+        })
     }
     
+    func getSelfProfile(_ result: @escaping FlutterResult){
+
+        TIMFriendshipManager.sharedInstance()?.getSelfProfile({
+            var profile = $0;
+            
+            var map = [String:Any]();
+            map["allowType"] = profile?.allowType.rawValue;
+            map["birthday"] = profile?.birthday;
+            map["faceUrl"] = profile?.faceURL;
+            map["gender"] = profile?.gender.rawValue;
+            map["identifier"] = profile?.identifier;
+            map["nickName"] = profile?.nickname;
+            map["location"] = profile?.location;
+            print("getSelfProfile              \(map)")
+            result(self.buildResponseMap(codeVal : 0,descVal : map))
+            
+        }, fail: {
+            result(self.buildResponseMap(codeVal : $0,descVal : $1))
+        })
+    }
+
+    func applyJoinGroup(_ map : [String: Any],_ result: @escaping FlutterResult){
+        var groupId = map["groupId"] as! String;
+        var msg = map["reason"] as! String;
+        
+        
+        
+        TIMGroupManager.sharedInstance()?.joinGroup(groupId, msg: msg, succ: {
+            result(self.buildResponseMap(codeVal : 0,descVal : "applyJoinGroup ok"))
+        }, fail: {
+            
+            result(self.buildResponseMap(codeVal : $0,descVal : $1))
+        })
+    }
     
     func inviteGroupMember(_ map : [String: Any],_ result: @escaping FlutterResult){
         var groupId = map["groupId"] as! String;
@@ -89,9 +154,9 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         
     }
     func createGroup(_ map : [String: Any],_ result: @escaping FlutterResult){
-        var type = map["type"] as! String;
-        var name = map["name"] as! String;
-        var info = TIMCreateGroupInfo();
+        let type = map["type"] as! String;
+        let name = map["name"] as! String;
+        let info = TIMCreateGroupInfo();
         info.groupName = name ;
         info.groupType = type;
         TIMGroupManager.sharedInstance()?.createGroup(info, succ: {

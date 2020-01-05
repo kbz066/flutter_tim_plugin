@@ -15,5 +15,12 @@ class TimMethodList{
     static var  MethodKeyCreateGroup : String = "createGroup";
     static var  MethodKeyInviteGroupMember : String = "inviteGroupMember";
     static var  MethodKeyApplyJoinGroup : String = "applyJoinGroup";
+    static var  MethodKeyGetSelfProfile : String = "getSelfProfile";
+    static var  MethodKeyGetMessage : String = "getMessage";
     
+    static var  MethodKeyGetLocalMessage: String = "getLocalMessage";
+    static var  MethodKeyModifySelfProfile: String = "modifySelfProfile";
+    
+    
+
 }

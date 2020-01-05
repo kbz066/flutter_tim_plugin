@@ -194,7 +194,7 @@ public class TimFlutterWrapper {
                 map.put("nickName",timUserProfile.getNickName());
                 map.put("location",timUserProfile.getLocation());
 
-                result.success(buildResponseMap(0,new JSONObject(map).toString()));
+                result.success(buildResponseMap(0,map));
                 System.out.println("getSelfProfile            ");
             }
         });
