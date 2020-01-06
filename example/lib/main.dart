@@ -142,7 +142,8 @@ class _MyAppState extends State<MyApp> {
       //var res =await TimFlutterPlugin.createGroup(type: TIMGroupType.Public, name: "创建个Public 群2 ");
 
       //var res =await TimFlutterPlugin.inviteGroupMember(groupId: "@TGS#27CSNSDGY", memList: ["2255"]);
-      var res=await TimFlutterPlugin.modifySelfProfile(map);
+      //var res=await TimFlutterPlugin.modifySelfProfile(map);
+      var res=await TimFlutterPlugin.setReadMessage(conversationType: TIMConversationType.C2C, id: 2255);
       print('发送消息res   $res');
     }else if(type=="下载文件"){
 

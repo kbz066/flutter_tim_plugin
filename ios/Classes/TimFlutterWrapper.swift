@@ -31,9 +31,64 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
             getMessage (call.arguments as! [String : Any],result)
         }else if(TimMethodList.MethodKeyModifySelfProfile == call.method){
             modifySelfProfile (call.arguments as! [String : Any],result)
+        }else if(TimMethodList.MethodKeyLogout == call.method){
+            logout (result)
+        }else if(TimMethodList.MethodKeyGetLocalMessage == call.method){
+           
+        }else if(TimMethodList.MethodKeyDeleteConversation == call.method){
+           deleteConversation (call.arguments as! [String : Any],result)
+        }else if(TimMethodList.MethodKeySetReadMessage == call.method){
+           setReadMessage (call.arguments as! [String : Any],result)
         }
 
     
+    }
+    
+    
+    func setReadMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
+        var conversation = getTIMConversationByID(map: map);
+        
+        conversation.setRead(nil, succ: {
+            result(self.buildResponseMap(codeVal : 0,descVal : "setReadMessage ok"))
+        }) {
+            result(self.buildResponseMap(codeVal : $0,descVal : $1))
+        }
+    }
+    
+    func getConversationList(_ map : [String: Any],_ result: @escaping FlutterResult){
+        
+    }
+    func deleteConversation(_ map : [String: Any],_ result: @escaping FlutterResult){
+   
+        var delMsg = map["delLocalMsg"] as! Bool;
+        var id = map["id"] as! Int;
+        
+        var type = map["conversationType"] as! Int ;
+        
+        TIMConversationType.init(rawValue: type);
+        
+           
+            
+        
+        var res : Bool;
+        
+        if(delMsg){
+            delMsg = (TIMManager.sharedInstance()?.deleteConversationAndMessages(TIMConversationType.init(rawValue: type)!, receiver: String(id)))!
+        }else{
+            delMsg = (TIMManager.sharedInstance()?.delete(TIMConversationType.init(rawValue: type)!, receiver: String(id)))!
+        }
+        
+        result(self.buildResponseMap(codeVal : 0,descVal : delMsg))
+
+    }
+
+    
+    func logout(_ result: @escaping FlutterResult){
+        TIMManager.sharedInstance()?.logout( {
+            result(self.buildResponseMap(codeVal : 0,descVal : "logout  ok"))
+        }, fail: {
+            result(self.buildResponseMap(codeVal : $0,descVal : $1))
+        })
     }
     func modifySelfProfile(_ map : [String: Any],_ result: @escaping FlutterResult){
 

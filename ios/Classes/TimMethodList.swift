@@ -20,6 +20,11 @@ class TimMethodList{
     
     static var  MethodKeyGetLocalMessage: String = "getLocalMessage";
     static var  MethodKeyModifySelfProfile: String = "modifySelfProfile";
+    static var  MethodKeyGetConversationList: String = "getConversationList";
+    
+    static var  MethodKeyDeleteConversation: String = "deleteConversation";
+    
+    static var  MethodKeySetReadMessage: String = "setReadMessage";
     
     
 
