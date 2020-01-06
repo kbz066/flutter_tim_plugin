@@ -157,14 +157,14 @@ class TimFlutterPlugin{
 
 
   ///删除会话
-  static Future<bool> deleteConversation({@required int conversationType,@required int id,bool delLocalMsg}) async {
+  static Future<Map> deleteConversation({@required int conversationType,@required int id,bool delLocalMsg=false}) async {
     Map map={
       "conversationType":conversationType,
       "delLocalMsg":delLocalMsg,
       "id":id
 
     };
-    return await _channel.invokeMethod(TimMethodKey.GetConversationList,map);
+    return await _channel.invokeMethod(TimMethodKey.DeleteConversation,map);
   }
 
   ///创建群组
