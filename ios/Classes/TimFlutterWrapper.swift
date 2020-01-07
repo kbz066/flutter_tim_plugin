@@ -45,6 +45,33 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
     }
     
     
+    func getPath(){
+        
+        var filePaths = [String]()
+        var dirPath = NSTemporaryDirectory();
+         
+         do {
+             let array = try FileManager.default.contentsOfDirectory(atPath: dirPath)
+             
+             for fileName in array {
+                 var isDir: ObjCBool = true
+                 
+                 let fullPath = "\(dirPath)/\(fileName)"
+                 
+                 if FileManager.default.fileExists(atPath: fullPath, isDirectory: &isDir) {
+                     if !isDir.boolValue {
+                         filePaths.append(fullPath)
+                     }
+                 }
+             }
+             
+         } catch let error as NSError {
+             print("get file path error: \(error)")
+         }
+  
+        print("path ========== ==== = = ==   \( filePaths)")
+    }
+    
     func setReadMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
         var conversation = getTIMConversationByID(map: map);
         
@@ -320,7 +347,10 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
             case MessageType.Custom:
                 result(self.buildResponseMap(codeVal : 0, descVal :MessageFactory.customMessage2String(timMessage)))
                 break
-                
+            case MessageType.Image:
+                   result(self.buildResponseMap(codeVal : 0, descVal :MessageFactory.imageMessage2String(timMessage)))
+   
+                break
                 
             default:
                 break
@@ -369,8 +399,6 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         
         var userConfig = TIMUserConfig();
      
-        
-        
         
         TIMManager.sharedInstance()?.add(self)
         
