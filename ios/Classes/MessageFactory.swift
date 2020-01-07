@@ -43,6 +43,51 @@ class MessageFactory{
         return convertDictionaryToJSONString(dict: map)
     }
     
+    static func imageMessage2String(_ msg : TIMMessage)-> String{
+        print("customMessage2String===============")
+            var map = buildBasicMap(msg);
+            
+            map["messageType"] = MessageType.Image;
+            
+            var elementList = Array<[String:Any]>();
+                  
+            var count = msg.elemCount();
+            for index in 0..<count{
+                var element  =  msg.getElem(index) as! TIMImageElem;
+                
+           
+                var elementMap = [String:Any]();
+                elementMap["path"] = element.path;
+                elementMap["imageFormat"] = element.format.rawValue;
+                elementMap["level"] = element.level.rawValue;
+                elementMap["taskId"] = element.taskId;
+        
+                
+                var images = Array<Any>();
+                
+                var timImageList = element.imageList as! Array<TIMImage>;
+                for image in timImageList {
+                    var imageListMap = [String:Any]();
+                    
+                    imageListMap["url"] = image.url;
+                    imageListMap["height"] = image.height;
+                    imageListMap["size"] = image.size;
+                    imageListMap["type"] = image.type.rawValue;
+                    imageListMap["uuid"] = image.uuid;
+                    imageListMap["width"] = image.width;
+                    
+                    images.append(imageListMap);
+                }
+                
+        
+                elementMap["imageList"] = images;
+                elementList.append(elementMap);
+                
+            }
+            map["elementList"] = elementList;
+            return convertDictionaryToJSONString(dict: map)
+    }
+    
     static func  basicMessage2String(_ msg : TIMMessage)-> String{
         var map = buildBasicMap(msg);
         var elementList = Array<[String:Any]>();
