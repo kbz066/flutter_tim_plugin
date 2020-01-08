@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tim_plugin/common_define.dart';
+import 'package:flutter_tim_plugin/message/conversation.dart';
 import 'package:flutter_tim_plugin/message/custom_message.dart';
 import 'package:flutter_tim_plugin/message/message.dart';
 import 'package:flutter_tim_plugin/tim_method_key.dart';
@@ -112,6 +113,9 @@ class TimFlutterPlugin{
   static Future<Map> downloadVideo({@required int conversationType,@required String snapshotPath,@required String videoPath,@required Message msg})async{
 
 
+    var p =Paint();
+    p.strokeJoin=StrokeJoin.round;
+
     Map map={
       "conversationType":conversationType,
       "rand":msg.rand,
@@ -203,8 +207,9 @@ class TimFlutterPlugin{
   }
 
 
-  static Future<List> getConversationList() async {
-    return await _channel.invokeMethod(TimMethodKey.GetConversationList);
+  static Future<List<Conversation>> getConversationList() async {
+    var res=await _channel.invokeMethod(TimMethodKey.GetConversationList);
+    return MessageFactory.instance.map2ConversationList(res["data"]);
   }
 
 

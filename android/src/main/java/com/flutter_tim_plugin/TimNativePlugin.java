@@ -33,7 +33,7 @@ public class TimNativePlugin implements FlutterPlugin,MethodCallHandler {
   public void onAttachedToEngine(FlutterPluginBinding binding) {
     channel = new MethodChannel(binding.getBinaryMessenger(), "tim_plugin");
 
-    channel.setMethodCallHandler(new TimNativePlugin());
+    channel.setMethodCallHandler(this);
     TimFlutterWrapper.getInstance().saveChannel(channel);
     TimFlutterWrapper.getInstance().saveContext(binding.getApplicationContext());
 

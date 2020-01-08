@@ -121,4 +121,18 @@ class MessageFactory extends Object {
     return content;
   }
 
+  List<Conversation> map2ConversationList(List<dynamic> list){
+    if(list==null)
+      return [];
+
+    var conversations=<Conversation>[];
+    list.forEach((val){
+      conversations.add(Conversation(val["peer"],val["conversationType"],val["unreadMessageNum"]));
+    });
+
+
+    return conversations;
+
+  }
+
 }

@@ -359,10 +359,17 @@ public class TimFlutterWrapper {
 
         System.out.println("conversationList       "+conversationList.size());
 
+        List<Map> list=new ArrayList<>();
         for (TIMConversation timConversation : conversationList) {
 
-            System.out.println("timConversation      "+timConversation.getLastMsg().toString());
+            Map map=new HashMap();
+            map.put("peer",timConversation.getPeer());
+            map.put("conversationType",timConversation.getType().value());
+            map.put("unreadMessageNum",timConversation.getUnreadMessageNum());
+            list.add(map);
+            System.out.println("timConversation      "+timConversation.getPeer()+"        "+timConversation.getType()+"    "+timConversation.getUnreadMessageNum());
         }
+        result.success(buildResponseMap(0,list));
     }
 
     private void downloadFile(final Map map, final MethodChannel.Result result, final boolean isVideo){
@@ -376,6 +383,7 @@ public class TimFlutterWrapper {
         locator.setRand((int) map.get("rand"));
         locator.setSelf((boolean) map.get("self"));
         locator.setSeq((int) map.get("seq"));
+
         locator.setTimestamp((int) map.get("timestamp"));
         setMsgField(locator,"stype",TIMConversationType.values()[(int) map.get("conversationType")]);
         setMsgField(locator,"sid",map.get("sender"));
