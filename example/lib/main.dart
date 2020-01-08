@@ -14,6 +14,7 @@ import 'package:flutter_tim_plugin/message/emoji_message.dart';
 import 'package:flutter_tim_plugin/message/file_message.dart';
 import 'package:flutter_tim_plugin/message/custom_message.dart';
 import 'package:flutter_tim_plugin/message/message.dart';
+import 'package:flutter_tim_plugin/message/video_message.dart';
 import 'package:path_provider/path_provider.dart';
 
 
@@ -124,7 +125,7 @@ class _MyAppState extends State<MyApp> {
     }else if(type == "发送消息"){
 
       String path = "/storage/emulated/0/Divoomtest.jpg";
-     // var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain(messageController.text));
+      var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain(messageController.text));
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: ImageMessage.obtain(path));
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: CustomMessage.obtain(Uint8List.fromList(utf8.encode("自定义消息"))));
 
@@ -145,8 +146,15 @@ class _MyAppState extends State<MyApp> {
       //var res=await TimFlutterPlugin.modifySelfProfile(map);
      // var res=await TimFlutterPlugin.setReadMessage(conversationType: TIMConversationType.C2C, id: 2255);
 
-      var res=await TimFlutterPlugin.getConversationList();
+//      getTemporaryDirectory().then((val) async {
+//        print('文件是否存在    ${File("${val.path}/aaa.mp3").existsSync()}');
+//
+//        var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: FileMessage.obtain("${val.path}/aaa.mp3","我是文件名字"));
+//
+//      });
+
       print('发送消息res   $res');
+
     }else if(type=="下载文件"){
 
 
@@ -160,9 +168,34 @@ class _MyAppState extends State<MyApp> {
       String tempPath = tempDir.path+"aaa";
 
       print('tempPath   $tempPath');
-      TimFlutterPlugin.downloadFile(conversationType: TIMConversationType.C2C,msg:message,path: tempPath );
 
 
+     TimFlutterPlugin.downloadFile(conversationType: TIMConversationType.C2C,msg:message,path: tempPath );
+
+
+    }
+  }
+  www() async {
+    // 获取应用文档目录并创建文件
+    Directory documentsDir = await getTemporaryDirectory();
+    String documentsPath = documentsDir.path;
+
+
+    File file = new File('$documentsPath/aaa.jpg');
+    if(!file.existsSync()) {
+      file.createSync();
+    }
+
+    writeToFile(context, file, "模拟缩略图+++++++++");
+
+
+  }
+  //将数据内容写入指定文件中
+  void writeToFile(BuildContext context, File file, String notes) async {
+    File file1 = await file.writeAsString(notes);
+    if(file1.existsSync()) {
+
+      print('write  ===============ok=======    ${file.path}'  );
     }
   }
 }

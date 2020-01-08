@@ -233,7 +233,7 @@ class TimFlutterPlugin{
       switch (call.method) {
 
         case TimMethodKey.MethodCallBackKeyNewMessages:
-
+          MessageFactory.instance.string2ListMessage(call.arguments);
           if(onNewMessageWrapper!=null){
             onNewMessageWrapper(MessageFactory.instance.string2ListMessage(call.arguments));
           }

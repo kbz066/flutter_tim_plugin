@@ -7,8 +7,11 @@ public class SwiftTimNativePlugin: NSObject, FlutterPlugin {
         
 
     let channel = FlutterMethodChannel(name: "tim_plugin", binaryMessenger: registrar.messenger())
+    
+    
     let instance = SwiftTimNativePlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
+    TimFlutterWrapper.sharedInstance.saveChannel(channel: channel);
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -16,6 +19,7 @@ public class SwiftTimNativePlugin: NSObject, FlutterPlugin {
     TimFlutterWrapper.sharedInstance.onFlutterMethodCall(call: call, result: result)
     
 
+    
     //result("iOS " + UIDevice.current.systemVersion)
   }
 }

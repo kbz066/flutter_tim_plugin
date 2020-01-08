@@ -43,8 +43,97 @@ class MessageFactory{
         return convertDictionaryToJSONString(dict: map)
     }
     
+    static func fileMessage2String(_ msg : TIMMessage)-> String{
+         var map = buildBasicMap(msg);
+         
+         map["messageType"] = MessageType.Custom;
+         
+         var elementList = Array<[String:Any]>();
+               
+         var count = msg.elemCount();
+         for index in 0..<count{
+             var element  =  msg.getElem(index) as! TIMFileElem;
+             
+        
+            var elementMap = [String:Any]();
+            elementMap["fileName"] = element.filename;
+            elementMap["fileSize"] = element.fileSize;
+            elementMap["path"] = element.path;
+            elementMap["taskId"] = element.taskId;
+            elementMap["uuid"] = element.uuid;
+            
+             elementList.append(elementMap);
+             
+         }
+         map["elementList"] = elementList;
+         return convertDictionaryToJSONString(dict: map)
+    }
+    
+    static func videoMessage2String(_ msg : TIMMessage)-> String{
+         var map = buildBasicMap(msg);
+         
+         map["messageType"] = MessageType.Sound;
+         
+         var elementList = Array<[String:Any]>();
+               
+         var count = msg.elemCount();
+         for index in 0..<count{
+             var element  =  msg.getElem(index) as! TIMVideoElem;
+             
+        
+            var elementMap = [String:Any]();
+            elementMap["videoPath"] = element.videoPath;
+            elementMap["snapshotPath"] = element.snapshotPath;
+            elementMap["videoUUID"] = element.video.uuid;
+            elementMap["videoType"] = element.video.type;
+            elementMap["videoSize"] = element.video.size;
+            elementMap["duaration"] = element.video.duration;
+            
+            elementMap["snapshotUUID"] = element.snapshot.uuid;
+            elementMap["snapshotType"] = element.snapshot.type;
+            elementMap["snapshotHeight"] = element.snapshot.height;
+            elementMap["snapshotWidth"] = element.snapshot.width;
+            
+
+
+            elementList.append(elementMap);
+             
+         }
+         map["elementList"] = elementList;
+         return convertDictionaryToJSONString(dict: map)
+    }
+    
+    static func soundMessage2String(_ msg : TIMMessage)-> String{
+        print("soundMessage2String===============")
+         var map = buildBasicMap(msg);
+         
+         map["messageType"] = MessageType.Sound;
+         
+         var elementList = Array<[String:Any]>();
+               
+         var count = msg.elemCount();
+         for index in 0..<count{
+             var element  =  msg.getElem(index) as! TIMSoundElem;
+             
+        
+             var elementMap = [String:Any]();
+            elementMap["path"] = element.path;
+            elementMap["duration"] = element.second;
+            elementMap["dataSize"] = element.dataSize;
+            elementMap["taskId"] = element.taskId;
+            elementMap["uuid"] = element.uuid;
+            
+            
+        
+            elementList.append(elementMap);
+             
+         }
+         map["elementList"] = elementList;
+         return convertDictionaryToJSONString(dict: map)
+    }
+    
     static func imageMessage2String(_ msg : TIMMessage)-> String{
-        print("customMessage2String===============")
+        print("imageMessage2String===============")
             var map = buildBasicMap(msg);
             
             map["messageType"] = MessageType.Image;
@@ -53,6 +142,8 @@ class MessageFactory{
                   
             var count = msg.elemCount();
             for index in 0..<count{
+                
+       
                 var element  =  msg.getElem(index) as! TIMImageElem;
                 
            
@@ -88,6 +179,18 @@ class MessageFactory{
             return convertDictionaryToJSONString(dict: map)
     }
     
+    static func textMessage2String(_ msg : TIMMessage)-> String{
+        var map = buildBasicMap(msg);
+          
+          map["messageType"] = MessageType.Text;
+          
+          var elementList = Array<[String:Any]>();
+                
+
+          map["text"] = elementList;
+          return convertDictionaryToJSONString(dict: map)
+    }
+    
     static func  basicMessage2String(_ msg : TIMMessage)-> String{
         var map = buildBasicMap(msg);
         var elementList = Array<[String:Any]>();
@@ -110,6 +213,53 @@ class MessageFactory{
 
 
     }
+    static func message2List(timList : Array<TIMMessage>)-> Array<String>{
+        var list = Array<String>();
+        
+    
+        for msg in timList {
+            let elmCount = msg.elemCount();
+
+            let elemType = getElemType(msg.getElem(0));
+            
+            print("elemType ========== =========   \(elemType)")
+            if (elemType == MessageType.Text) {
+   
+                list.append(textMessage2String(msg))
+              }else if (elemType == MessageType.Image) {
+
+                list.append(imageMessage2String(msg));
+              }else if (elemType == MessageType.Sound) {
+
+                  list.append(soundMessage2String(msg));
+              }else if (elemType == MessageType.File) {
+
+                  list.append(fileMessage2String(msg));
+              }else if (elemType == MessageType.Video) {
+
+                  list.append(videoMessage2String(msg));
+              }else if (elemType == MessageType.Custom) {
+
+                  list.append(customMessage2String(msg));
+              }else {
+
+
+
+                  list.append(basicMessage2String(msg));
+                  
+              }
+            
+            
+
+    
+            
+        }
+        print("elemType ========== =========   \(list)    ")
+        return list;
+        
+    }
+    
+    
     static func getElemType(_ elem : TIMElem)-> Int{
         if(elem is TIMTextElem){
             return MessageType.Text
@@ -117,6 +267,16 @@ class MessageFactory{
             return MessageType.Face
         }else if(elem is TIMLocationElem){
             return MessageType.Location
+        }else if(elem is TIMVideoElem){
+            return MessageType.Video
+        }else if(elem is TIMSoundElem){
+            return MessageType.Sound
+        }else if(elem is TIMFileElem){
+            return MessageType.File
+        }else if(elem is TIMCustomElem){
+            return MessageType.Custom
+        }else if(elem is TIMImageElem){
+            return MessageType.Image
         }else{
             return -99
         }

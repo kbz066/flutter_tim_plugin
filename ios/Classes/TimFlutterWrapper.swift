@@ -9,6 +9,8 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
     
     static let sharedInstance = TimFlutterWrapper()
     
+    var mChannel : FlutterMethodChannel?;
+    
     func onFlutterMethodCall(call: FlutterMethodCall, result: @escaping FlutterResult){
 
         
@@ -227,14 +229,88 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         case MessageType.Image:
             sendImageMessage(map,result)
             break;
-
+        case MessageType.Sound:
+            sendSoundMessage(map,result)
+            break;
+        case MessageType.Video:
+            sendVideoMessage(map,result)
             
+            break;
+        case MessageType.File:
+            sendFileMessage(map,result)
+                
+            break;
         default:
             break
         }
 
         
     }
+    
+    func sendFileMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
+        var content = map["content"] as! [String : Any];
+                      
+             var timMessage = TIMMessage()
+                      
+             var elm = TIMFileElem();
+             elm.path = content["filePath"] as! String ;
+             elm.filename = content["fileName"] as! String ;
+
+             print("发送。   sendFileMessage  \( elm.path )")
+                      
+             timMessage.add(elm);
+                      
+             sendMessageCallBack(MessageType.File,map ,timMessage ,result)
+    }
+    
+    func sendVideoMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
+        
+        let content = map["content"] as! [String : Any];
+                 
+        let timMessage = TIMMessage()
+                 
+        let elm = TIMVideoElem();
+        let video = TIMVideo();
+        let snapshot = TIMSnapshot();
+        
+        video.duration = Int32(content["duration"] as! Int)
+        
+        snapshot.width = Int32(content["width"] as! Int);
+        snapshot.height = Int32(content["height"] as! Int);
+        
+        elm.snapshot = snapshot;
+        elm.video = video;
+        
+        elm.snapshotPath = content["imgPath"] as! String ;
+        elm.videoPath = content["videoPath"] as! String ;
+        
+        print("发送。video snapshotPath   \( elm.snapshotPath )")
+             print("发送。video videoPath   \( elm.videoPath )")
+                 
+        timMessage.add(elm);
+                 
+        sendMessageCallBack(MessageType.Video,map ,timMessage ,result)
+        
+        
+        
+  
+    }
+    
+    func sendSoundMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
+        var content = map["content"] as! [String : Any];
+                 
+        var timMessage = TIMMessage()
+                 
+        var elm = TIMSoundElem();
+        elm.path = content["localPath"] as! String ;
+        elm.second = Int32(content["duration"] as! Int)
+        print("发送。lsound   ocalPath  \( elm.path )")
+                 
+        timMessage.add(elm);
+                 
+        sendMessageCallBack(MessageType.Image,map ,timMessage ,result)
+    }
+    
     func createGroup(_ map : [String: Any],_ result: @escaping FlutterResult){
         let type = map["type"] as! String;
         let name = map["name"] as! String;
@@ -277,7 +353,7 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         
         timMessage.add(elm);
         
-        sendMessageCallBack(MessageType.Custom,map ,timMessage ,result)
+        sendMessageCallBack(MessageType.Sound,map ,timMessage ,result)
     }
     
     func sendLocationMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
@@ -348,10 +424,19 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
                 result(self.buildResponseMap(codeVal : 0, descVal :MessageFactory.customMessage2String(timMessage)))
                 break
             case MessageType.Image:
-                   result(self.buildResponseMap(codeVal : 0, descVal :MessageFactory.imageMessage2String(timMessage)))
+                   result(self.buildResponseMap(codeVal : 0, descVal :MessageFactory.soundMessage2String(timMessage)))
    
                 break
                 
+            case MessageType.Sound:
+                result(self.buildResponseMap(codeVal : 0, descVal :MessageFactory.soundMessage2String(timMessage)))
+                
+                break
+            case MessageType.Video:
+                result(self.buildResponseMap(codeVal : 0, descVal :MessageFactory.videoMessage2String(timMessage)))
+            case MessageType.File:
+                result(self.buildResponseMap(codeVal : 0, descVal :MessageFactory.fileMessage2String(timMessage)))
+                break
             default:
                 break
             }
@@ -401,6 +486,7 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
      
         
         TIMManager.sharedInstance()?.add(self)
+        TIMManager.sharedInstance()?.setUserConfig(userConfig);
         
 
         var initState = TIMManager.sharedInstance()?.initSdk(config)
@@ -411,7 +497,10 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
     }
     
     func onNewMessage(_ msgs: [Any]!) {
+        let arguments = MessageFactory.message2List(timList: msgs as! Array<TIMMessage>);
         
+        mChannel?.invokeMethod(TimMethodList.MethodCallBackKeyNewMessages,arguments: arguments )
+        print("onNewMessage                 \(msgs)")
         
     }
     
@@ -427,13 +516,15 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         
         
 
-        var type = map["conversationType"] as! Int ;
-        var id = map["id"] as! Int;
+        let type = map["conversationType"] as! Int ;
+        let id = map["id"] as! Int;
     
        
         return TIMManager.sharedInstance().getConversation( TIMConversationType.init(rawValue: type)!, receiver:  String(id))
   
     }
-
+     func saveChannel(channel : FlutterMethodChannel) {
+         mChannel = channel;
+    }
 }
 
