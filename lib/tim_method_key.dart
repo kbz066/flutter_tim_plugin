@@ -19,6 +19,7 @@ class TimMethodKey{
   static const String InviteGroupMember = 'inviteGroupMember';
   static const String ApplyJoinGroup = 'applyJoinGroup';
 
+  static const String RevokeMessage = 'revokeMessage';
   static const String GetMessage = 'getMessage';
   static const String SetReadMessage = 'setReadMessage';
   static const String GetLocalMessage = 'getLocalMessage';

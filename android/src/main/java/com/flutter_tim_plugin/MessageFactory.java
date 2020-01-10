@@ -235,52 +235,62 @@ public class MessageFactory {
 
         return new JSONObject(dataMap).toString();
     }
+    public String textMessage2String(TIMMessage msg) {
+        Map dataMap=buildBasicMap(msg);
 
+        dataMap.put("messageType",TIMElemType.Text.value());
+
+        List elementList=new ArrayList();
+
+        for (int i = 0; i < msg.getElementCount(); i++) {
+            TIMTextElem element = (TIMTextElem) msg.getElement(i);
+            Map elementMap=new HashMap();
+            elementMap.put("text",element.getText());
+            elementList.add(elementMap);
+
+        }
+
+        dataMap.put("elementList",elementList);
+
+        System.out.println("打印  "+new JSONObject(dataMap).toString());
+
+        return new JSONObject(dataMap).toString();
+    }
 
     public List<String> message2List(List<TIMMessage> timList){
         List<String> list=new ArrayList<>();
         for (TIMMessage msg : timList) {
 
+            TIMElem elem = msg.getElement(0);
 
+            //获取当前元素的类型
+            TIMElemType elemType = elem.getType();
+            System.out.println( "elem type: " + elemType.name());
+            if (elemType == TIMElemType.Text) {
 
-            for(int i = 0; i < msg.getElementCount(); ++i) {
-                TIMElem elem = msg.getElement(i);
+                list.add(textMessage2String(msg));
+                //处理文本消息
+            } else if (elemType == TIMElemType.Image) {
 
-                //获取当前元素的类型
-                TIMElemType elemType = elem.getType();
-                System.out.println( "elem type: " + elemType.name());
-                if (elemType == TIMElemType.Text) {
-                    TIMTextElem textElem= (TIMTextElem) elem;
+                list.add(imageMessage2String(msg));
+            }else if (elemType == TIMElemType.Sound) {
 
-                    Map dataMap=buildBasicMap(msg);
-                    dataMap.put("messageType",TIMElemType.Text.value());
-                    dataMap.put("text",textElem.getText());
-                    list.add(new JSONObject(dataMap).toString());
+                list.add(soundMessage2String(msg));
+            }else if (elemType == TIMElemType.File) {
 
-                    System.out.println("message2List   准备返回    "+ elemType.name() +"  "    +new JSONObject(dataMap).toString());
-                    //处理文本消息
-                } else if (elemType == TIMElemType.Image) {
+                list.add(fileMessage2String(msg));
+            }else if (elemType == TIMElemType.Video) {
 
-                    list.add(imageMessage2String(msg));
-                }else if (elemType == TIMElemType.Sound) {
+                list.add(videoMessage2String(msg));
+            }else if (elemType == TIMElemType.Custom) {
 
-                    list.add(soundMessage2String(msg));
-                }else if (elemType == TIMElemType.File) {
-
-                    list.add(fileMessage2String(msg));
-                }else if (elemType == TIMElemType.Video) {
-
-                    list.add(videoMessage2String(msg));
-                }else if (elemType == TIMElemType.Custom) {
-
-                    list.add(customMessage2String(msg));
-                }else {
+                list.add(customMessage2String(msg));
+            }else {
 
 
 
-                    list.add(basicMessage2String(msg));
-                    System.out.println("message2List      elemType     "+elemType);
-                }
+                list.add(basicMessage2String(msg));
+                System.out.println("message2List      elemType     "+elemType);
             }
 
         }

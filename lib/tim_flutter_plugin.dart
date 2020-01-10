@@ -103,7 +103,7 @@ class TimFlutterPlugin{
       "self":msg.isSelf,
       "seq":msg.msgSeq,
       "timestamp":msg.time,
-      "sender":msg.sender,
+      "id":msg.sender,
       "path":path
     };
     return await _channel.invokeMethod(TimMethodKey.DownloadFile,map);
@@ -207,6 +207,21 @@ class TimFlutterPlugin{
   }
 
 
+  /// 回撤消息
+  static Future revokeMessage({@required int conversationType,@required Message msg})async{
+
+
+    Map map={
+      "conversationType":conversationType,
+      "rand":msg.rand,
+      "self":msg.isSelf,
+      "seq":msg.msgSeq,
+      "timestamp":msg.time,
+      "id":msg.sender,
+    };
+    return await _channel.invokeMethod(TimMethodKey.RevokeMessage,map);
+  }
+
   static Future<List<Conversation>> getConversationList() async {
     var res=await _channel.invokeMethod(TimMethodKey.GetConversationList);
     return MessageFactory.instance.map2ConversationList(res["data"]);
@@ -233,7 +248,7 @@ class TimFlutterPlugin{
       switch (call.method) {
 
         case TimMethodKey.MethodCallBackKeyNewMessages:
-          MessageFactory.instance.string2ListMessage(call.arguments);
+
           if(onNewMessageWrapper!=null){
             onNewMessageWrapper(MessageFactory.instance.string2ListMessage(call.arguments));
           }

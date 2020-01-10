@@ -10,6 +10,7 @@ public class TimMethodList {
     static String MethodKeyModifySelfProfile = "modifySelfProfile";
     static String MethodKeyApplyJoinGroup = "applyJoinGroup";
 
+    static String MethodKeyRevokeMessage = "revokeMessage";
     static String MethodKeyDisconnect = "disconnect";
     static String MethodKeySendMessage = "sendMessage";
     static String MethodKeyRefrechUserInfo = "refreshUserInfo";

@@ -130,10 +130,66 @@ public class TimFlutterWrapper {
             modifySelfProfile((HashMap<String, Object>) call.arguments,result);
         }else if (TimMethodList.MethodKeyApplyJoinGroup.equalsIgnoreCase(call.method)){
             applyJoinGroup((HashMap<String, Object>) call.arguments,result);
+        }else if (TimMethodList.MethodKeyRevokeMessage.equalsIgnoreCase(call.method)){
+            revokeMessage((HashMap<String, Object>) call.arguments,result);
         }
 
 
 
+    }
+
+    private void revokeMessage(HashMap<String, Object> arguments, final MethodChannel.Result result) {
+        final TIMConversation conversation = getTIMConversationByID(arguments);
+
+        List<TIMMessageLocator> locators=new ArrayList<>();
+        TIMMessageLocator locator=new TIMMessageLocator();
+        locator.setRand(Long.parseLong(arguments.get("rand").toString()));
+        locator.setSelf((boolean) arguments.get("self"));
+        locator.setSeq(Long.parseLong(arguments.get("seq").toString()));
+
+        locator.setTimestamp(Long.parseLong(arguments.get("timestamp").toString()));
+        setMsgField(locator,"stype",TIMConversationType.values()[(int) arguments.get("conversationType")]);
+        setMsgField(locator,"sid",arguments.get("id"));
+        locators.add(locator);
+
+        conversation.findMessages(locators, new TIMValueCallBack<List<TIMMessage>>() {
+            @Override
+            public void onError(int i, String s) {
+
+                result.success(buildResponseMap(i,s));
+                System.out.println("findMessages onError   "+i+"  "+s);
+            }
+
+            @Override
+            public void onSuccess(List<TIMMessage> timMessages) {
+
+
+
+                if (timMessages!=null&&timMessages.size()>0){
+
+
+
+                    conversation.revokeMessage(timMessages.get(0), new TIMCallBack() {
+                        @Override
+                        public void onError(int i, String s) {
+                            result.success(buildResponseMap(i,s));
+                        }
+
+                        @Override
+                        public void onSuccess() {
+                            result.success(buildResponseMap(0,"revokeMessage ok"));
+                        }
+                    });
+
+
+                }else {
+                    result.success(buildResponseMap(-1,"msg    error"));
+                }
+
+            }
+        });
+
+        System.out.println("revokeMessage ===========    "+conversation);
     }
 
     private void applyJoinGroup(HashMap<String, Object> arguments, final MethodChannel.Result result) {
@@ -294,7 +350,7 @@ public class TimFlutterWrapper {
         System.out.println(" conversation    "+conversation.getType());
 
 
-        conversation.getLocalMessage(count, null, new TIMValueCallBack<List<TIMMessage>>() {
+        conversation.getMessage(count, null, new TIMValueCallBack<List<TIMMessage>>() {
             @Override
             public void onError(int i, String s) {
                 System.out.println("getMessage    onError   "+s+"   "+i);
@@ -373,20 +429,18 @@ public class TimFlutterWrapper {
     }
 
     private void downloadFile(final Map map, final MethodChannel.Result result, final boolean isVideo){
-        TIMConversation conversation = TIMManager.getInstance().getConversation(
-                TIMConversationType.values()[(int) map.get("conversationType")],    //会话类型
-                map.get("sender").toString());
+        TIMConversation conversation = getTIMConversationByID(map);
 
         List<TIMMessageLocator> locators=new ArrayList<>();
 
         TIMMessageLocator locator=new TIMMessageLocator();
-        locator.setRand((int) map.get("rand"));
+        locator.setRand(Long.parseLong(map.get("rand").toString()));
         locator.setSelf((boolean) map.get("self"));
-        locator.setSeq((int) map.get("seq"));
+        locator.setSeq(Long.parseLong(map.get("seq").toString()));
 
-        locator.setTimestamp((int) map.get("timestamp"));
+        locator.setTimestamp(Long.parseLong(map.get("timestamp").toString()));
         setMsgField(locator,"stype",TIMConversationType.values()[(int) map.get("conversationType")]);
-        setMsgField(locator,"sid",map.get("sender"));
+        setMsgField(locator,"sid",map.get("id"));
         locators.add(locator);
 
         conversation.findMessages(locators, new TIMValueCallBack<List<TIMMessage>>() {
@@ -427,6 +481,8 @@ public class TimFlutterWrapper {
 
     private void downloadFileByType(TIMElem elem, String path, final MethodChannel.Result result){
 
+
+
         TIMCallBack timCallBack = new TIMCallBack() {
             @Override
             public void onError(int i, String s) {
@@ -446,6 +502,9 @@ public class TimFlutterWrapper {
         }else  if (elem instanceof TIMSoundElem){
             TIMSoundElem soundElem= (TIMSoundElem) elem;
             soundElem.getSoundToFile(path, timCallBack);
+        }else  if (elem instanceof TIMImageElem){
+            TIMImageElem imageElem= (TIMImageElem) elem;
+            imageElem.getImageList().get(2).getImage(path, timCallBack);
         }
     }
 
@@ -488,6 +547,8 @@ public class TimFlutterWrapper {
 
 
         } catch (Exception e) {
+
+            System.out.println("setMsgField ==============================  "+e.getLocalizedMessage());
             e.printStackTrace();
         }
     }
@@ -784,15 +845,8 @@ public class TimFlutterWrapper {
     }
 
 
-    private void getConversationList(MethodCall call, MethodChannel.Result result) {
-        //获取单聊会话
-        String peer = "sample_user_1";  //获取与用户 "sample_user_1" 的会话
-        TIMConversation conversation = TIMManager.getInstance().getConversation(
-                TIMConversationType.C2C,    //会话类型：单聊
-                peer);
 
 
-    }
 
     private void logout( final MethodChannel.Result result) {
 

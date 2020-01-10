@@ -63,7 +63,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-
+    getExternalStorageDirectory().then((val){
+      print('打印路径                    ${val.absolute.path}');
+    });
 
     return MaterialApp(
       home: Scaffold(
@@ -125,7 +127,7 @@ class _MyAppState extends State<MyApp> {
     }else if(type == "发送消息"){
 
       String path = "/storage/emulated/0/Divoomtest.jpg";
-      var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain(messageController.text));
+      //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain(messageController.text));
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: ImageMessage.obtain(path));
       //var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: CustomMessage.obtain(Uint8List.fromList(utf8.encode("自定义消息"))));
 
@@ -144,7 +146,7 @@ class _MyAppState extends State<MyApp> {
 
       //var res =await TimFlutterPlugin.inviteGroupMember(groupId: "@TGS#27CSNSDGY", memList: ["2255"]);
       //var res=await TimFlutterPlugin.modifySelfProfile(map);
-     // var res=await TimFlutterPlugin.setReadMessage(conversationType: TIMConversationType.C2C, id: 2255);
+     // var res=await TimFlutterPlugin.getMessage(conversationType: TIMConversationType.C2C, id: 2255,count: 5);
 
 //      getTemporaryDirectory().then((val) async {
 //        print('文件是否存在    ${File("${val.path}/aaa.mp3").existsSync()}');
@@ -152,26 +154,36 @@ class _MyAppState extends State<MyApp> {
 //        var res=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: FileMessage.obtain("${val.path}/aaa.mp3","我是文件名字"));
 //
 //      });
+      Message ts=Message();
 
+      ts.rand=4040861075;
+      ts.sender="2255";
+      ts.isSelf =true;
+      ts.msgSeq = 61659;
+      ts.time=1578639575;
+      //var res=await TimFlutterPlugin.getMessage(conversationType: TIMConversationType.C2C, id: 2255, count: 5);
+      //var res=await TimFlutterPlugin.revokeMessage(conversationType: TIMConversationType.C2C,msg: ts);
+
+      var res=await TimFlutterPlugin.getConversationList();
       print('发送消息res   $res');
 
     }else if(type=="下载文件"){
 
 
       Message message=Message();
-      message.time=1576483073;
-      message.rand=1101001612;
-      message.msgSeq=16800;
-      message.isSelf=false;
-      message.sender="1234";
+      message.time=1578639559;
+      message.rand=4040453814;
+      message.msgSeq=61653;
+      message.isSelf=true;
+      message.sender="2255";
       Directory tempDir = await getTemporaryDirectory();
-      String tempPath = tempDir.path+"aaa";
+      String tempPath = tempDir.path+"/aaass3";
 
       print('tempPath   $tempPath');
 
 
-     TimFlutterPlugin.downloadFile(conversationType: TIMConversationType.C2C,msg:message,path: tempPath );
-
+     var res = await TimFlutterPlugin.downloadFile(conversationType: TIMConversationType.C2C,msg:message,path: tempPath );
+      print('下载结果   $res');
 
     }
   }
