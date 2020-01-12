@@ -63,9 +63,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-    getExternalStorageDirectory().then((val){
-      print('打印路径                    ${val.absolute.path}');
-    });
+
 
     return MaterialApp(
       home: Scaffold(
@@ -161,7 +159,7 @@ class _MyAppState extends State<MyApp> {
       ts.isSelf =true;
       ts.msgSeq = 61659;
       ts.time=1578639575;
-      //var res=await TimFlutterPlugin.getMessage(conversationType: TIMConversationType.C2C, id: 2255, count: 5);
+      //var res=await TimFlutterPlugin.getLocalMessage(conversationType: TIMConversationType.C2C, id: 2255, count: 5);
       //var res=await TimFlutterPlugin.revokeMessage(conversationType: TIMConversationType.C2C,msg: ts);
 
       var res=await TimFlutterPlugin.getConversationList();

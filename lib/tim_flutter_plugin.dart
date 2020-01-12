@@ -113,8 +113,6 @@ class TimFlutterPlugin{
   static Future<Map> downloadVideo({@required int conversationType,@required String snapshotPath,@required String videoPath,@required Message msg})async{
 
 
-    var p =Paint();
-    p.strokeJoin=StrokeJoin.round;
 
     Map map={
       "conversationType":conversationType,

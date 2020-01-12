@@ -36,42 +36,27 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         }else if(TimMethodList.MethodKeyLogout == call.method){
             logout (result)
         }else if(TimMethodList.MethodKeyGetLocalMessage == call.method){
-           
+           getLocalMessage (call.arguments as! [String : Any],result)
         }else if(TimMethodList.MethodKeyDeleteConversation == call.method){
            deleteConversation (call.arguments as! [String : Any],result)
         }else if(TimMethodList.MethodKeySetReadMessage == call.method){
            setReadMessage (call.arguments as! [String : Any],result)
+        }else if(TimMethodList.MethodKeyGetConversationList == call.method){
+           getConversationList (result)
         }
+
 
     
     }
     
     
-    func getPath(){
+
+    func downloadFile(_ map : [String: Any],_ result: @escaping FlutterResult){
+        var conversation = getTIMConversationByID(map: map);
+        var locator = TIMMessageLocator();
         
-        var filePaths = [String]()
-        var dirPath = NSTemporaryDirectory();
-         
-         do {
-             let array = try FileManager.default.contentsOfDirectory(atPath: dirPath)
-             
-             for fileName in array {
-                 var isDir: ObjCBool = true
-                 
-                 let fullPath = "\(dirPath)/\(fileName)"
-                 
-                 if FileManager.default.fileExists(atPath: fullPath, isDirectory: &isDir) {
-                     if !isDir.boolValue {
-                         filePaths.append(fullPath)
-                     }
-                 }
-             }
-             
-         } catch let error as NSError {
-             print("get file path error: \(error)")
-         }
-  
-        print("path ========== ==== = = ==   \( filePaths)")
+      
+        
     }
     
     func setReadMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
@@ -84,8 +69,18 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         }
     }
     
-    func getConversationList(_ map : [String: Any],_ result: @escaping FlutterResult){
+    func getConversationList(_ result: @escaping FlutterResult){
         
+        var conversationList = TIMManager.sharedInstance()?.getConversationList() ;
+        var list = [Any]();
+        for timConversation in conversationList! {
+            var map = [String:Any]();
+            map["unreadMessageNum"] = timConversation.getUnReadMessageNum();
+            map["conversationType"] = timConversation.getType().rawValue;
+            map["peer"] = timConversation.getReceiver();
+            list.append(map)
+        }
+        result(self.buildResponseMap(codeVal : 0,descVal : list))
     }
     func deleteConversation(_ map : [String: Any],_ result: @escaping FlutterResult){
    
@@ -134,7 +129,9 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         var count = map["count"] as! Int;
         
         conversation.getMessage(Int32(count), last: nil, succ: {
-            
+            let arguments = MessageFactory.message2List(timList: $0 as! Array<TIMMessage>);
+                  
+            self.mChannel?.invokeMethod(TimMethodList.MethodCallBackKeyNewMessages,arguments: arguments )
             print("getMessage      =======        \($0)")
             
         },fail:{
@@ -143,7 +140,23 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
             result(self.buildResponseMap(codeVal : $0,descVal : $1))
         })
     }
-    
+    func getLocalMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
+         var conversation = getTIMConversationByID(map: map);
+        
+        var count = map["count"] as! Int;
+        
+        conversation.getMessage(Int32(count), last: nil, succ: {
+            let arguments = MessageFactory.message2List(timList: $0 as! Array<TIMMessage>);
+                  
+            self.mChannel?.invokeMethod(TimMethodList.MethodCallBackKeyNewMessages,arguments: arguments )
+            print("getMessage      =======        \($0)")
+            
+        },fail:{
+            
+            
+            result(self.buildResponseMap(codeVal : $0,descVal : $1))
+        })
+    }
     func getSelfProfile(_ result: @escaping FlutterResult){
 
         TIMFriendshipManager.sharedInstance()?.getSelfProfile({

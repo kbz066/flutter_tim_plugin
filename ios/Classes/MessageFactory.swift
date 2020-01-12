@@ -185,10 +185,19 @@ class MessageFactory{
           map["messageType"] = MessageType.Text;
           
           var elementList = Array<[String:Any]>();
-                
-
-          map["text"] = elementList;
-          return convertDictionaryToJSONString(dict: map)
+                var count = msg.elemCount();
+                for index in 0..<count{
+                    var element  =  msg.getElem(index) as! TIMTextElem;
+                         
+                    
+                    var elementMap = [String:Any]();
+    
+                    elementMap["text"] = element.text;
+                    elementList.append(elementMap);
+                         
+                     }
+        map["text"] = elementList;
+        return convertDictionaryToJSONString(dict: map)
     }
     
     static func  basicMessage2String(_ msg : TIMMessage)-> String{

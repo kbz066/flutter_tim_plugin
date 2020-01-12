@@ -27,5 +27,7 @@ class TimMethodList{
     static var  MethodKeySetReadMessage: String = "setReadMessage";
     
     static var MethodCallBackKeyNewMessages : String = "newMessagesCallBack";
+    static var MethodCallBackKeyDownloadFile: String = "downloadFile";
+    
 
 }
