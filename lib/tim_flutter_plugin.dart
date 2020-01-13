@@ -103,7 +103,7 @@ class TimFlutterPlugin{
       "self":msg.isSelf,
       "seq":msg.msgSeq,
       "timestamp":msg.time,
-      "id":msg.sender,
+      "id":int.parse(msg.sender),
       "path":path
     };
     return await _channel.invokeMethod(TimMethodKey.DownloadFile,map);

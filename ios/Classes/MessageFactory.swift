@@ -10,6 +10,9 @@ class MessageFactory{
     static func  buildBasicMap(_ msg : TIMMessage) -> [String:Any]{
         var dataMap =  [String:Any]();
         dataMap["msgId"] = msg.msgId();
+
+        dataMap["msgSeq"] = msg.locator()?.seq;
+        dataMap["rand"] = msg.locator()?.rand;
         dataMap["time"] = Int(msg.timestamp()!.timeIntervalSince1970);
         dataMap["isSelf"] = msg.isSelf();
         dataMap["isPeerReaded"] = msg.isPeerReaded();

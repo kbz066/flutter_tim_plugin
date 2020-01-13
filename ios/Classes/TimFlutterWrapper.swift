@@ -43,24 +43,101 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
            setReadMessage (call.arguments as! [String : Any],result)
         }else if(TimMethodList.MethodKeyGetConversationList == call.method){
            getConversationList (result)
+        }else if(TimMethodList.MethodCallBackKeyDownloadFile == call.method){
+           downloadFile (call.arguments as! [String : Any],result,false)
+        }else if(TimMethodList.MethodCallBackKeyDownloadVideo == call.method){
+           downloadFile (call.arguments as! [String : Any],result,true)
         }
 
 
+
     
     }
     
     
 
-    func downloadFile(_ map : [String: Any],_ result: @escaping FlutterResult){
+    func downloadFile(_ map : [String: Any],_ result: @escaping FlutterResult,_ isVideo : Bool){
+            
         var conversation = getTIMConversationByID(map: map);
-        var locator = TIMMessageLocator();
+       
         
-      
+        var locator = TIMMessageLocator();
+                    
+        locator.rand = UInt64(map["rand"] as! Int);
+        locator.seq = UInt64(map["seq"] as! Int);
+        locator.time = map["timestamp"] as! Int;
+       // locator.sessType = TIMConversationType.init(rawValue: map["conversationType"] as! Int)!
+    
+        locator.isSelf = map["self"] as! Bool;
+       // locator.sessId = String(map["id"] as! Int);
+        
+        
+        print("locator     rand   ====== ==== == ==    \(locator.rand)")
+        print("locator      seq  ====== ==== == ==    \(locator.seq)")
+        print("locator        ====== ==== == ==    \(locator.time)")
+        print("locator       sessType ====== ==== == ==    \(locator.sessType.rawValue)")
+                print("locator      isSelf  ====== ==== == ==    \(locator.isSelf)")
+                print("locator      sessId  ====== ==== == ==    \(locator.time)")
+        
+        conversation.findMessages([locator], succ: {
+            var list = $0;
+            
+            if (list?.count ?? 0) > 0 {
+                var element =  (list![0] as! TIMMessage).getElem(0) ;
+                self.downloadFileByType(element!, map["path"] as! String,result);
+                
+            }
+            
+        }) {
+             result(self.buildResponseMap(codeVal : $0,descVal : $1))
+        }
+
+
+    }
+    
+    func downloadVideo(_ elm : TIMVideoElem,_ map :[String:Any],_ result: @escaping FlutterResult){
+        elm.video.getVideo(map["videoPath"] as! String,succ: {
+            elm.snapshot.getImage(map["snapshotPath"] as! String, succ: {
+                   result(self.buildResponseMap(codeVal : 0,descVal : "download ok"))
+            }) {
+                 result(self.buildResponseMap(codeVal : $0,descVal : $1))
+            }
+        }){
+                result(self.buildResponseMap(codeVal : $0,descVal : $1))
+        }
+    }
+    
+    func downloadFileByType(_ elm : TIMElem,_ path :String,_ result: @escaping FlutterResult){
+        
+        
+         func fail(code: Int32, desc: String?)-> Void{
+            result(self.buildResponseMap(codeVal : code,descVal : desc))
+            print("downloadFileByType ==== ====   fail    \(code)  \(desc)")
+        };
+        
+         func succ(){
+            result(self.buildResponseMap(codeVal : 0,descVal : "download ok"))
+            print("downloadFileByType ==== ====   succ")
+        };
+        
+        
+        if(elm is TIMImageElem){
+            var imageElm = elm as! TIMImageElem;
+            (imageElm.imageList[0] as! TIMImage).getImage(path, succ: succ,fail: fail )
+            
+        }else if(elm is TIMSoundElem){
+            var soundElm = elm as! TIMSoundElem;
+            soundElm.getSound(path, succ: succ,fail: fail )
+        }else if(elm is TIMFileElem){
+            var fileElm = elm as! TIMFileElem;
+            fileElm.getFile(path, succ: succ,fail: fail )
+        }
         
     }
     
+    
     func setReadMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
-        var conversation = getTIMConversationByID(map: map);
+        let conversation = getTIMConversationByID(map: map);
         
         conversation.setRead(nil, succ: {
             result(self.buildResponseMap(codeVal : 0,descVal : "setReadMessage ok"))
@@ -97,12 +174,12 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         var res : Bool;
         
         if(delMsg){
-            delMsg = (TIMManager.sharedInstance()?.deleteConversationAndMessages(TIMConversationType.init(rawValue: type)!, receiver: String(id)))!
+            res = (TIMManager.sharedInstance()?.deleteConversationAndMessages(TIMConversationType.init(rawValue: type)!, receiver: String(id)))!
         }else{
-            delMsg = (TIMManager.sharedInstance()?.delete(TIMConversationType.init(rawValue: type)!, receiver: String(id)))!
+            res = (TIMManager.sharedInstance()?.delete(TIMConversationType.init(rawValue: type)!, receiver: String(id)))!
         }
         
-        result(self.buildResponseMap(codeVal : 0,descVal : delMsg))
+        result(self.buildResponseMap(codeVal : 0,descVal : res))
 
     }
 
@@ -131,7 +208,8 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         conversation.getMessage(Int32(count), last: nil, succ: {
             let arguments = MessageFactory.message2List(timList: $0 as! Array<TIMMessage>);
                   
-            self.mChannel?.invokeMethod(TimMethodList.MethodCallBackKeyNewMessages,arguments: arguments )
+            result(self.buildResponseMap(codeVal : 0,descVal : arguments))
+
             print("getMessage      =======        \($0)")
             
         },fail:{
@@ -148,8 +226,8 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         conversation.getMessage(Int32(count), last: nil, succ: {
             let arguments = MessageFactory.message2List(timList: $0 as! Array<TIMMessage>);
                   
-            self.mChannel?.invokeMethod(TimMethodList.MethodCallBackKeyNewMessages,arguments: arguments )
-            print("getMessage      =======        \($0)")
+            result(self.buildResponseMap(codeVal : 0,descVal : arguments))
+            print("getLocalMessage      =======        \($0)")
             
         },fail:{
             
@@ -532,7 +610,7 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         let type = map["conversationType"] as! Int ;
         let id = map["id"] as! Int;
     
-       
+     
         return TIMManager.sharedInstance().getConversation( TIMConversationType.init(rawValue: type)!, receiver:  String(id))
   
     }

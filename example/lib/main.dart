@@ -167,20 +167,21 @@ class _MyAppState extends State<MyApp> {
 
     }else if(type=="下载文件"){
 
+      Message ts=Message();
 
-      Message message=Message();
-      message.time=1578639559;
-      message.rand=4040453814;
-      message.msgSeq=61653;
-      message.isSelf=true;
-      message.sender="2255";
+      ts.rand=2830530733;
+      ts.sender="2255";
+      ts.isSelf =true;
+      ts.msgSeq = 43191;
+      ts.time=1578644115;
+
       Directory tempDir = await getTemporaryDirectory();
       String tempPath = tempDir.path+"/aaass3";
 
       print('tempPath   $tempPath');
 
 
-     var res = await TimFlutterPlugin.downloadFile(conversationType: TIMConversationType.C2C,msg:message,path: tempPath );
+     var res = await TimFlutterPlugin.downloadFile(conversationType: TIMConversationType.C2C,msg:ts,path: tempPath );
       print('下载结果   $res');
 
     }

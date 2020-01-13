@@ -17,7 +17,7 @@ public class SwiftTimNativePlugin: NSObject, FlutterPlugin {
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     
     TimFlutterWrapper.sharedInstance.onFlutterMethodCall(call: call, result: result)
-    
+      
 
     
     //result("iOS " + UIDevice.current.systemVersion)
