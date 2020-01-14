@@ -71,7 +71,7 @@ class TimFlutterPlugin{
 
   }
   ///登出
-  static Future<dynamic> logout() async {
+  static Future<Map> logout() async {
 
 
 

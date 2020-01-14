@@ -110,9 +110,9 @@ class _MyAppState extends State<MyApp> {
     if(type=="初始化"){
 
       //1.初始化 im SDK
-      var  map= await TimFlutterPlugin.init(1400294549);
+      var  initSdk= await TimFlutterPlugin.init(1400294549);
       setState(() {
-        this.result=map.toString();
+        this.result=initSdk.toString();
       });
 
     } else if (type == "登录") {
