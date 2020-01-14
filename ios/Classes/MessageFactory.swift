@@ -26,7 +26,6 @@ class MessageFactory{
     
     static func customMessage2String(_ msg : TIMMessage)-> String{
         
-        print("customMessage2String===============")
         var map = buildBasicMap(msg);
         
         map["messageType"] = MessageType.Custom;
@@ -107,7 +106,7 @@ class MessageFactory{
     }
     
     static func soundMessage2String(_ msg : TIMMessage)-> String{
-        print("soundMessage2String===============")
+
          var map = buildBasicMap(msg);
          
          map["messageType"] = MessageType.Sound;
@@ -136,7 +135,7 @@ class MessageFactory{
     }
     
     static func imageMessage2String(_ msg : TIMMessage)-> String{
-        print("imageMessage2String===============")
+     
             var map = buildBasicMap(msg);
             
             map["messageType"] = MessageType.Image;
@@ -234,7 +233,7 @@ class MessageFactory{
 
             let elemType = getElemType(msg.getElem(0));
             
-            print("elemType ========== =========   \(elemType)")
+     
             if (elemType == MessageType.Text) {
    
                 list.append(textMessage2String(msg))
@@ -266,7 +265,7 @@ class MessageFactory{
     
             
         }
-        print("elemType ========== =========   \(list)    ")
+
         return list;
         
     }

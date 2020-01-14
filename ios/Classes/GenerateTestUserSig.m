@@ -1,17 +1,18 @@
 #import "GenerateTestUserSig.h"
+
 #import <CommonCrypto/CommonCrypto.h>
 #import <zlib.h>
 
 @implementation GenerateTestUserSig
 
-+ (NSString *)genTestUserSig:(NSString *)identifier
++ (NSString *)genTestUserSig:(NSString *)identifier :(int ) appid:(int) time:(NSString *) key
 {
     CFTimeInterval current = CFAbsoluteTimeGetCurrent() + kCFAbsoluteTimeIntervalSince1970;
     long TLSTime = floor(current);
     NSMutableDictionary *obj = [@{@"TLS.ver": @"2.0",
                                   @"TLS.identifier": identifier,
-                                  @"TLS.sdkappid": @(SDKAPPID),
-                                  @"TLS.expire": @(EXPIRETIME),
+                                  @"TLS.sdkappid": @(appid),
+                                  @"TLS.expire": @(time),
                                   @"TLS.time": @(TLSTime)} mutableCopy];
     NSMutableString *stringToSign = [[NSMutableString alloc] init];
     NSArray *keyOrder = @[@"TLS.identifier",
@@ -23,7 +24,7 @@
     }
     NSLog(@"%@", stringToSign);
     //NSString *sig = [self sigString:stringToSign];
-    NSString *sig = [self hmac:stringToSign];
+    NSString *sig = [self hmac:stringToSign:key];
 
     obj[@"TLS.sig"] = sig;
     NSLog(@"sig: %@", sig);
@@ -49,9 +50,9 @@
     return result;
 }
 
-+ (NSString *)hmac:(NSString *)plainText
++ (NSString *)hmac:(NSString *)plainText:(NSString *)key
 {
-    const char *cKey  = [SECRETKEY cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *cKey  = [key cStringUsingEncoding:NSASCIIStringEncoding];
     const char *cData = [plainText cStringUsingEncoding:NSASCIIStringEncoding];
 
     unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];

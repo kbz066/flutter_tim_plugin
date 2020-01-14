@@ -25,9 +25,13 @@ class TimMethodList{
     static var  MethodKeyDeleteConversation: String = "deleteConversation";
     
     static var  MethodKeySetReadMessage: String = "setReadMessage";
-    
+
     static var MethodCallBackKeyNewMessages : String = "newMessagesCallBack";
     static var MethodCallBackKeyDownloadFile: String = "DownloadFile";
     static var MethodCallBackKeyDownloadVideo: String = "DownloadVideo";
+    static var MethodCallBackKeyRevokeMessage: String = "revokeMessage";
+    static var MethodCallBackKeyGetUserSig: String = "getUserSig";
+    static var MethodCallBackKeyUserStatus: String = "userStatusCallBack";
+    
 
 }

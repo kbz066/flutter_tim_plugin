@@ -47,7 +47,8 @@ class _MyAppState extends State<MyApp> {
 
 
     return MaterialApp(
-      home: Scaffold(
+      home:
+      Scaffold(
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
@@ -133,8 +134,10 @@ class _MyAppState extends State<MyApp> {
     }else if(type == "发送文字消息"){
 
 
-      var msg=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain(messageController.text));
+      //var msg=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain(messageController.text));
 
+      var msg = await TimFlutterPlugin.revokeMessage(conversationType: TIMConversationType.C2C,
+          rand: 2714377284, isSelf: true, time: 1578836853, id: 2255, msgSeq: 41419);
       setState(() {
         this.result=msg.toString();
       });

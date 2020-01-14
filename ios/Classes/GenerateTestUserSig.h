@@ -66,7 +66,7 @@ static NSString * const SECRETKEY = @"32fcda1bb51e94ca08eddeb80da0f030be66101b15
  *
  * 文档：https://cloud.tencent.com/document/product/269/32688#Server
  */
-+ (NSString *)genTestUserSig:(NSString *)identifier;
++ (NSString *)genTestUserSig:(NSString *)identifier :(int ) appid:(int) time:(NSString *) key;
 @end
 
 NS_ASSUME_NONNULL_END

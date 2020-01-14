@@ -5,7 +5,7 @@
 //  Created by kbz on 2019/12/24.
 //
 
-class  TimFlutterWrapper :NSObject, TIMMessageListener{
+class  TimFlutterWrapper :NSObject, TIMMessageListener,TIMUserStatusListener{
     
     static let sharedInstance = TimFlutterWrapper()
     
@@ -14,7 +14,6 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
     func onFlutterMethodCall(call: FlutterMethodCall, result: @escaping FlutterResult){
 
         
-        print("f方法名字。 \(call.method)")
         if(TimMethodList.MethodKeyInit == call.method){
             initTim(call: call,result: result);
         }else if(TimMethodList.MethodKeyLogin == call.method){
@@ -47,6 +46,10 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
            downloadFile (call.arguments as! [String : Any],result,false)
         }else if(TimMethodList.MethodCallBackKeyDownloadVideo == call.method){
            downloadFile (call.arguments as! [String : Any],result,true)
+        }else if(TimMethodList.MethodCallBackKeyRevokeMessage == call.method){
+           revokeMessage (call.arguments as! [String : Any],result)
+        }else if(TimMethodList.MethodCallBackKeyGetUserSig == call.method){
+           getUserSig (call.arguments as! [String : Any],result)
         }
 
 
@@ -54,8 +57,54 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
     
     }
     
-    
+    func getUserSig(_ map : [String: Any],_ result: @escaping FlutterResult){
+        
+        
+        
+        let appid = map["appid"] as! Int;
+        let userId = map["userId"] as! String;
+        let time = map["time"] as! Int;
+        let key = map["key"] as! String;
+        let sig = GenerateTestUserSig.genTestUserSig(userId, Int32(appid),Int32(time),key);
+        
+        result(sig);
+  
+    }
 
+    func revokeMessage(_ map : [String: Any],_ result: @escaping FlutterResult){
+           var conversation = getTIMConversationByID(map: map);
+           
+            
+            var locator = TIMMessageLocator();
+                        
+            locator.rand = UInt64(map["rand"] as! Int);
+            locator.seq = UInt64(map["seq"] as! Int);
+            locator.time = map["timestamp"] as! Int;
+
+            locator.isSelf = map["self"] as! Bool;
+
+            
+            
+
+            
+            conversation.findMessages([locator], succ: {
+                var list = $0;
+                
+                if (list?.count ?? 0) > 0 {
+                    conversation.revokeMessage(list![0] as! TIMMessage, succ: {
+                         result(self.buildResponseMap(codeVal : 0,descVal : "revokeMessage ok"))
+                    }) {
+                        result(self.buildResponseMap(codeVal : $0,descVal : $1))
+                    }
+                    
+                }
+                
+            }) {
+                 result(self.buildResponseMap(codeVal : $0,descVal : $1))
+            }
+        
+      
+    }
     func downloadFile(_ map : [String: Any],_ result: @escaping FlutterResult,_ isVideo : Bool){
             
         var conversation = getTIMConversationByID(map: map);
@@ -66,18 +115,13 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         locator.rand = UInt64(map["rand"] as! Int);
         locator.seq = UInt64(map["seq"] as! Int);
         locator.time = map["timestamp"] as! Int;
-       // locator.sessType = TIMConversationType.init(rawValue: map["conversationType"] as! Int)!
+
     
         locator.isSelf = map["self"] as! Bool;
-       // locator.sessId = String(map["id"] as! Int);
+
         
         
-        print("locator     rand   ====== ==== == ==    \(locator.rand)")
-        print("locator      seq  ====== ==== == ==    \(locator.seq)")
-        print("locator        ====== ==== == ==    \(locator.time)")
-        print("locator       sessType ====== ==== == ==    \(locator.sessType.rawValue)")
-                print("locator      isSelf  ====== ==== == ==    \(locator.isSelf)")
-                print("locator      sessId  ====== ==== == ==    \(locator.time)")
+
         
         conversation.findMessages([locator], succ: {
             var list = $0;
@@ -112,12 +156,12 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         
          func fail(code: Int32, desc: String?)-> Void{
             result(self.buildResponseMap(codeVal : code,descVal : desc))
-            print("downloadFileByType ==== ====   fail    \(code)  \(desc)")
+            
         };
         
          func succ(){
             result(self.buildResponseMap(codeVal : 0,descVal : "download ok"))
-            print("downloadFileByType ==== ====   succ")
+            
         };
         
         
@@ -210,7 +254,7 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
                   
             result(self.buildResponseMap(codeVal : 0,descVal : arguments))
 
-            print("getMessage      =======        \($0)")
+        
             
         },fail:{
             
@@ -227,7 +271,7 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
             let arguments = MessageFactory.message2List(timList: $0 as! Array<TIMMessage>);
                   
             result(self.buildResponseMap(codeVal : 0,descVal : arguments))
-            print("getLocalMessage      =======        \($0)")
+            
             
         },fail:{
             
@@ -248,7 +292,7 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
             map["identifier"] = profile?.identifier;
             map["nickName"] = profile?.nickname;
             map["location"] = profile?.location;
-            print("getSelfProfile              \(map)")
+        
             result(self.buildResponseMap(codeVal : 0,descVal : map))
             
         }, fail: {
@@ -273,10 +317,7 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
     func inviteGroupMember(_ map : [String: Any],_ result: @escaping FlutterResult){
         var groupId = map["groupId"] as! String;
         var memList = map["memList"] as! Array<String>;
-        
-        
-        print("groupId       \(groupId)")
-        print("memList       \(memList)")
+    
         
         TIMGroupManager.sharedInstance()?.inviteGroupMember(groupId, members: memList, succ: {
            
@@ -289,7 +330,7 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
                 map["user"] = res.member;
                 list.append(map);
             }
-            print("inviteGroupMember        \(list)")
+
             
             result(self.buildResponseMap(codeVal : 0, descVal : list))
         }, fail: {
@@ -347,8 +388,6 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
              elm.path = content["filePath"] as! String ;
              elm.filename = content["fileName"] as! String ;
 
-             print("发送。   sendFileMessage  \( elm.path )")
-                      
              timMessage.add(elm);
                       
              sendMessageCallBack(MessageType.File,map ,timMessage ,result)
@@ -375,8 +414,6 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         elm.snapshotPath = content["imgPath"] as! String ;
         elm.videoPath = content["videoPath"] as! String ;
         
-        print("发送。video snapshotPath   \( elm.snapshotPath )")
-             print("发送。video videoPath   \( elm.videoPath )")
                  
         timMessage.add(elm);
                  
@@ -395,7 +432,6 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         var elm = TIMSoundElem();
         elm.path = content["localPath"] as! String ;
         elm.second = Int32(content["duration"] as! Int)
-        print("发送。lsound   ocalPath  \( elm.path )")
                  
         timMessage.add(elm);
                  
@@ -425,7 +461,6 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         var elm = TIMImageElem();
         elm.path = content["localPath"] as! String ;
         
-        print("发送。localPath  \( elm.path )")
               
         timMessage.add(elm);
               
@@ -499,7 +534,6 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         
         var conversation = getTIMConversationByID(map: map);
   
-        print("sendMessageCallBack        \(timMessage)")
         
         conversation.send(timMessage, succ: {
             
@@ -531,10 +565,10 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
             default:
                 break
             }
-                   print("sendMessageCallBack。  ========================           succ")
+
 
         }, fail: {
-            print("sendMessageCallBack。  =====================  fail   ")
+
             result(self.buildResponseMap(codeVal : $0,descVal : $1))
         })
 
@@ -548,7 +582,7 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
         var param = TIMLoginParam();
         param.identifier = map["userID"] as! String;
       
-        param.userSig = GenerateTestUserSig.genTestUserSig(param.identifier)
+        param.userSig = map["userSig"] as! String;
         
   
         
@@ -567,14 +601,14 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
     }
     ///初始化
     func  initTim(call: FlutterMethodCall, result: @escaping FlutterResult){
-        print( type(of: call.arguments))
+
         
         var config = TIMSdkConfig();
-        config.sdkAppId = 1400294549
+        config.sdkAppId = Int32(call.arguments as! Int)
         config.logLevel = TIMLogLevel.LOG_DEBUG;
         
         var userConfig = TIMUserConfig();
-     
+        userConfig.userStatusListener = self;
         
         TIMManager.sharedInstance()?.add(self)
         TIMManager.sharedInstance()?.setUserConfig(userConfig);
@@ -582,16 +616,33 @@ class  TimFlutterWrapper :NSObject, TIMMessageListener{
 
         var initState = TIMManager.sharedInstance()?.initSdk(config)
         
-        
-        print("f初始化---------------------  \(initState)")
+
         result(buildResponseMap(codeVal : initState! ,descVal : initState!))
     }
+
     
+    
+
+    
+    func onForceOffline(){
+        
+        
+        mChannel!.invokeMethod(TimMethodList.MethodCallBackKeyUserStatus, arguments: 1);
+    }
+    
+    func onReConnFailed(code : Int ,err :String){
+        
+    }
+    func onUserSigExpired(){
+        mChannel!.invokeMethod(TimMethodList.MethodCallBackKeyUserStatus, arguments: 2);
+    }
+
+
     func onNewMessage(_ msgs: [Any]!) {
         let arguments = MessageFactory.message2List(timList: msgs as! Array<TIMMessage>);
         
         mChannel?.invokeMethod(TimMethodList.MethodCallBackKeyNewMessages,arguments: arguments )
-        print("onNewMessage                 \(msgs)")
+
         
     }
     
