@@ -71,7 +71,6 @@ public class TimFlutterWrapper {
     public void onFlutterMethodCall(MethodCall call, MethodChannel.Result result) {
 
 
-        System.out.println("onFlutterMethodCall    " + call.method + "       " + TimMethodList.MethodKeyGetConversationList.equalsIgnoreCase(call.method));
         if (TimMethodList.MethodKeyInit.equalsIgnoreCase(call.method)) {
             initIM(call.arguments, result);
 
@@ -133,9 +132,20 @@ public class TimFlutterWrapper {
             applyJoinGroup((HashMap<String, Object>) call.arguments, result);
         } else if (TimMethodList.MethodKeyRevokeMessage.equalsIgnoreCase(call.method)) {
             revokeMessage((HashMap<String, Object>) call.arguments, result);
+        }else if (TimMethodList.MethodKeyGetUserSig.equalsIgnoreCase(call.method)) {
+            getUserSig((HashMap<String, Object>) call.arguments, result);
         }
 
 
+    }
+
+    private void getUserSig(HashMap<String, Object> arguments, MethodChannel.Result result) {
+        int appid = (int) arguments.get("appid");
+        String userId =  arguments.get("userId").toString();
+        int time = (int) arguments.get("time");
+        String key =  arguments.get("key").toString();
+        String sig = GenerateTestUserSig.genTestUserSig(userId,appid,time,key);
+        result.success(sig);
     }
 
     private void revokeMessage(HashMap<String, Object> arguments, final MethodChannel.Result result) {
@@ -157,7 +167,7 @@ public class TimFlutterWrapper {
             public void onError(int i, String s) {
 
                 result.success(buildResponseMap(i, s));
-                System.out.println("findMessages onError   " + i + "  " + s);
+
             }
 
             @Override
@@ -187,7 +197,7 @@ public class TimFlutterWrapper {
             }
         });
 
-        System.out.println("revokeMessage ===========    " + conversation);
+
     }
 
     private void applyJoinGroup(HashMap<String, Object> arguments, final MethodChannel.Result result) {
@@ -210,19 +220,19 @@ public class TimFlutterWrapper {
     private void modifySelfProfile(HashMap<String, Object> arguments, final MethodChannel.Result result) {
 
 
-        System.out.println("modifySelfProfile  修改    " + arguments);
+
 
         TIMFriendshipManager.getInstance().modifySelfProfile(arguments, new TIMCallBack() {
             @Override
             public void onError(int code, String desc) {
                 result.success(buildResponseMap(code, desc));
-                Log.e("onError ", "modifySelfProfile failed: " + code + " desc" + desc);
+
             }
 
             @Override
             public void onSuccess() {
                 result.success(buildResponseMap(0, "modifySelfProfile ok"));
-                Log.e("tag", "modifySelfProfile success");
+
             }
         });
     }
@@ -248,7 +258,7 @@ public class TimFlutterWrapper {
                 map.put("location", timUserProfile.getLocation());
 
                 result.success(buildResponseMap(0, map));
-                System.out.println("getSelfProfile            ");
+
             }
         });
 
@@ -256,7 +266,7 @@ public class TimFlutterWrapper {
 
     private void setReadMessage(Map arguments, final MethodChannel.Result result) {
         final TIMConversation conversation = getTIMConversationByID(arguments);
-        System.out.println("未读数量   " + conversation.getUnreadMessageNum());
+
         conversation.setReadMessage(null, new TIMCallBack() {
             @Override
             public void onError(int i, String s) {
@@ -265,7 +275,7 @@ public class TimFlutterWrapper {
 
             @Override
             public void onSuccess() {
-                System.out.println("未读数量  onSuccess   " + conversation.getUnreadMessageNum());
+
                 result.success(buildResponseMap(0, "setReadMessage ok"));
             }
         });
@@ -276,9 +286,7 @@ public class TimFlutterWrapper {
         String groupId = (String) arguments.get("groupId");
         List<String> memList = (List<String>) arguments.get("memList");
 
-        for (String s : memList) {
-            System.out.println("memList-------------------->   " + s);
-        }
+
 
         //将 list 中的用户加入群组
         TIMGroupManager.getInstance().inviteGroupMember(groupId, memList, new TIMValueCallBack<List<TIMGroupMemberResult>>() {
@@ -339,25 +347,24 @@ public class TimFlutterWrapper {
 
         int count = (int) map.get("count");
 
-        System.out.println("count   " + count);
-        System.out.println("id   " + map.get("id"));
+
 
         TIMConversation conversation = getTIMConversationByID(map);
 
-        System.out.println(" conversation    " + conversation.getType());
+
 
 
         conversation.getMessage(count, null, new TIMValueCallBack<List<TIMMessage>>() {
             @Override
             public void onError(int i, String s) {
-                System.out.println("getMessage    onError   " + s + "   " + i);
+
                 result.success(buildResponseMap(i, s));
             }
 
             @Override
             public void onSuccess(List<TIMMessage> msgs) {
 
-                System.out.println("getMessage    onSuccess   " + msgs.size());
+
                 //遍历取得的消息
                 for (TIMMessage msg : msgs) {
 
@@ -376,30 +383,21 @@ public class TimFlutterWrapper {
 
         int count = (int) map.get("count");
 
-        System.out.println("count   " + count);
-        System.out.println("id   " + map.get("id"));
+
 
         TIMConversation conversation = getTIMConversationByID(map);
-        System.out.println(" conversation    " + conversation.getType());
+
         conversation.getLocalMessage(count, null, new TIMValueCallBack<List<TIMMessage>>() {
             @Override
             public void onError(int i, String s) {
-                System.out.println("getLocalMessage    onError   " + s + "   " + i);
+
                 result.success(buildResponseMap(i, s));
             }
 
             @Override
             public void onSuccess(List<TIMMessage> msgs) {
 
-                System.out.println("getLocalMessage    onSuccess   " + msgs.size());
-                //遍历取得的消息
-                for (TIMMessage msg : msgs) {
 
-                    //可以通过 timestamp()获得消息的时间戳, isSelf()是否为自己发送的消息
-                    Log.e("getLocalMessage", msg.toString());
-
-
-                }
                 result.success(buildResponseMap(0, MessageFactory.getInstance().message2List(msgs)));
             }
         });
@@ -410,7 +408,7 @@ public class TimFlutterWrapper {
 
         List<TIMConversation> conversationList = TIMManager.getInstance().getConversationList();
 
-        System.out.println("conversationList       " + conversationList.size());
+
 
         List<Map> list = new ArrayList<>();
         for (TIMConversation timConversation : conversationList) {
@@ -420,7 +418,7 @@ public class TimFlutterWrapper {
             map.put("conversationType", timConversation.getType().value());
             map.put("unreadMessageNum", timConversation.getUnreadMessageNum());
             list.add(map);
-            System.out.println("timConversation      " + timConversation.getPeer() + "        " + timConversation.getType() + "    " + timConversation.getUnreadMessageNum());
+
         }
         result.success(buildResponseMap(0, list));
     }
@@ -444,7 +442,7 @@ public class TimFlutterWrapper {
             @Override
             public void onError(int i, String s) {
 
-                System.out.println("findMessages onError   " + i + "  " + s);
+                result.success(buildResponseMap(i, s));
             }
 
             @Override
@@ -462,7 +460,7 @@ public class TimFlutterWrapper {
 
 
                 }
-                System.out.println("findMessages onSuccess   " + timMessages.size());
+
             }
         });
     }
@@ -480,13 +478,13 @@ public class TimFlutterWrapper {
             @Override
             public void onError(int i, String s) {
                 result.success(buildResponseMap(i, s));
-                System.out.println("下载失败了   " + i + "   " + s);
+
             }
 
             @Override
             public void onSuccess() {
                 result.success(buildResponseMap(0, "download ok"));
-                System.out.println("下载成功了");
+
             }
         };
         if (elem instanceof TIMFileElem) {
@@ -505,7 +503,7 @@ public class TimFlutterWrapper {
         elem.getVideoInfo().getVideo(map.get("videoPath").toString(), new TIMCallBack() {
             @Override
             public void onError(int i, String s) {
-                System.out.println("视频下载失败     " + s);
+
                 result.success(buildResponseMap(i, s));
             }
 
@@ -514,13 +512,13 @@ public class TimFlutterWrapper {
                 elem.getSnapshotInfo().getImage(map.get("snapshotPath").toString(), new TIMCallBack() {
                     @Override
                     public void onError(int i, String s) {
-                        System.out.println("视频下载失败     " + s);
+
                         result.success(buildResponseMap(i, s));
                     }
 
                     @Override
                     public void onSuccess() {
-                        System.out.println("视频下载成功了  ");
+
                         result.success(buildResponseMap(0, "download ok"));
                     }
                 });
@@ -536,19 +534,19 @@ public class TimFlutterWrapper {
             field.setAccessible(true);
             // 给变量赋值
             field.set(locator, value);
-            System.out.println("setMsgField------------->   " + field.get(locator));
+
 
 
         } catch (Exception e) {
 
-            System.out.println("setMsgField ==============================  " + e.getLocalizedMessage());
+
             e.printStackTrace();
         }
     }
 
     private void sendMessage(MethodCall call, MethodChannel.Result result) {
 
-        System.out.println("sendMessage      " + call.arguments);
+
 
         if (call.arguments instanceof Map) {
             Map<String, Object> map = (Map<String, Object>) call.arguments;
@@ -654,7 +652,7 @@ public class TimFlutterWrapper {
         elem.setPath(content.get("filePath").toString()); //设置文件路径
         elem.setFileName(content.get("fileName").toString()); //设置消息展示用的文件名称
 
-        System.out.println("发送文件   " + elem.getPath() + "   " + elem.getFileName() + " " + elem.getUuid() + "   " + elem.getFileSize());
+
         //将 elem 添加到消息
         if (msg.addElement(elem) != 0) {
 
@@ -784,7 +782,7 @@ public class TimFlutterWrapper {
      */
     private void sendMessageCallBack(final int type, final Map map, TIMMessage timMessage, final MethodChannel.Result result) {
 
-        System.out.println("conversationType   " + (TIMConversationType.values()[(int) map.get("conversationType")]));
+
         TIMConversation conversation = getTIMConversationByID(map);
         conversation.sendMessage(timMessage, new TIMValueCallBack<TIMMessage>() {//发送消息回调
             @Override
@@ -799,7 +797,6 @@ public class TimFlutterWrapper {
             public void onSuccess(TIMMessage msg) {//发送消息成功
 
 
-                System.out.println("msg     " + msg.toString());
 
                 switch (type) {
                     case MessageType.Text:
@@ -857,11 +854,11 @@ public class TimFlutterWrapper {
 
 
         String userID = map.get("userID").toString();
-        // 获取userSig函数
-        String userSig = GenerateTestUserSig.genTestUserSig(userID);
+
+        String userSig = map.get("userSig").toString();
 
 
-        System.out.println("userSig         " + userSig);
+
         // identifier 为用户名，userSig 为用户登录凭证
         TIMManager.getInstance().login(userID, userSig, new TIMCallBack() {
             @Override
@@ -871,13 +868,11 @@ public class TimFlutterWrapper {
                 result.success(buildResponseMap(code, desc));
 
 
-                System.out.println("login failed. code: ");
             }
 
             @Override
             public void onSuccess() {
 
-                System.out.println("登录成功----------------》" + Thread.currentThread().getName());
 
                 result.success(buildResponseMap(0, "login Success"));
 
@@ -904,7 +899,7 @@ public class TimFlutterWrapper {
     private void initIM(Object arguments, MethodChannel.Result result) {
 
 
-        System.out.println("init    im   id   " + arguments);
+
 
         //初始化 IM SDK 基本配置
         //判断是否是在主线程
@@ -919,7 +914,7 @@ public class TimFlutterWrapper {
 
 
                     mChannel.invokeMethod(TimMethodList.MethodCallBackKeyNewMessages, MessageFactory.getInstance().message2List(list));
-                    System.out.println("收到消息   " + list.size() + "  " + timMessage.toString());
+
                     return false;
                 }
             });
@@ -932,7 +927,7 @@ public class TimFlutterWrapper {
             boolean init = TIMManager.getInstance().init(mContext, config);
 
             result.success(buildResponseMap(init ? 0 : 1, init));
-            System.out.println("打印      " + init);
+
         }
     }
 

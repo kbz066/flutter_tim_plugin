@@ -97,7 +97,6 @@ public class MessageFactory {
 
         dataMap.put("elementList",elementList);
 
-        System.out.println("打印  "+new JSONObject(dataMap).toString());
 
         return new JSONObject(dataMap).toString();
     }
@@ -108,7 +107,7 @@ public class MessageFactory {
         dataMap.put("messageType",TIMElemType.Sound.value());
 
         List elementList=new ArrayList();
-        System.out.println( "发送消息成功  getElementCount  "+msg.getElementCount());
+
         for (int i = 0; i < msg.getElementCount(); i++) {
             TIMSoundElem element = (TIMSoundElem) msg.getElement(i);
             Map elementMap=new HashMap();
@@ -125,7 +124,7 @@ public class MessageFactory {
 
         dataMap.put("elementList",elementList);
 
-        System.out.println("打印  "+new JSONObject(dataMap).toString());
+
 
         return new JSONObject(dataMap).toString();
     }
@@ -140,7 +139,7 @@ public class MessageFactory {
 
 
         List elementList=new ArrayList();
-        System.out.println( "收到文件消息成功  getElementCount  "+msg.getElementCount());
+
         for (int i = 0; i < msg.getElementCount(); i++) {
             TIMFileElem element = (TIMFileElem) msg.getElement(i);
             Map elementMap=new HashMap();
@@ -151,15 +150,12 @@ public class MessageFactory {
             elementMap.put("uuid",element.getUuid());
 
 
-            System.out.println("打印   "+msg.getMessageLocator().toString());
-
             elementList.add(elementMap);
 
         }
 
         dataMap.put("elementList",elementList);
 
-        System.out.println("打印  "+new JSONObject(dataMap).toString());
 
         return new JSONObject(dataMap).toString();
     }
@@ -170,11 +166,11 @@ public class MessageFactory {
         dataMap.put("messageType",TIMElemType.Video.value());
 
         List elementList=new ArrayList();
-        System.out.println( "消息视频  getElementCount  "+msg.getElementCount());
+
         for (int i = 0; i < msg.getElementCount(); i++) {
             TIMVideoElem element = (TIMVideoElem) msg.getElement(i);
 
-            System.out.println(" 视频信息  "+element.getVideoPath());
+
             Map elementMap=new HashMap();
             elementMap.put("videoPath",element.getVideoPath());
             elementMap.put("snapshotPath",element.getSnapshotPath());
@@ -196,7 +192,7 @@ public class MessageFactory {
 
         dataMap.put("elementList",elementList);
 
-        System.out.println("打印  "+new JSONObject(dataMap).toString());
+
 
         return new JSONObject(dataMap).toString();
     }
@@ -220,7 +216,7 @@ public class MessageFactory {
         dataMap.put("messageType",TIMElemType.Custom.value());
 
         List elementList=new ArrayList();
-        System.out.println( "发送消息成功  getElementCount  "+msg.getElementCount());
+
         for (int i = 0; i < msg.getElementCount(); i++) {
             TIMCustomElem element = (TIMCustomElem) msg.getElement(i);
             Map elementMap=new HashMap();
@@ -231,7 +227,7 @@ public class MessageFactory {
 
         dataMap.put("elementList",elementList);
 
-        System.out.println("打印  "+new JSONObject(dataMap).toString());
+
 
         return new JSONObject(dataMap).toString();
     }
@@ -252,7 +248,7 @@ public class MessageFactory {
 
         dataMap.put("elementList",elementList);
 
-        System.out.println("打印  "+new JSONObject(dataMap).toString());
+
 
         return new JSONObject(dataMap).toString();
     }
@@ -265,7 +261,7 @@ public class MessageFactory {
 
             //获取当前元素的类型
             TIMElemType elemType = elem.getType();
-            System.out.println( "elem type: " + elemType.name());
+
             if (elemType == TIMElemType.Text) {
 
                 list.add(textMessage2String(msg));
@@ -290,7 +286,7 @@ public class MessageFactory {
 
 
                 list.add(basicMessage2String(msg));
-                System.out.println("message2List      elemType     "+elemType);
+
             }
 
         }

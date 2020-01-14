@@ -23,7 +23,6 @@ public class TimNativePlugin implements FlutterPlugin,MethodCallHandler {
     TimFlutterWrapper.getInstance().saveChannel(instance.channel);
     TimFlutterWrapper.getInstance().saveContext(registrar.context());
 
-    System.out.println("TimNativePlugin  registerWith ------------------------> ");
 
   }
 
@@ -44,7 +43,7 @@ public class TimNativePlugin implements FlutterPlugin,MethodCallHandler {
   public void onMethodCall(final MethodCall call, final Result result) {
 
 
-    System.out.println("onMethodCall           "+Thread.currentThread().getName());
+
     TimFlutterWrapper.getInstance().onFlutterMethodCall(call,result);
   }
   @Override

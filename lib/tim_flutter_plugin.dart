@@ -36,17 +36,29 @@ class TimFlutterPlugin{
   ///初始化 SDK
   ///
   ///[appkey] appkey
-  static Future<dynamic>  init(int sdkAppid) async{
+  static Future<Map>  init(int sdkAppid) async{
 
     var res= await _channel.invokeMethod(TimMethodKey.Init, sdkAppid);
     _addNativeMethodCallHandler();
 
     return res;
   }
-
+  /// 腾讯云 SDKAppId，需要替换为您自己账号下的 SDKAppId。
+  /// userId 用户id
+  /// time  签名过期时间，建议不要设置的过短
+  /// key  计算签名用的加密密钥
+  static Future<String> getUserSig(int appid,String userId,int time,String key) async {
+    Map arguments={
+      "appid":appid,
+      "time":time,
+      "key":key,
+      "userId":userId
+    };
+    return  await _channel.invokeMethod(TimMethodKey.GetUserSig, arguments);
+  }
 
   ///登录
-  static Future<dynamic> login(String userID,String userSig) async {
+  static Future<Map> login(String userID,String userSig) async {
 
     Map arguments={
       "userID":userID,
@@ -94,33 +106,41 @@ class TimFlutterPlugin{
 
 
   /// 下载文件
-  static Future<Map> downloadFile({@required int conversationType,@required String path,@required Message msg})async{
+  static Future<Map> downloadFile({@required int conversationType,@required String path,@required int rand,
+  @required bool isSelf,@required int  time,@required int  id,@required int msgSeq
 
+  })async{
 
     Map map={
       "conversationType":conversationType,
-      "rand":msg.rand,
-      "self":msg.isSelf,
-      "seq":msg.msgSeq,
-      "timestamp":msg.time,
-      "id":int.parse(msg.sender),
+      "rand":rand,
+      "self":isSelf,
+      "seq":msgSeq,
+      "timestamp":time,
+      "id":id,
       "path":path
     };
     return await _channel.invokeMethod(TimMethodKey.DownloadFile,map);
   }
 
   /// 下载音频消息
-  static Future<Map> downloadVideo({@required int conversationType,@required String snapshotPath,@required String videoPath,@required Message msg})async{
+  static Future<Map> downloadVideo({@required int conversationType,@required String snapshotPath,@required String videoPath,
+    @required int rand,
+    @required bool isSelf,@required int  time,@required int  id,@required int msgSeq
+
+
+  })async{
+
 
 
 
     Map map={
       "conversationType":conversationType,
-      "rand":msg.rand,
-      "self":msg.isSelf,
-      "seq":msg.msgSeq,
-      "timestamp":msg.time,
-      "sender":msg.sender,
+      "rand":rand,
+      "self":isSelf,
+      "seq":msgSeq,
+      "timestamp":time,
+      "id":id,
       "videoPath":videoPath,
       "snapshotPath":snapshotPath
     };
@@ -206,16 +226,18 @@ class TimFlutterPlugin{
 
 
   /// 回撤消息
-  static Future revokeMessage({@required int conversationType,@required Message msg})async{
+  static Future revokeMessage({@required int conversationType,
+    @required int rand,
+    @required bool isSelf,@required int  time,@required int  id,@required int msgSeq})async{
 
 
     Map map={
       "conversationType":conversationType,
-      "rand":msg.rand,
-      "self":msg.isSelf,
-      "seq":msg.msgSeq,
-      "timestamp":msg.time,
-      "id":msg.sender,
+      "rand":rand,
+      "self":isSelf,
+      "seq":msgSeq,
+      "timestamp":time,
+      "id":id,
     };
     return await _channel.invokeMethod(TimMethodKey.RevokeMessage,map);
   }
