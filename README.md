@@ -1,30 +1,69 @@
 # flutter dim
 
-基于腾讯云im 封装的一个 flutter im库
+基于腾讯云im 封装的一个 flutter im库.所有消息类型都封装了对应的实体类,可以很方便的调用省去自己解析消息.实体类的属性名完全按照官方文档定义 有不清楚的查看官方文档即可
 
 ## 前期准备
 [腾讯im官网](https://cloud.tencent.com/document/product/269/36838) 申请开发者账号
+并创建应用
 
-通过管理后台的 "基本信息"->"App Key" 获取 AppKey
-
-通过管理后台的 "IM 服务"—>"API 调用"->"用户服务"->"获取 Token"，通过用户 id 获取 IMToken
-
-
-因为这个库是基于腾讯云im的，因此需要去云im申请一个应用，阅读这篇[文章](https://github.com/tencentyun/TIMSDK/tree/master/Android)可以获得以下知识：
-
-1、`appid`怎么来的
-
-2、`账号`及其对应的`sig`如何来的，已经推荐的sig的生成方式（当然这个是后台同学关注的）。
+通过管理后台 获取到密匙和SDKAppID
 
 
+# 依赖 IM Flutter plugin
 
-## 使用 dim
-dim的使用非常简单，只需引入这个库就可以使用了。
+在项目的 `pubspec.yaml` 中写如下依赖
 
-```dart
-dependencies:
-  dim: ^0.2.6
 ```
+dependencies:
+  flutter:
+    sdk: flutter
+
+  rongcloud_im_plugin: ^1.0.5
+```
+
+然后在项目路径执行 `flutter packages get` 来下载 Flutter Plugin
+
+# 集成步骤
+
+
+## 1.初始化 SDK
+
+```
+TimFlutterPlugin.init(RongAppKey);
+
+```
+
+## 2.获取密匙sig 
+
+```
+官方推荐密匙通过服务器获取防止泄露.
+
+本地可以通过TimFlutterPlugin.getUserSig函数获取封装好的密匙
+```
+## 3. 登录im
+```
+ TimFlutterPlugin.login("userid", "密匙sig")
+
+```
+
+
+# API 调用
+
+
+
+## 发送消息
+
+发送文本消息
+
+```
+ Message msg=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain("要发送的文本消息"));
+
+  }
+```
+
+
+
+# API 调用
 
 ## 已有的功能
 
