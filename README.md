@@ -3,7 +3,7 @@
 基于腾讯云im 封装的一个 flutter im库
 
 ## 前期准备
-[融云官网](https://developer.rongcloud.cn/signup/?utm_source=IMfluttergithub&utm_term=Imsign) 申请开发者账号
+[腾讯im官网](https://cloud.tencent.com/document/product/269/36838) 申请开发者账号
 
 通过管理后台的 "基本信息"->"App Key" 获取 AppKey
 
