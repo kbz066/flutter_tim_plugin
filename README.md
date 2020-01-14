@@ -1,8 +1,13 @@
-# dim
+# flutter dim
 
 基于腾讯云im 封装的一个 flutter im库
 
-## 使用之前注意事项
+## 前期准备
+[融云官网](https://developer.rongcloud.cn/signup/?utm_source=IMfluttergithub&utm_term=Imsign) 申请开发者账号
+
+通过管理后台的 "基本信息"->"App Key" 获取 AppKey
+
+通过管理后台的 "IM 服务"—>"API 调用"->"用户服务"->"获取 Token"，通过用户 id 获取 IMToken
 
 
 因为这个库是基于腾讯云im的，因此需要去云im申请一个应用，阅读这篇[文章](https://github.com/tencentyun/TIMSDK/tree/master/Android)可以获得以下知识：
@@ -11,7 +16,7 @@
 
 2、`账号`及其对应的`sig`如何来的，已经推荐的sig的生成方式（当然这个是后台同学关注的）。
 
-弄清楚这些之后，就可以开始使用`dim`了。
+
 
 ## 使用 dim
 dim的使用非常简单，只需引入这个库就可以使用了。
