@@ -134,10 +134,9 @@ class _MyAppState extends State<MyApp> {
     }else if(type == "发送文字消息"){
 
 
-      //var msg=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain(messageController.text));
+      var msg=await TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: TextMessage.obtain(messageController.text));
 
-      var msg = await TimFlutterPlugin.revokeMessage(conversationType: TIMConversationType.C2C,
-          rand: 2714377284, isSelf: true, time: 1578836853, id: 2255, msgSeq: 41419);
+
       setState(() {
         this.result=msg.toString();
       });
@@ -145,7 +144,7 @@ class _MyAppState extends State<MyApp> {
       //TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: ImageMessage.obtain(path));//图片消息
       // TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: CustomMessage.obtain(Uint8List.fromList(utf8.encode("自定义消息"))));
 
-      // TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: FileMessage.obtain(path,"测试文件发送"));
+      // TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: FileMessage.obtain(path,"文件发送"));
       // TimFlutterPlugin.sendMessage( id: 2255,conversationType: TIMConversationType.C2C,content: LocationMessage.obtain(66.6,99.9,"位置信息"));
       // TimFlutterPlugin.getLocalMessage(conversationType: TIMConversationType.C2C, id: 2255, count: 5);//获取消息
 
