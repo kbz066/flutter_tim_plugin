@@ -15,7 +15,7 @@ import 'package:flutter_tim_plugin/message/file_message.dart';
 import 'package:flutter_tim_plugin/message/custom_message.dart';
 import 'package:flutter_tim_plugin/message/message.dart';
 import 'package:flutter_tim_plugin/message/video_message.dart';
-import 'package:path_provider/path_provider.dart';
+
 
 
 void main() => runApp(MyApp());
