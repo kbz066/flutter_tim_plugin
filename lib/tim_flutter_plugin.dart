@@ -12,8 +12,6 @@ import 'package:flutter_tim_plugin/message/conversation.dart';
 import 'package:flutter_tim_plugin/message/custom_message.dart';
 import 'package:flutter_tim_plugin/message/message.dart';
 import 'package:flutter_tim_plugin/tim_method_key.dart';
-import 'package:path_provider/path_provider.dart';
-
 import 'message/custom_message.dart';
 import 'message/message_content.dart';
 import 'message/message_factory.dart';
@@ -123,7 +121,7 @@ class TimFlutterPlugin{
     return await _channel.invokeMethod(TimMethodKey.DownloadFile,map);
   }
 
-  /// 下载音频消息
+  /// 下载视频消息
   static Future<Map> downloadVideo({@required int conversationType,@required String snapshotPath,@required String videoPath,
     @required int rand,
     @required bool isSelf,@required int  time,@required int  id,@required int msgSeq
