@@ -20,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-   flutter_tim_plugin: ^0.0.2
+   flutter_tim_plugin: ^0.0.5
 ```
 
 然后在项目路径执行 `flutter packages get` 来下载 Flutter Plugin
