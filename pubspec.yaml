@@ -1,6 +1,6 @@
 name: flutter_tim_plugin
 description: Flitter im Library Based on Tencent cloud im encapsulation realizes most common functions
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/kbz066/flutter_tim_plugin
 
 environment:
