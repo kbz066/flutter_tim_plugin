@@ -9,12 +9,12 @@ class LocationMessage extends MessageContent {
   String desc;
 
   static LocationMessage obtain(
-    double Latitude,
+    double latitude,
     double longitude,
     String desc,
   ) {
     LocationMessage msg = new LocationMessage();
-    msg.latitude = Latitude;
+    msg.latitude = latitude;
     msg.longitude = longitude;
     msg.desc = desc;
     return msg;

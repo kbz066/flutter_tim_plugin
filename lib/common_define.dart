@@ -96,11 +96,7 @@ class TIMConnectionStatus {
   static const int UserBlocked = 5; //用户被封禁
 }
 
-class TIMFriendGenderType {
-  static final int GENDER_UNKNOWN = 0;
-  static final int GENDER_MALE = 1;
-  static final int GENDER_FEMALE = 2;
-}
+
 
 ///错误码
 ///

@@ -1,6 +1,5 @@
 import 'package:flutter_tim_plugin/message/message_content.dart';
 
-
 class Message {
   int code;
   int messageType;

@@ -1,5 +1,3 @@
-
-
 import '../common_define.dart';
 
 import 'message_content.dart';

@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'package:flutter_tim_plugin/message/message_content.dart';

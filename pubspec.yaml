@@ -1,5 +1,5 @@
 name: flutter_tim_plugin
-description: 基于腾讯云im 封装的一个 flutter im库.所有消息类型都封装了对应的实体类,可以很方便的调用省去自己解析消息。 实体类的属性名完全按照官方文档定义 有不清楚的查看官方文档即可.
+description: A flitter im Library Based on Tencent cloud im encapsulation. All message types encapsulate corresponding entity classes, which can be easily called without parsing messages. The attribute name of entity class can be viewed clearly according to the official document definition
 version: 0.0.3
 homepage: https://github.com/kbz066/flutter_tim_plugin
 

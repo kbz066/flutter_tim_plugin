@@ -1,8 +1,5 @@
-
 import '../common_define.dart';
 import 'message_content.dart';
-
-
 
 class ImageMessage extends MessageContent {
   static const int messageType = MessageType.Image;
@@ -47,7 +44,6 @@ class ImageMessage extends MessageContent {
 }
 
 class MessageDataElement {
-  MessageDataElement() {}
   String path;
   int imageFormat;
   int level;
