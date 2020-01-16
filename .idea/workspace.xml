@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="82f946ba-7bb3-4043-b9a6-c4e0213bf4ec" name="Default Changelist" comment="" />
+    <list default="true" id="82f946ba-7bb3-4043-b9a6-c4e0213bf4ec" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,7 +146,21 @@
       <option name="project" value="LOCAL" />
       <updated>1579144709042</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="去除无用错误码定义">
+      <created>1579145028899</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1579145028899</updated>
+    </task>
+    <task id="LOCAL-00013" summary="增加说明">
+      <created>1579145101496</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1579145101496</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -173,6 +189,8 @@
     <MESSAGE value="android 去除无用打印" />
     <MESSAGE value="去除无用代码" />
     <MESSAGE value="优化代码" />
-    <option name="LAST_COMMIT_MESSAGE" value="优化代码" />
+    <MESSAGE value="去除无用错误码定义" />
+    <MESSAGE value="增加说明" />
+    <option name="LAST_COMMIT_MESSAGE" value="增加说明" />
   </component>
 </project>
