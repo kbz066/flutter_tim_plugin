@@ -1,5 +1,4 @@
-
-class TimMethodKey{
+class TimMethodKey {
   //method list
 
   static const String Init = 'init';
@@ -35,9 +34,12 @@ class TimMethodKey{
   static const String InsertOutgoingMessage = 'insertOutgoingMessage';
   static const String GetTotalUnreadCount = 'getTotalUnreadCount';
   static const String GetUnreadCountTargetId = 'getUnreadCountTargetId';
-  static const String GetUnreadCountConversationTypeList = 'getUnreadCountConversationTypeList';
-  static const String SetConversationNotificationStatus = 'setConversationNotificationStatus';
-  static const String GetConversationNotificationStatus = 'getConversationNotificationStatus';
+  static const String GetUnreadCountConversationTypeList =
+      'getUnreadCountConversationTypeList';
+  static const String SetConversationNotificationStatus =
+      'setConversationNotificationStatus';
+  static const String GetConversationNotificationStatus =
+      'getConversationNotificationStatus';
   static const String RemoveConversation = 'RemoveConversation';
   static const String GetBlockedConversationList = 'getBlockedConversationList';
   static const String SetConversationToTop = 'setConversationToTop';
@@ -51,16 +53,21 @@ class TimMethodKey{
   static const String DownloadFile = 'DownloadFile';
   static const String DownloadVideo = 'DownloadVideo';
 
-
   static const String MethodCallBackKeyInit = 'initCallBack';
   static const String MethodCallBackKeyNewMessages = 'newMessagesCallBack';
-  static const String MethodCallBackKeyRefreshUserInfo = 'refreshUserInfoCallBack';
-  static const String MethodCallBackKeyUserStatus= 'userStatusCallBack';
-  static const String MethodCallBackKeyReceiveMessage = 'receiveMessageCallBack';
+  static const String MethodCallBackKeyRefreshUserInfo =
+      'refreshUserInfoCallBack';
+  static const String MethodCallBackKeyUserStatus = 'userStatusCallBack';
+  static const String MethodCallBackKeyReceiveMessage =
+      'receiveMessageCallBack';
   static const String MethodCallBackKeyJoinChatRoom = 'joinChatRoomCallBack';
   static const String MethodCallBackKeyQuitChatRoom = 'quitChatRoomCallBack';
-  static const String MethodCallBackKeyUploadMediaProgress = 'uploadMediaProgressCallBack';
-  static const String MethodCallBackKeyGetRemoteHistoryMessages = 'getRemoteHistoryMessagesCallBack';
-  static const String MethodCallBackKeyConnectionStatusChange = 'ConnectionStatusChangeCallBack';
-  static const String MethodCallBackKeySendDataToFlutter = 'SendDataToFlutterCallBack';
+  static const String MethodCallBackKeyUploadMediaProgress =
+      'uploadMediaProgressCallBack';
+  static const String MethodCallBackKeyGetRemoteHistoryMessages =
+      'getRemoteHistoryMessagesCallBack';
+  static const String MethodCallBackKeyConnectionStatusChange =
+      'ConnectionStatusChangeCallBack';
+  static const String MethodCallBackKeySendDataToFlutter =
+      'SendDataToFlutterCallBack';
 }

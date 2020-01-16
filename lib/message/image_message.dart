@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 
 import '../common_define.dart';
 import 'message_content.dart';
 
-import 'dart:convert' show json;
+
 
 class ImageMessage extends MessageContent {
   static const int messageType = MessageType.Image;
@@ -11,7 +10,6 @@ class ImageMessage extends MessageContent {
   String localPath;
 
   List<MessageDataElement> elementList;
-
 
   /// [localPath] 本地路径，
   static ImageMessage obtain(String localPath) {
@@ -22,17 +20,17 @@ class ImageMessage extends MessageContent {
 
   @override
   void decode(Map map) {
-
-
     if (map['elementList'] != null) {
       this.elementList = new List<MessageDataElement>();
-      (map['elementList'] as List).forEach((v) { elementList.add( MessageDataElement.fromJson(v)); });
+      (map['elementList'] as List).forEach((v) {
+        elementList.add(MessageDataElement.fromJson(v));
+      });
     }
   }
 
   @override
   Map encode() {
-    Map map = {"localPath":this.localPath,"messageType":messageType};
+    Map map = {"localPath": this.localPath, "messageType": messageType};
     return map;
   }
 
@@ -41,8 +39,6 @@ class ImageMessage extends MessageContent {
     return "";
   }
 
-
-
   @override
   int getMessageType() {
     // TODO: implement getMessageType
@@ -50,17 +46,13 @@ class ImageMessage extends MessageContent {
   }
 }
 
-
-
 class MessageDataElement {
-  MessageDataElement(){}
+  MessageDataElement() {}
   String path;
   int imageFormat;
   int level;
   List<TIMImage> imageList;
   int taskId;
-
-
 
   MessageDataElement.fromJson(Map<dynamic, dynamic> json) {
     path = json['path'];
@@ -68,13 +60,15 @@ class MessageDataElement {
     level = json['level'];
     if (json['imageList'] != null) {
       imageList = new List<TIMImage>();
-      (json['imageList'] as List).forEach((v) { imageList.add( TIMImage.fromJson(v)); });
+      (json['imageList'] as List).forEach((v) {
+        imageList.add(TIMImage.fromJson(v));
+      });
     }
     taskId = json['taskId'];
   }
-
 }
-class TIMImage{
+
+class TIMImage {
   int type;
   String url;
   String uuid;
@@ -82,9 +76,7 @@ class TIMImage{
   int height;
   int width;
 
-
   TIMImage.fromJson(Map<String, dynamic> json) {
-
     size = json['size'];
     width = json['width'];
     type = json['type'];
@@ -92,6 +84,4 @@ class TIMImage{
     url = json['url'];
     height = json['height'];
   }
-
 }
-

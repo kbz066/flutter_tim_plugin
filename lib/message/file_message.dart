@@ -2,19 +2,15 @@ import 'package:flutter_tim_plugin/message/message_content.dart';
 
 import '../common_define.dart';
 
-class FileMessage extends MessageContent{
-
-
+class FileMessage extends MessageContent {
   static const int messageType = MessageType.File;
-
 
   String filePath;
 
   String fileName;
   List<MessageDataElement> elementList;
 
-
-  static FileMessage obtain(String filePath,String fileName) {
+  static FileMessage obtain(String filePath, String fileName) {
     FileMessage msg = new FileMessage();
     msg.filePath = filePath;
     msg.fileName = fileName;
@@ -39,7 +35,7 @@ class FileMessage extends MessageContent{
 
   @override
   Map encode() {
-    Map map = {"filePath":this.filePath,"fileName":this.fileName};
+    Map map = {"filePath": this.filePath, "fileName": this.fileName};
     return map;
   }
 
@@ -48,23 +44,15 @@ class FileMessage extends MessageContent{
     // TODO: implement getMessageType
     return messageType;
   }
-
-
-
-
 }
 
-
-
 class MessageDataElement {
-
   String fileName;
   int fileSize;
   int taskId;
   String uuid;
 
   String path;
-
 
   MessageDataElement.fromJson(Map<String, dynamic> json) {
     fileName = json['fileName'];

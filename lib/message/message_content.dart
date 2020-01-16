@@ -1,13 +1,7 @@
-
-
-abstract class MessageContent implements MessageCoding, MessageContentView {
-
-
-}
+abstract class MessageContent implements MessageCoding, MessageContentView {}
 
 abstract class MessageCoding {
   Map encode();
-
 
   void decode(Map map);
   int getMessageType();
