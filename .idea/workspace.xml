@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="82f946ba-7bb3-4043-b9a6-c4e0213bf4ec" name="Default Changelist" comment="优化代码">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/message/emoji_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/emoji_message.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/message/image_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/image_message.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/message/location_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/location_message.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/message/message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/message.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/message/sound_message.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/message/sound_message.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-    </list>
+    <list default="true" id="82f946ba-7bb3-4043-b9a6-c4e0213bf4ec" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +137,14 @@
       <option name="project" value="LOCAL" />
       <updated>1579140183756</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="优化代码">
+      <created>1579144709042</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1579144709042</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
