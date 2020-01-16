@@ -1,6 +1,6 @@
 name: flutter_tim_plugin
 description: A flitter im Library Based on Tencent cloud im encapsulation. All message types encapsulate corresponding entity classes, which can be easily called without parsing messages. The attribute name of entity class can be viewed clearly according to the official document definition
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/kbz066/flutter_tim_plugin
 
 environment:
