@@ -31,7 +31,7 @@ dependencies:
 ## 1.初始化 SDK
 
 ```
-TimFlutterPlugin.init(RongAppKey);
+TimFlutterPlugin.init(AppKey);
 
 ```
 
